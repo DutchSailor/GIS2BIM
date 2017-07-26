@@ -1,3 +1,4 @@
+
 GIStoBIM is a collection of custom nodes for the Dynamo visual programming environment. 
 It contains many Revit-related nodes, but also nodes for general purposes.
 
@@ -13,6 +14,7 @@ It had not been tested with older versions of Revit and Dynamo.
 
 ## Material on this repository
 -Directory supportfiles contains files with families to use with the nodes and example files.
+
 -Directory nodes contains the versions of the package and the actual nodes
 
 ## Help to develop GIStoBIM
