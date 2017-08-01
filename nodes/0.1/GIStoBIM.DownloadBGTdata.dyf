@@ -1,25 +1,21 @@
-<Workspace Version="1.3.1.1736" X="-492.42479242757" Y="-241.221678737624" zoom="1.11798788304238" ScaleFactor="1" Name="GIStoBIM.DownloadBGTdata" Description="Download BGT-data(dutch GIS-information)" ID="73265b9f-d823-4f9f-8269-cc5dfbb00078" Category="GIStoBIM.Geoservices">
+<Workspace Version="1.3.1.1736" X="-280.498260605828" Y="-0.436814323299302" zoom="0.721395744756138" ScaleFactor="1" Name="GIStoBIM.DownloadBGTdata" Description="Download BGT-data(dutch GIS-information)" ID="73265b9f-d823-4f9f-8269-cc5dfbb00078" Category="GIStoBIM.Geoservices">
   <NamespaceResolutionMap>
     <ClassMap partialName="String" resolvedName="DSCore.String" assemblyName="DSCoreNodes.dll" />
   </NamespaceResolutionMap>
   <Elements>
-    <PythonNodeModels.PythonNode guid="418955c9-1e4b-404a-88f7-fab6efe1db22" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1712.43953958544" y="526.779932205465" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="2">
+    <PythonNodeModels.PythonNode guid="418955c9-1e4b-404a-88f7-fab6efe1db22" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1759.79132510989" y="517.673819604609" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="2">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <Script>import sys
 sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
-
-import requests
+from System.Net import WebClient
 
 url= IN[0]
-filoc= 'IN[1]
+filoc= IN[1]
 
-r = requests.get(url)
-with open(filoc, "wb") as code:
-    code.write(r.content)
+WebClient().DownloadFile(url, filoc)
 
-OUT= filoc
-</Script>
+OUT= filoc</Script>
     </PythonNodeModels.PythonNode>
     <Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction guid="daca5020-e804-4502-8101-e38965663d34" type="Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction" nickname="String.Concat" x="1431.63953958545" y="619.779932205465" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="DSCoreNodes.dll" function="DSCore.String.Concat@string[]" inputcount="4">
       <PortInfo index="0" default="False" />
@@ -28,7 +24,7 @@ OUT= filoc
       <PortInfo index="3" default="False" />
     </Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction>
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="667e0b2e-907a-495b-958a-255fb25f7733" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="721.33923350914" y="782.825821612404" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;.zip&quot;;" ShouldFocus="false" />
-    <PythonNodeModels.PythonNode guid="6b7efeca-2617-4665-ad27-4e818c50e5a3" type="PythonNodeModels.PythonNode" nickname="Spring.NumberToString" x="634.039539585445" y="550.779932205465" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+    <PythonNodeModels.PythonNode guid="6b7efeca-2617-4665-ad27-4e818c50e5a3" type="PythonNodeModels.PythonNode" nickname="Spring.NumberToString" x="652.681448296883" y="548.961845166848" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>#Copyright(c) 2016, Dimitar Venkov
 # @5devene, dimitar.ven@gmail.com
@@ -57,14 +53,14 @@ OUT = output1(out1)</Script>
       <PortInfo index="1" default="False" />
       <PortInfo index="2" default="False" />
     </Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction>
-    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="a6ab03a6-1463-4dc2-b964-c370dc8f444a" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="634.039539585445" y="441.206598872131" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;https://downloads.pdok.nl/service/extract.zip?extractname=bgt&amp;extractset=citygml&amp;excludedtypes=plaatsbepalingspunt&amp;history=true&amp;tiles=%7B%22layers%22%3A%5B%7B%22aggregateLevel%22%3A0%2C%22codes%22%3A%5B&quot;;&#xA;&quot;%5D%7D%5D%7D&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="a6ab03a6-1463-4dc2-b964-c370dc8f444a" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="428.12749854549" y="411.313819381593" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;https://downloads.pdok.nl/service/extract.zip?extractname=bgt&amp;extractset=citygml&amp;excludedtypes=plaatsbepalingspunt&amp;history=true&amp;tiles=%7B%22layers%22%3A%5B%7B%22aggregateLevel%22%3A0%2C%22codes%22%3A%5B&quot;;&#xA;&quot;%5D%7D%5D%7D&quot;;" ShouldFocus="false" />
     <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="d5883c3c-a2d4-4afe-b743-02e656788ffe" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="420.439539585445" y="550.779932205465" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
       <Symbol value="mortoncode" />
     </Dynamo.Graph.Nodes.CustomNodes.Symbol>
     <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="631d46c3-dcd9-495f-b7e6-b7492a71a035" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="553.769090397193" y="671.025621329699" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
       <Symbol value="directory: String" />
     </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CustomNodes.Output guid="06d872a9-237f-4172-b390-141b0a8be8c6" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1789.97186663952" y="641.917626998846" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="06d872a9-237f-4172-b390-141b0a8be8c6" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="2011.60209130805" y="528.481835650135" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
       <PortInfo index="0" default="False" />
       <Symbol value="Location" />
     </Dynamo.Graph.Nodes.CustomNodes.Output>
@@ -74,8 +70,8 @@ OUT = output1(out1)</Script>
     </CoreNodeModels.Input.StringInput>
   </Elements>
   <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="418955c9-1e4b-404a-88f7-fab6efe1db22" start_index="0" end="06d872a9-237f-4172-b390-141b0a8be8c6" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="daca5020-e804-4502-8101-e38965663d34" start_index="0" end="418955c9-1e4b-404a-88f7-fab6efe1db22" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="daca5020-e804-4502-8101-e38965663d34" start_index="0" end="06d872a9-237f-4172-b390-141b0a8be8c6" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="667e0b2e-907a-495b-958a-255fb25f7733" start_index="0" end="daca5020-e804-4502-8101-e38965663d34" end_index="3" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="6b7efeca-2617-4665-ad27-4e818c50e5a3" start_index="0" end="d82c55e7-b47a-4a0a-a47d-0ddda7e88e88" end_index="1" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="6b7efeca-2617-4665-ad27-4e818c50e5a3" start_index="0" end="daca5020-e804-4502-8101-e38965663d34" end_index="2" portType="0" />
@@ -90,6 +86,6 @@ OUT = output1(out1)</Script>
   <Annotations />
   <Presets />
   <Cameras>
-    <Camera Name="Background Preview" eyeX="-26367.853515625" eyeY="28570.7578125" eyeZ="127412.4609375" lookX="26362.853515625" lookY="-28559.7578125" lookZ="-127420.4609375" upX="0" upY="1" upZ="0" />
+    <Camera Name="Background Preview" eyeX="-7624.63525390625" eyeY="231035.796875" eyeZ="106568.671875" lookX="7619.63525390625" lookY="-231024.796875" lookZ="-106576.671875" upX="0.0568024404346943" upY="0.604599118232727" upZ="-0.794501960277557" />
   </Cameras>
 </Workspace>
