@@ -18,3 +18,7 @@ It had not been tested with older or newer versions of Revit and Dynamo.
 
 ## Help to develop GIStoBIM
 If you are interested in contributing to GIStoBIM, please let met know! You're most welcome.
+
+## Blog
+https://dutchrevitblog.blogspot.nl/
+https://revitstructure-nl.blogspot.nl/
