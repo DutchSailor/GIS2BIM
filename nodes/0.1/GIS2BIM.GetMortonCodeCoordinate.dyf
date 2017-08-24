@@ -1,0 +1,71 @@
+<Workspace Version="1.3.1.1736" X="-74.176" Y="-62.338" zoom="1.1575" ScaleFactor="1" Name="GIStoBIM.GetMortonCodeCoordinate" Description="Get mortoncode(bitshifting) given 2 coordinates and tiledimension" ID="fbe16cb3-66bc-4da9-81a0-35afe0be3cb8" Category="GIS2BIM.WebrequestActions">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="e13223a5-972c-40fe-92a6-42ba7fdcd0c1" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="111.2" y="301.6" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//X-coordinate&#xD;&#xA;X: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <PythonNodeModels.PythonNode guid="2d681ecf-78cc-4c20-aa29-a351c08a7a24" type="PythonNodeModels.PythonNode" nickname="Python Script" x="728.8" y="359.2" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="5">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+
+import math
+
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+X = IN[0]
+Y = IN[1]
+Xmod=IN[2]
+Ymod=IN[3]
+TILE=IN[4]
+
+x = bin(int(math.floor(((X - Xmod)/TILE))))
+y = bin(int(math.floor(((Y - Ymod)/TILE))))
+
+x = str(x[2:])
+y = str(y[2:])
+
+res = "".join(i + j for i, j in zip(y, x))
+z=(res)
+
+z = int(z, 2)
+
+#Assign your output to the OUT variable.
+OUT = z</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="da616531-4a66-4c6b-af3b-7dff84b57827" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="114.4" y="427.2" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//Y-coordinate&#xD;&#xA;Y: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="8a5a075e-c7a5-4f1f-b739-ca614cec5275" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="109.2" y="520.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//Modification of X-coordinate&#xD;&#xA;ModX: double=-100000" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="c7e2ecea-ecac-416f-8087-c6597ed325c0" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="110" y="601.2" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//Modification of Y-coordinate&#xD;&#xA;ModY: double=200000" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="ec1d6d85-0e71-43b0-a1a6-687c25f1433c" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="107.2" y="700.8" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="TileDimension: double=2000" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="d53dd67a-f437-4896-9f3a-6d2c09af095c" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1007.2" y="326.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Z" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="e13223a5-972c-40fe-92a6-42ba7fdcd0c1" start_index="0" end="2d681ecf-78cc-4c20-aa29-a351c08a7a24" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="2d681ecf-78cc-4c20-aa29-a351c08a7a24" start_index="0" end="d53dd67a-f437-4896-9f3a-6d2c09af095c" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="da616531-4a66-4c6b-af3b-7dff84b57827" start_index="0" end="2d681ecf-78cc-4c20-aa29-a351c08a7a24" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8a5a075e-c7a5-4f1f-b739-ca614cec5275" start_index="0" end="2d681ecf-78cc-4c20-aa29-a351c08a7a24" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c7e2ecea-ecac-416f-8087-c6597ed325c0" start_index="0" end="2d681ecf-78cc-4c20-aa29-a351c08a7a24" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ec1d6d85-0e71-43b0-a1a6-687c25f1433c" start_index="0" end="2d681ecf-78cc-4c20-aa29-a351c08a7a24" end_index="4" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>
