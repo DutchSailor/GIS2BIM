@@ -1,6 +1,6 @@
 
 
-GIStoBIM is a collection of custom nodes for the Dynamo visual programming environment.  It imports GIS-information to Autotdesk Revit-models. 
+GIS2BIM is a collection of custom nodes for the Dynamo visual programming environment.  It imports GIS-information to Autotdesk Revit-models. 
 
 ## Version
 Currently version is not released yet.
@@ -18,7 +18,7 @@ It had not been tested with older or newer versions of Revit and Dynamo.
 -Directory nodes contains the versions of the package and the actual nodes
 
 ## Help to develop GIStoBIM
-If you are interested in contributing to GIStoBIM, please let met know! You're most welcome.
+If you are interested in contributing to GIS2BIM, please let met know! You're most welcome.
 
 ## Blog
 https://dutchrevitblog.blogspot.nl/
