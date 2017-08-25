@@ -1,4 +1,4 @@
-•![Image](GIS2BIMLOGO.png)
+•![Image](https://github.com/DutchSailor/GIS2BIM/edit/master/GIS2BIMLOGO.png)
 
 GIS2BIM is a collection of custom nodes for the Dynamo visual programming environment.  It imports GIS-information to Autotdesk Revit-models. 
 
