@@ -1,0 +1,59 @@
+<Workspace Version="1.3.1.1736" X="-106.577768887241" Y="88.5368584866469" zoom="0.70823125" ScaleFactor="1" Name="GIS2BIM.PTStoPoints" Description="convert a pts-file(ascii) to dynamo points" ID="a43bd5a6-c4e5-433a-b201-a7d3cfe757bd" Category="GIS2BIM.Pointcloud">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="DSCore.List" resolvedName="DSCore.List" assemblyName="DSCoreNodes.dll" />
+    <ClassMap partialName="String" resolvedName="DSCore.String" assemblyName="DSCoreNodes.dll" />
+    <ClassMap partialName="Point" resolvedName="Autodesk.DesignScript.Geometry.Point" assemblyName="ProtoGeometry.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="74b44d6a-409f-4829-9658-b8d7e9e58e4d" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="945.323039096216" y="200.632692175246" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="t1 = DSCore.List.Transpose(t2);&#xA;t5 = 1000*String.ToNumber(DSCore.List.GetItemAtIndex(t1, 0));&#xA;t6 = 1000*String.ToNumber(DSCore.List.GetItemAtIndex(t1, 1));&#xA;t7 = 1000*String.ToNumber(DSCore.List.GetItemAtIndex(t1, 2));&#xA;points = Point.ByCoordinates(t5,t6,t7);" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <PythonNodeModels.PythonNode guid="08d7b389-3a43-49be-ba8f-141fea321ba0" type="PythonNodeModels.PythonNode" nickname="Python Script" x="714.767688799762" y="194.643446314877" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+# Import RevitNodes
+
+clr.AddReference("RevitNodes")
+import Revit
+import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+
+import itertools
+
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+
+input = IN[0]
+
+pointlist = input.split()
+
+def grouper(n, it):
+    "grouper(3, 'ABCDEFG') --&gt; ABC DEF G"
+    it = iter(it)
+    return iter(lambda: list(itertools.islice(it, n)), [])
+
+pointlist = list(grouper(4, pointlist))
+
+OUT = pointlist</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="05ae4b5c-be40-49be-98d8-cadaebfd7ce0" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="File.ReadText" x="450.52882559853" y="195.2" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.IO.File.ReadText@var">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="65fd5ce1-39cc-402e-84b6-b496b0eefebc" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="195.178635014837" y="196.828486646884" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="PTSFile" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="0808c2c8-d03d-49f4-81de-125df4f7e989" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1661.85517638094" y="263.562419073365" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Points" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="74b44d6a-409f-4829-9658-b8d7e9e58e4d" start_index="4" end="0808c2c8-d03d-49f4-81de-125df4f7e989" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="08d7b389-3a43-49be-ba8f-141fea321ba0" start_index="0" end="74b44d6a-409f-4829-9658-b8d7e9e58e4d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="05ae4b5c-be40-49be-98d8-cadaebfd7ce0" start_index="0" end="08d7b389-3a43-49be-ba8f-141fea321ba0" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="65fd5ce1-39cc-402e-84b6-b496b0eefebc" start_index="0" end="05ae4b5c-be40-49be-98d8-cadaebfd7ce0" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>
