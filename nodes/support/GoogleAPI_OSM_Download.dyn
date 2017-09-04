@@ -1,0 +1,131 @@
+<Workspace Version="1.3.1.1736" X="593.906916114152" Y="-3.22774067507089" zoom="0.679664896814826" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="DSCore.List" resolvedName="DSCore.List" assemblyName="DSCoreNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="2b4245ae-b824-4b77-a24b-e57901878a6f" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.GeoCodingGoogleAPI" x="267.065970604649" y="360.29246972466" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="True" />
+      <ID value="4a574a48-aab3-45bf-a64d-98afa743366d" />
+      <Name value="GIS2BIM.GeoCodingGoogleAPI" />
+      <Description value="gets coordinate from adress with google API" />
+      <Inputs>
+        <Input value="Streetname" />
+        <Input value="Housenumber" />
+        <Input value="Place" />
+        <Input value="Country" />
+        <Input value="GoogleAPIKey" />
+      </Inputs>
+      <Outputs>
+        <Output value="Latitude" />
+        <Output value="Longitude" />
+        <Output value="Elevation" />
+        <Output value="XML" />
+        <Output value="GoogleAPILink" />
+        <Output value="GoogleAPILinkElevation" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="963ebe5b-0bfe-4ded-8c1a-1b99ffabf829" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreateBoundingBoxLATLONG" x="948.835573069673" y="642.00207977045" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <ID value="1dce3f92-a7f6-4f10-8b33-384ce92015dc" />
+      <Name value="GIS2BIM.CreateBoundingBoxLATLONG" />
+      <Description value="create boundingbox with from lat/long coordinate in degrees" />
+      <Inputs>
+        <Input value="Lat" />
+        <Input value="Long" />
+        <Input value="WidthMeters" />
+      </Inputs>
+      <Outputs>
+        <Output value="West" />
+        <Output value="East" />
+        <Output value="North" />
+        <Output value="South" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="fe166a10-e246-4589-807d-44ab73bfae08" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="373.300670546172" y="782.976505751833" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="500;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="28f1c05f-e7f9-4798-bb47-542f09871860" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1145.33920127533" y="977.05630931707" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;C:/TEMP&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="e2ac7c92-8c75-4b24-9d21-9e704c40c9fb" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="OSM.Features" x="-51.202599384743" y="1100.75918445523" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="..\..\..\..\..\..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\Elk\bin\Elk.dll" function="Elk.OSM.Features" />
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="14ae82f2-5ab7-4b79-9599-3f00d284f6b6" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="OSM.Location" x="316.302574434029" y="1006.28466698711" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="..\..\..\..\..\..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\Elk\bin\Elk.dll" function="Elk.OSM.Location@string">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="e94a6dc6-d0fb-4a7a-9072-30dbb0933959" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="OSM.OSMData" x="606.443150802408" y="1149.49125541133" isVisible="false" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="..\..\..\..\..\..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\Elk\bin\Elk.dll" function="Elk.OSM.OSMData@var[],string,string,string[]">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="e603dd57-01e9-46e9-b5e3-856eef8d9ab6" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="List.GetItemAtIndex" x="323.848794518732" y="1234.39845232043" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="DSCoreNodes.dll" function="DSCore.List.GetItemAtIndex@var[]..[],int">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="6def3141-06dd-4b06-87d5-70dc2a7ecc77" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="134.582632694812" y="1327.21446767477" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="5;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="f524a7a4-c3aa-4f1e-884d-51c4cfe1fa01" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="321.709647961742" y="1372.40896550463" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="10;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="fb4ce4e8-398c-42d8-be8b-fb98a3f9699c" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="OSM.SubFeatures" x="558.619423275862" y="1393.17005987991" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="..\..\..\..\..\..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\Elk\bin\Elk.dll" function="Elk.OSM.SubFeatures@string,int[]">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="bac47e05-2400-4d68-8f32-0e1c291bc155" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="PolyCurve.ByPoints" x="909.70920284198" y="1151.385512882" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.PolyCurve.ByPoints@Autodesk.DesignScript.Geometry.Point[],bool">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="True" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="da7b45ce-c454-431c-935a-3d907ef7525b" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-445.407135568587" y="662.026885941742" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;AIzaSyCHc87ARU6CZ4Kti6Mn5LTw8jocK0owwaM&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="67d5e4b8-07ba-4946-bcdd-b939a1e85686" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.DownloadOSM" x="1408.72810805759" y="565.63260986934" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="False" />
+      <ID value="c9536f20-07cc-484d-9afb-fc09e8b331fb" />
+      <Name value="GIS2BIM.DownloadOSM" />
+      <Description value="Download OSM data within a boundingbox" />
+      <Inputs>
+        <Input value="West" />
+        <Input value="East" />
+        <Input value="North" />
+        <Input value="South" />
+        <Input value="Directory" />
+      </Inputs>
+      <Outputs>
+        <Output value="Directory" />
+        <Output value="Location" />
+        <Output value="DownloadlinkOSM" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="4ccf9bc4-7f91-4bf5-ba1e-659d4523cf7b" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-159.028053921767" y="386.681860637292" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;waterstreet&quot;;&#xA;&quot;1&quot;;&#xA;&quot;new york&quot;;&#xA;&quot;USA&quot;;" ShouldFocus="false" />
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="2b4245ae-b824-4b77-a24b-e57901878a6f" start_index="0" end="963ebe5b-0bfe-4ded-8c1a-1b99ffabf829" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="2b4245ae-b824-4b77-a24b-e57901878a6f" start_index="1" end="963ebe5b-0bfe-4ded-8c1a-1b99ffabf829" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="963ebe5b-0bfe-4ded-8c1a-1b99ffabf829" start_index="0" end="67d5e4b8-07ba-4946-bcdd-b939a1e85686" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="963ebe5b-0bfe-4ded-8c1a-1b99ffabf829" start_index="1" end="67d5e4b8-07ba-4946-bcdd-b939a1e85686" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="963ebe5b-0bfe-4ded-8c1a-1b99ffabf829" start_index="2" end="67d5e4b8-07ba-4946-bcdd-b939a1e85686" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="963ebe5b-0bfe-4ded-8c1a-1b99ffabf829" start_index="3" end="67d5e4b8-07ba-4946-bcdd-b939a1e85686" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="fe166a10-e246-4589-807d-44ab73bfae08" start_index="0" end="963ebe5b-0bfe-4ded-8c1a-1b99ffabf829" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="28f1c05f-e7f9-4798-bb47-542f09871860" start_index="0" end="67d5e4b8-07ba-4946-bcdd-b939a1e85686" end_index="4" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e2ac7c92-8c75-4b24-9d21-9e704c40c9fb" start_index="0" end="e603dd57-01e9-46e9-b5e3-856eef8d9ab6" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="14ae82f2-5ab7-4b79-9599-3f00d284f6b6" start_index="0" end="e94a6dc6-d0fb-4a7a-9072-30dbb0933959" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="14ae82f2-5ab7-4b79-9599-3f00d284f6b6" start_index="1" end="e94a6dc6-d0fb-4a7a-9072-30dbb0933959" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e94a6dc6-d0fb-4a7a-9072-30dbb0933959" start_index="0" end="bac47e05-2400-4d68-8f32-0e1c291bc155" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e603dd57-01e9-46e9-b5e3-856eef8d9ab6" start_index="0" end="e94a6dc6-d0fb-4a7a-9072-30dbb0933959" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e603dd57-01e9-46e9-b5e3-856eef8d9ab6" start_index="0" end="fb4ce4e8-398c-42d8-be8b-fb98a3f9699c" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6def3141-06dd-4b06-87d5-70dc2a7ecc77" start_index="0" end="e603dd57-01e9-46e9-b5e3-856eef8d9ab6" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f524a7a4-c3aa-4f1e-884d-51c4cfe1fa01" start_index="0" end="fb4ce4e8-398c-42d8-be8b-fb98a3f9699c" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="fb4ce4e8-398c-42d8-be8b-fb98a3f9699c" start_index="0" end="e94a6dc6-d0fb-4a7a-9072-30dbb0933959" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="67d5e4b8-07ba-4946-bcdd-b939a1e85686" start_index="1" end="14ae82f2-5ab7-4b79-9599-3f00d284f6b6" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ccf9bc4-7f91-4bf5-ba1e-659d4523cf7b" start_index="0" end="2b4245ae-b824-4b77-a24b-e57901878a6f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ccf9bc4-7f91-4bf5-ba1e-659d4523cf7b" start_index="1" end="2b4245ae-b824-4b77-a24b-e57901878a6f" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ccf9bc4-7f91-4bf5-ba1e-659d4523cf7b" start_index="2" end="2b4245ae-b824-4b77-a24b-e57901878a6f" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ccf9bc4-7f91-4bf5-ba1e-659d4523cf7b" start_index="3" end="2b4245ae-b824-4b77-a24b-e57901878a6f" end_index="3" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="103073.8359375" eyeY="420248.65625" eyeZ="383224.1875" lookX="58090.0390625" lookY="-366248.71875" lookZ="-408705.5" upX="0.068650409579277" upY="0.87292206287384" upZ="-0.483005344867706" />
+  </Cameras>
+</Workspace>
