@@ -1,0 +1,329 @@
+<Workspace Version="1.3.2.2480" X="-239.386768717247" Y="435.781858549396" zoom="0.620845611369312" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="Application.Document.Current" resolvedName="Revit.Application.Document" assemblyName="RevitNodes.dll" />
+    <ClassMap partialName="Application.Document" resolvedName="Revit.Application.Document" assemblyName="RevitNodes.dll" />
+    <ClassMap partialName="Revit.Application.Document.Current" resolvedName="Revit.Application.Document" assemblyName="RevitNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="fbe0dc99-ef0b-4629-9bcc-8140ce1c54d0" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="926.674280253168" y="-187.951578619698" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;4326&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="42a0b1da-7a40-4d19-b6a0-0d484caf881a" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.SearchCRS" x="1202.69419431992" y="-563.716908273985" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="True" />
+      <ID value="7b795053-f3a1-4ee5-8ef9-22e00cea8a74" />
+      <Name value="GIS2BIM.SearchCRS" />
+      <Description value="Search for a Coordinate Reference System " />
+      <Inputs>
+        <Input value="EPSG_Code" />
+      </Inputs>
+      <Outputs>
+        <Output value="Name CRS" />
+        <Output value="URL CRS" />
+        <Output value="All CRS-systems" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="f9c0e632-7aa3-4bde-b8b7-abc572ed1309" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="687.898531296867" y="-316.173497996947" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;31370&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="fafd0fa1-17eb-44cd-b6c3-38ee49681e68" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.GeoCodingGoogleAPI" x="603.019200529903" y="-73.1586226408705" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="True" />
+      <ID value="4a574a48-aab3-45bf-a64d-98afa743366d" />
+      <Name value="GIS2BIM.GeoCodingGoogleAPI" />
+      <Description value="gets coordinate from adress with google API" />
+      <Inputs>
+        <Input value="Streetname" />
+        <Input value="Housenumber" />
+        <Input value="Place" />
+        <Input value="Country" />
+        <Input value="GoogleAPIKey" />
+      </Inputs>
+      <Outputs>
+        <Output value="Latitude" />
+        <Output value="Longitude" />
+        <Output value="Elevation" />
+        <Output value="XML" />
+        <Output value="GoogleAPILink" />
+        <Output value="GoogleAPILinkElevation" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="9f8a85fe-3fe9-4089-95f9-26abf704ce4e" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="251.175253555967" y="-62.3934640623906" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;Grootkanonplein&quot;;&#xA;&quot;2&quot;;&#xA;&quot;Gent&quot;;&#xA;&quot;Belgium&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="967f8945-cac7-4d55-849e-3d6fc7f59be9" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.TransformCRS_epsg" x="1277.88528711532" y="-67.9615665171719" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="True" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="1813c488-6cc1-4cc0-aaf5-ea0606534144" />
+      <Name value="GIS2BIM.TransformCRS_epsg" />
+      <Description value="Uses the API of http://epsg.io to transform Coordinate Reference Systems" />
+      <Inputs>
+        <Input value="sourceCRS" />
+        <Input value="targetCRS" />
+        <Input value="xCoordinate" />
+        <Input value="yCoordinate" />
+      </Inputs>
+      <Outputs>
+        <Output value="Xtransformed" />
+        <Output value="Ytransformed" />
+        <Output value="URL" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="e0f99dd0-b04e-427e-859c-c42d4ffbdaec" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreateBoundingBox" x="1814.4610643758" y="-71.4807964312334" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="1b8585e3-81f4-499f-8e18-81d010124896" />
+      <Name value="GIS2BIM.CreateBoundingBox" />
+      <Description value="create boundingboxstring for webrequests based on coördinates and dimensions" />
+      <Inputs>
+        <Input value="CoordinateX" />
+        <Input value="CoordinateY" />
+        <Input value="BoxWidth" />
+        <Input value="BoxHeight" />
+      </Inputs>
+      <Outputs>
+        <Output value="Boxstring" />
+        <Output value="Boxstring2" />
+        <Output value="Xmin" />
+        <Output value="Ymin" />
+        <Output value="Xmax" />
+        <Output value="Ymax" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="8db5b187-e18b-4a3a-bf8a-1b181d828760" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="BoundingboxWidth" x="251.175253555967" y="222.386712032074" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="250;" ShouldFocus="false" />
+    <CoreNodeModels.WebRequest guid="dfea4e23-a9a1-43df-822c-a4b6d8443a8d" type="CoreNodeModels.WebRequest" nickname="Web Request" x="3014.13886085417" y="-473.022806651916" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.WebRequest>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="7bd57bff-13f3-4caf-9eb7-8baecdfa93e5" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreatePointsPolygonFromGMLxy" x="3352.76509551171" y="-472.557550519407" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="True" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="True" />
+      <PortInfo index="5" default="True" />
+      <ID value="a7643070-8353-4a17-bb53-fa2cd8f9561a" />
+      <Name value="GIS2BIM.CreatePointsPolygonFromGMLxy" />
+      <Description value="Create point and polygons from a GML-file" />
+      <Inputs>
+        <Input value="XML" />
+        <Input value="XPATHSTRING" />
+        <Input value="DeltaX" />
+        <Input value="DeltaY" />
+        <Input value="Connectpolygon" />
+        <Input value="UnitsConversionFactor" />
+      </Inputs>
+      <Outputs>
+        <Output value="PolyCurves" />
+        <Output value="Points" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="c0bbd755-17c8-45a9-8c4b-315d513970db" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreateDetailLinesFromPolygons" x="4005.70626667393" y="-313.766210170823" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <ID value="b79393ef-f778-4f91-81d0-3438d389991d" />
+      <Name value="GIS2BIM.CreateDetailLinesFromPolygons" />
+      <Description value="Create detaillines from polygons in a view" />
+      <Inputs>
+        <Input value="View" />
+        <Input value="PolyCurves" />
+        <Input value="Linestyle" />
+      </Inputs>
+      <Outputs>
+        <Output value="Detaillines" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="0f655a55-7398-47a1-a060-809dad34d118" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreatePointsPolygonFromGMLxy" x="3346.6382059538" y="-10.655401044116" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="True" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="True" />
+      <PortInfo index="5" default="True" />
+      <ID value="a7643070-8353-4a17-bb53-fa2cd8f9561a" />
+      <Name value="GIS2BIM.CreatePointsPolygonFromGMLxy" />
+      <Description value="Create point and polygons from a GML-file" />
+      <Inputs>
+        <Input value="XML" />
+        <Input value="XPATHSTRING" />
+        <Input value="DeltaX" />
+        <Input value="DeltaY" />
+        <Input value="Connectpolygon" />
+        <Input value="UnitsConversionFactor" />
+      </Inputs>
+      <Outputs>
+        <Output value="PolyCurves" />
+        <Output value="Points" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <CoreNodeModels.WebRequest guid="1e9c030e-2c9f-4aee-8e03-fcdbba81f537" type="CoreNodeModels.WebRequest" nickname="Web Request" x="3008.01197129626" y="10.0048947221408" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.WebRequest>
+    <CoreNodeModels.WebRequest guid="8434f6da-95d8-4941-ac96-c1617a56e1f0" type="CoreNodeModels.WebRequest" nickname="Web Request" x="3027.32783179278" y="439.0446617044" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.WebRequest>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="ce604e50-5bc5-4145-8043-9830906f469c" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreatePointFromGML" x="3404.06392727698" y="324.600035511729" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="True" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="True" />
+      <ID value="72d0b00c-9715-4d3f-b4a7-653baa5c0ecc" />
+      <Name value="GIS2BIM.CreatePointFromGML" />
+      <Description value="Create Points from space seperated GML" />
+      <Inputs>
+        <Input value="XML" />
+        <Input value="XPATHSTRING" />
+        <Input value="ModX" />
+        <Input value="ModY" />
+        <Input value="UnitsConversionFactor" />
+      </Inputs>
+      <Outputs>
+        <Output value="Point" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="e77c87a0-b22c-48b0-8d9a-307452d985c8" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.BelgiumGeoservicesLibrary" x="2345.09027426479" y="-65.5517210070266" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <ID value="ba1cba70-cbbd-469f-ab07-2815f4d91865" />
+      <Name value="GIS2BIM.BelgiumGeoservicesLibrary" />
+      <Description value="Geoserviceslibrary in Belgium" />
+      <Inputs>
+        <Input value="BoundingboxString" />
+      </Inputs>
+      <Outputs>
+        <Output value="CadastreParcels(GRB:ADP)(WFS)" />
+        <Output value="BuildingOutlines(GRB:GBG)(WFS)" />
+        <Output value="Housenumbers(GRB:TBLGBGADR)(WFS)" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="570e9ee1-9f4d-4ff3-bc78-faae9ae9c946" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="DataSets.GetXMLNode" x="3403.93021051972" y="606.174734249062" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="..\..\..\..\..\..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\LunchBox for Dynamo\bin\LunchBox.dll" function="Lists.DataSets.GetXMLNode@string,string">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="040924c7-d37c-45c2-bbd5-525fcf8a4cf9" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.SetSharedCoordinate" x="1636.67965852432" y="287.525350109525" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="True" />
+      <PortInfo index="3" default="True" />
+      <ID value="da4af9e2-1688-4b45-8fa1-1ccb8a821143" />
+      <Name value="GIS2BIM.SetSharedCoordinate" />
+      <Description value="Set shared coordinate/project basepoint" />
+      <Inputs>
+        <Input value="X" />
+        <Input value="Y" />
+        <Input value="Z" />
+        <Input value="MeterToMM" />
+      </Inputs>
+      <Outputs>
+        <Output value="Xresult" />
+        <Output value="Yresult" />
+        <Output value="Zresult" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="fa625d89-5fab-4a19-92c9-87e545bcee3d" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="3170.85244474779" y="650.396066248286" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;GRB:HUISNR&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="0e93efda-0742-4c0f-859d-872e89189cdc" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="3757.70250505032" y="707.161273385374" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;Center&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="29d8eb38-7e33-43d8-97a8-5ce38d07440f" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="251.175253555967" y="349.212989631394" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="Application.Document.Current.ActiveView;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="e38e4200-9b65-4d93-9221-a49ba49fc32c" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="251.175253555967" y="460.622934373135" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;Thin Lines&quot;;&#xA;&quot;Hidden Lines&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="26f9c6a6-f17b-4612-82a3-b5f4ac43de9e" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreateDetailLinesFromPolygons" x="3979.47011451832" y="71.5802344120957" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <ID value="b79393ef-f778-4f91-81d0-3438d389991d" />
+      <Name value="GIS2BIM.CreateDetailLinesFromPolygons" />
+      <Description value="Create detaillines from polygons in a view" />
+      <Inputs>
+        <Input value="View" />
+        <Input value="PolyCurves" />
+        <Input value="Linestyle" />
+      </Inputs>
+      <Outputs>
+        <Output value="Detaillines" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="84313e80-f15c-4677-9e8e-f917dc057b66" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="TextNote.ByLocation" x="4159.25873817137" y="549.978601506539" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="RevitNodes.dll" function="Revit.Elements.TextNote.ByLocation@Revit.Elements.Views.View,Autodesk.DesignScript.Geometry.Point,string,string,Revit.Elements.TextNoteType,bool,double">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="True" />
+      <PortInfo index="5" default="True" />
+      <PortInfo index="6" default="True" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="2ba31155-6901-44d0-8b6d-111a7c3e06ef" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Flatten" x="3690.99967873007" y="609.048332786727" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="BuiltIn" function="Flatten@var[]..[]">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <CoreNodeModels.FromObject guid="0bebb592-14e5-44c3-8647-2390098855ac" type="CoreNodeModels.FromObject" nickname="String from Object" x="3937.53632586565" y="637.096671906484" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.FromObject>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="fbe0dc99-ef0b-4629-9bcc-8140ce1c54d0" start_index="0" end="967f8945-cac7-4d55-849e-3d6fc7f59be9" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f9c0e632-7aa3-4bde-b8b7-abc572ed1309" start_index="0" end="42a0b1da-7a40-4d19-b6a0-0d484caf881a" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f9c0e632-7aa3-4bde-b8b7-abc572ed1309" start_index="0" end="967f8945-cac7-4d55-849e-3d6fc7f59be9" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="fafd0fa1-17eb-44cd-b6c3-38ee49681e68" start_index="0" end="967f8945-cac7-4d55-849e-3d6fc7f59be9" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="fafd0fa1-17eb-44cd-b6c3-38ee49681e68" start_index="1" end="967f8945-cac7-4d55-849e-3d6fc7f59be9" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9f8a85fe-3fe9-4089-95f9-26abf704ce4e" start_index="0" end="fafd0fa1-17eb-44cd-b6c3-38ee49681e68" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9f8a85fe-3fe9-4089-95f9-26abf704ce4e" start_index="1" end="fafd0fa1-17eb-44cd-b6c3-38ee49681e68" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9f8a85fe-3fe9-4089-95f9-26abf704ce4e" start_index="2" end="fafd0fa1-17eb-44cd-b6c3-38ee49681e68" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9f8a85fe-3fe9-4089-95f9-26abf704ce4e" start_index="3" end="fafd0fa1-17eb-44cd-b6c3-38ee49681e68" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="0" end="e0f99dd0-b04e-427e-859c-c42d4ffbdaec" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="0" end="7bd57bff-13f3-4caf-9eb7-8baecdfa93e5" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="0" end="0f655a55-7398-47a1-a060-809dad34d118" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="0" end="ce604e50-5bc5-4145-8043-9830906f469c" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="0" end="040924c7-d37c-45c2-bbd5-525fcf8a4cf9" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="1" end="e0f99dd0-b04e-427e-859c-c42d4ffbdaec" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="1" end="7bd57bff-13f3-4caf-9eb7-8baecdfa93e5" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="1" end="0f655a55-7398-47a1-a060-809dad34d118" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="1" end="ce604e50-5bc5-4145-8043-9830906f469c" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="967f8945-cac7-4d55-849e-3d6fc7f59be9" start_index="1" end="040924c7-d37c-45c2-bbd5-525fcf8a4cf9" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e0f99dd0-b04e-427e-859c-c42d4ffbdaec" start_index="0" end="e77c87a0-b22c-48b0-8d9a-307452d985c8" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8db5b187-e18b-4a3a-bf8a-1b181d828760" start_index="0" end="e0f99dd0-b04e-427e-859c-c42d4ffbdaec" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8db5b187-e18b-4a3a-bf8a-1b181d828760" start_index="0" end="e0f99dd0-b04e-427e-859c-c42d4ffbdaec" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="dfea4e23-a9a1-43df-822c-a4b6d8443a8d" start_index="0" end="7bd57bff-13f3-4caf-9eb7-8baecdfa93e5" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7bd57bff-13f3-4caf-9eb7-8baecdfa93e5" start_index="0" end="c0bbd755-17c8-45a9-8c4b-315d513970db" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0f655a55-7398-47a1-a060-809dad34d118" start_index="0" end="26f9c6a6-f17b-4612-82a3-b5f4ac43de9e" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="1e9c030e-2c9f-4aee-8e03-fcdbba81f537" start_index="0" end="0f655a55-7398-47a1-a060-809dad34d118" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8434f6da-95d8-4941-ac96-c1617a56e1f0" start_index="0" end="ce604e50-5bc5-4145-8043-9830906f469c" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8434f6da-95d8-4941-ac96-c1617a56e1f0" start_index="0" end="570e9ee1-9f4d-4ff3-bc78-faae9ae9c946" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ce604e50-5bc5-4145-8043-9830906f469c" start_index="0" end="84313e80-f15c-4677-9e8e-f917dc057b66" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e77c87a0-b22c-48b0-8d9a-307452d985c8" start_index="0" end="dfea4e23-a9a1-43df-822c-a4b6d8443a8d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e77c87a0-b22c-48b0-8d9a-307452d985c8" start_index="1" end="1e9c030e-2c9f-4aee-8e03-fcdbba81f537" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e77c87a0-b22c-48b0-8d9a-307452d985c8" start_index="2" end="8434f6da-95d8-4941-ac96-c1617a56e1f0" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="570e9ee1-9f4d-4ff3-bc78-faae9ae9c946" start_index="0" end="2ba31155-6901-44d0-8b6d-111a7c3e06ef" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="fa625d89-5fab-4a19-92c9-87e545bcee3d" start_index="0" end="570e9ee1-9f4d-4ff3-bc78-faae9ae9c946" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0e93efda-0742-4c0f-859d-872e89189cdc" start_index="0" end="84313e80-f15c-4677-9e8e-f917dc057b66" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="29d8eb38-7e33-43d8-97a8-5ce38d07440f" start_index="0" end="c0bbd755-17c8-45a9-8c4b-315d513970db" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="29d8eb38-7e33-43d8-97a8-5ce38d07440f" start_index="0" end="26f9c6a6-f17b-4612-82a3-b5f4ac43de9e" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="29d8eb38-7e33-43d8-97a8-5ce38d07440f" start_index="0" end="84313e80-f15c-4677-9e8e-f917dc057b66" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e38e4200-9b65-4d93-9221-a49ba49fc32c" start_index="0" end="26f9c6a6-f17b-4612-82a3-b5f4ac43de9e" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e38e4200-9b65-4d93-9221-a49ba49fc32c" start_index="1" end="c0bbd755-17c8-45a9-8c4b-315d513970db" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="2ba31155-6901-44d0-8b6d-111a7c3e06ef" start_index="0" end="0bebb592-14e5-44c3-8647-2390098855ac" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0bebb592-14e5-44c3-8647-2390098855ac" start_index="0" end="84313e80-f15c-4677-9e8e-f917dc057b66" end_index="2" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="10063ee6-354b-442c-b42a-ce1bc9de53c7" annotationText="HOUSENUMBER" left="3017.32783179278" top="278.600035511729" width="1485.53090637859" height="519.97856599481" fontSize="30" InitialTop="324.600035511729" InitialHeight="503.97856599481" TextblockHeight="36" backgrouund="#FFC1D676">
+      <Models ModelGuid="8434f6da-95d8-4941-ac96-c1617a56e1f0" />
+      <Models ModelGuid="ce604e50-5bc5-4145-8043-9830906f469c" />
+      <Models ModelGuid="570e9ee1-9f4d-4ff3-bc78-faae9ae9c946" />
+      <Models ModelGuid="fa625d89-5fab-4a19-92c9-87e545bcee3d" />
+      <Models ModelGuid="84313e80-f15c-4677-9e8e-f917dc057b66" />
+      <Models ModelGuid="2ba31155-6901-44d0-8b6d-111a7c3e06ef" />
+      <Models ModelGuid="0bebb592-14e5-44c3-8647-2390098855ac" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="599562fd-cd30-4749-8e30-cce615f94143" annotationText="CADASTRE PARCELS" left="3004.13886085417" top="-519.022806651916" width="1277.96740581976" height="349.856596481093" fontSize="30" InitialTop="-473.022806651916" InitialHeight="333.856596481093" TextblockHeight="36" backgrouund="#FFC1D676">
+      <Models ModelGuid="dfea4e23-a9a1-43df-822c-a4b6d8443a8d" />
+      <Models ModelGuid="7bd57bff-13f3-4caf-9eb7-8baecdfa93e5" />
+      <Models ModelGuid="c0bbd755-17c8-45a9-8c4b-315d513970db" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="6b7c5c1f-852b-4af3-b354-b751afc028bf" annotationText="BUILDING OUTLINES" left="2998.01197129626" top="-56.655401044116" width="1257.85814322206" height="272.835635456212" fontSize="30" InitialTop="-10.655401044116" InitialHeight="256.835635456212" TextblockHeight="36" backgrouund="#FFC1D676">
+      <Models ModelGuid="0f655a55-7398-47a1-a060-809dad34d118" />
+      <Models ModelGuid="1e9c030e-2c9f-4aee-8e03-fcdbba81f537" />
+      <Models ModelGuid="26f9c6a6-f17b-4612-82a3-b5f4ac43de9e" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17586.34375" eyeY="198706.828125" eyeZ="149894.859375" lookX="17581.34375" lookY="-198695.828125" lookZ="-149902.859375" upX="0.0754971951246262" upY="0.761538326740265" upZ="-0.643707692623138" />
+  </Cameras>
+</Workspace>
