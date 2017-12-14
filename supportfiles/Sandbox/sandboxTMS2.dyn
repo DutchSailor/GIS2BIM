@@ -1,0 +1,132 @@
+<Workspace Version="1.3.2.2480" X="-1878.33462037327" Y="-389.193200928583" zoom="0.842893770232269" ScaleFactor="1" Name="Home" Description="" RunType="Automatic" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="a1d1ec8d-d355-4a0a-900d-5ea512eef6a9" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1582.63918075827" y="590.335677765892" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;https://mt1.google.com/vt/lyrs=s&amp;x=268935&amp;y=173664&amp;z=19&quot;;" ShouldFocus="false" />
+    <PythonNodeModels.PythonNode guid="230fc830-4729-407b-80e3-12061b094b59" type="PythonNodeModels.PythonNode" nickname="Python Script" x="2402.73149645653" y="741.946651591621" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+
+#Assign your output to the OUT variable.
+OUT = 0</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="1e44c4c5-441c-4c5e-9752-7674c89be5e6" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.DownloadOSM" x="1859.13968698585" y="877.942226649015" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="False" />
+      <ID value="c9536f20-07cc-484d-9afb-fc09e8b331fb" />
+      <Name value="GIS2BIM.DownloadOSM" />
+      <Description value="Download OSM data within a boundingbox" />
+      <Inputs>
+        <Input value="West" />
+        <Input value="East" />
+        <Input value="North" />
+        <Input value="South" />
+        <Input value="Directory" />
+      </Inputs>
+      <Outputs>
+        <Output value="Directory" />
+        <Output value="Location" />
+        <Output value="DownloadlinkOSM" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <PythonNodeModels.PythonNode guid="9f244ebe-02da-4a26-a0d9-35d87661e5be" type="PythonNodeModels.PythonNode" nickname="Python Script" x="2777.9414198172" y="694.625602327505" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <Script>import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+from System.Net import WebClient
+import urllib2
+
+url= IN[0]
+filoc= IN[1]
+
+WebClient().DownloadFile(url, filoc)
+
+OUT= filoc</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="152e8d34-8c8f-4662-ac63-2ce7d282b0c3" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="2402" y="952" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;C:/TEMP/googletms.jpg&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="4e4a4ff0-ab98-4417-a425-0607c9d3acdc" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.WebrequestWMS" x="2683.16038337001" y="269.176283334817" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <ID value="711dc65d-f2fc-4e22-8b92-e079bd175e45" />
+      <Name value="GIS2BIM.WebrequestWMS" />
+      <Description value="a webrequest based on WMS-protocol" />
+      <Inputs>
+        <Input value="WMSwebrequest" />
+      </Inputs>
+      <Outputs>
+        <Output value="watch image" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <PythonNodeModels.PythonNode guid="8a5843c7-2ee9-4493-a94f-a893e3b31f23" type="PythonNodeModels.PythonNode" nickname="Python Script" x="2540.67454426848" y="544.541668659572" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+
+import clr
+
+clr.AddReference("System.Drawing")
+clr.AddReference("System")
+from System.Drawing import Image
+from System.Drawing import Bitmap
+from System.Drawing import Graphics
+from System.Drawing.Imaging import ImageFormat
+from System.Net import WebRequest
+url= IN[0]
+
+request = WebRequest.Create(url)
+response = request.GetResponse()
+bitmap = Image.FromStream(response.GetResponseStream())
+
+OUT = bitmap</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="4c7f60b0-3d85-4406-bc2b-7de3ec307024" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="2611.77784306941" y="1146.8856937392" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="" ShouldFocus="false" />
+    <PythonNodeModels.PythonNode guid="8683582e-4de1-4fd2-927f-77baca6832b8" type="PythonNodeModels.PythonNode" nickname="Python Script" x="2858.82800109168" y="1062.87640176552" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+
+#Assign your output to the OUT variable.
+OUT = 0</Script>
+    </PythonNodeModels.PythonNode>
+    <PythonNodeModels.PythonNode guid="adcc39f7-0f2d-4325-bd34-59077c8b015d" type="PythonNodeModels.PythonNode" nickname="Python Script" x="3033.58305163265" y="861.083057471577" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <Script>import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+from System.Net import WebClient
+from System import Uri
+
+url= IN[0]
+filoc= IN[1]
+
+url2 = Uri(url)
+test = WebClient().DownloadFileAsync(url2, filoc)
+
+OUT= test</Script>
+    </PythonNodeModels.PythonNode>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="a1d1ec8d-d355-4a0a-900d-5ea512eef6a9" start_index="0" end="9f244ebe-02da-4a26-a0d9-35d87661e5be" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a1d1ec8d-d355-4a0a-900d-5ea512eef6a9" start_index="0" end="8a5843c7-2ee9-4493-a94f-a893e3b31f23" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a1d1ec8d-d355-4a0a-900d-5ea512eef6a9" start_index="0" end="4e4a4ff0-ab98-4417-a425-0607c9d3acdc" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a1d1ec8d-d355-4a0a-900d-5ea512eef6a9" start_index="0" end="230fc830-4729-407b-80e3-12061b094b59" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a1d1ec8d-d355-4a0a-900d-5ea512eef6a9" start_index="0" end="adcc39f7-0f2d-4325-bd34-59077c8b015d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="152e8d34-8c8f-4662-ac63-2ce7d282b0c3" start_index="0" end="9f244ebe-02da-4a26-a0d9-35d87661e5be" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="152e8d34-8c8f-4662-ac63-2ce7d282b0c3" start_index="0" end="adcc39f7-0f2d-4325-bd34-59077c8b015d" end_index="1" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

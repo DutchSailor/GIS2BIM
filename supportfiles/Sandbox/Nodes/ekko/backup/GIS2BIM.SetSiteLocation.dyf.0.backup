@@ -1,0 +1,104 @@
+<Workspace Version="1.3.0.875" X="124" Y="354" zoom="1" ScaleFactor="1" Name="GIS2BIM.SetSiteLocation" Description="Sets the properties of the current Site Location of the active Revit Project&#xD;&#xA;untested for 2018" ID="1aa88147-bd3e-48f6-92ac-b02be6fce3fb" Category="GIS2BIM.Revit">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="Location" resolvedName="DynamoUnits.Location" assemblyName="DynamoUnits.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <PythonNodeModels.PythonNode guid="9cb0237a-a200-4bfb-ab29-46a0c82fae7f" type="PythonNodeModels.PythonNode" nickname="Python Script" x="807.230618523907" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="4">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <Script>#©2017 Ekko Nap, ekko@groosman.com
+#licensed under MIT
+
+import clr
+clr.AddReference("RevitServices")
+import RevitServices
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+import math
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+projectLocation = doc.ActiveProjectLocation
+siteLocation = projectLocation.SiteLocation
+
+#SiteLocation = projectLocation.GetSiteLocation(); // 2018
+#from https://github.com/jeremytammik/the_building_coder_samples/blob/master/BuildingCoder/BuildingCoder/CmdUnrotateNorth.cs
+#untested
+
+bool = IN[0]
+latitude = IN[1]
+longitude = IN[2]
+name = IN[3]
+
+if bool==1:
+	TransactionManager.Instance.EnsureInTransaction(doc)
+
+	newLatitude=siteLocation.Latitude=latitude*math.pi/180
+	newLongitude=siteLocation.Longitude=longitude*math.pi/180
+	newName=siteLocation.PlaceName=name
+	
+	TransactionManager.Instance.TransactionTaskDone()
+
+OUT = newLatitude*180/math.pi, newLongitude*180/math.pi, newName
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="e37d4d81-2cad-4cae-8438-ee2c892e24e5" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Location.ByLatitudeAndLongitude" x="1203.28148334292" y="-103.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DynamoUnits.dll" function="DynamoUnits.Location.ByLatitudeAndLongitude@double,double,string">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="e0457ffe-762a-4726-8f6f-d8892b3f2bbb" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="0" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="toggle: bool=true" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="8006a528-f526-4cca-8703-1f87389cf222" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="0" y="150" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//latitude, between -90 and 90&#xD;&#xA;lat: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="cdc0c072-457c-4760-86d6-c6158c9bd538" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="0" y="300" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//longitude, between -180 and 180&#xD;&#xA;lon: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="88ae322b-d9b3-4cb7-84d7-bddb2b48bd95" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1471.28148334292" y="-102" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Location" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="6136522e-2b78-4402-8818-95f4d177cf22" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="999" y="-1" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="lat=out[0];&#xA;lon=out[1];&#xA;name=out[2];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="435bfb10-3d4d-4928-a673-909860ccb03b" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1466.28148334292" y="53" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="lat" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="2fd91957-97a4-4783-a3e9-e4e0dd8d0110" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1467.28148334292" y="131" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="lon" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="06d8330f-ca5f-4899-823d-cfb60a85be2b" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1468.28148334292" y="199" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="name" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="7e88b558-3cc8-4875-aac2-246bd4c13eb6" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-1" y="390" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//address or place name&#xD;&#xA;name: string = &quot;User Defined&quot;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="9cb0237a-a200-4bfb-ab29-46a0c82fae7f" start_index="0" end="6136522e-2b78-4402-8818-95f4d177cf22" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e37d4d81-2cad-4cae-8438-ee2c892e24e5" start_index="0" end="88ae322b-d9b3-4cb7-84d7-bddb2b48bd95" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e0457ffe-762a-4726-8f6f-d8892b3f2bbb" start_index="0" end="9cb0237a-a200-4bfb-ab29-46a0c82fae7f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8006a528-f526-4cca-8703-1f87389cf222" start_index="0" end="9cb0237a-a200-4bfb-ab29-46a0c82fae7f" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="cdc0c072-457c-4760-86d6-c6158c9bd538" start_index="0" end="9cb0237a-a200-4bfb-ab29-46a0c82fae7f" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6136522e-2b78-4402-8818-95f4d177cf22" start_index="0" end="e37d4d81-2cad-4cae-8438-ee2c892e24e5" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6136522e-2b78-4402-8818-95f4d177cf22" start_index="0" end="435bfb10-3d4d-4928-a673-909860ccb03b" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6136522e-2b78-4402-8818-95f4d177cf22" start_index="1" end="e37d4d81-2cad-4cae-8438-ee2c892e24e5" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6136522e-2b78-4402-8818-95f4d177cf22" start_index="1" end="2fd91957-97a4-4783-a3e9-e4e0dd8d0110" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6136522e-2b78-4402-8818-95f4d177cf22" start_index="2" end="06d8330f-ca5f-4899-823d-cfb60a85be2b" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6136522e-2b78-4402-8818-95f4d177cf22" start_index="2" end="e37d4d81-2cad-4cae-8438-ee2c892e24e5" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7e88b558-3cc8-4875-aac2-246bd4c13eb6" start_index="0" end="9cb0237a-a200-4bfb-ab29-46a0c82fae7f" end_index="3" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-52551.80078125" eyeY="56920.4375" eyeZ="253741.453125" lookX="52502.33984375" lookY="-56877.53125" lookZ="-253761.296875" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
