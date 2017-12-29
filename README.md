@@ -20,6 +20,8 @@ It had not been tested with older or newer versions of Revit and Dynamo.
 ## Help to develop GIS2BIM
 If you are interested in contributing to GIS2BIM, please let met know! You're most welcome.
 
+Notice that this version is very much a beta version, although it is in our opinion usable. If you use it, feedback is very much appreciated.
+
 ## Blog
 https://dutchrevitblog.blogspot.nl/
 
