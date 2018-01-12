@@ -22,7 +22,7 @@ If you are interested in contributing to GIS2BIM, please let met know! You're mo
 
 Notice that this version is very much a beta version, although it is in our opinion usable. If you use it, feedback is very much appreciated.
 
-## Blog
+## More information
 https://dutchrevitblog.blogspot.nl/
 
 https://revitstructure-nl.blogspot.nl/
