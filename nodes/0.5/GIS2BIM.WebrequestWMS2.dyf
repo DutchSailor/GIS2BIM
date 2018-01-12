@@ -1,0 +1,42 @@
+<Workspace Version="1.3.1.1736" X="-1044.01117001305" Y="31.2350998570106" zoom="0.90209066213693" ScaleFactor="1" Name="GIS2BIM.WebrequestWMS2" Description="a webrequest based on WMS-protocol" ID="1355f94d-cbe1-451b-b6cf-5e7dab407717" Category="GIS2BIM.WMS">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="Autodesk.Point" resolvedName="Autodesk.DesignScript.Geometry.Point" assemblyName="ProtoGeometry.dll" />
+    <ClassMap partialName="Autodesk.DesignScript.Geometry.Point" resolvedName="Autodesk.DesignScript.Geometry.Point" assemblyName="ProtoGeometry.dll" />
+    <ClassMap partialName="Image.Image" resolvedName="Image.Image" assemblyName="Archi-lab_Mandrill.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <PythonNodeModels.PythonNode guid="1b4ad9c3-0e07-4fd2-a939-0ade50231b70" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1560.84355378595" y="171.052804285873" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+
+import clr
+
+clr.AddReference("System.Drawing")
+clr.AddReference("System")
+from System.Drawing import Image
+from System.Net import WebRequest
+url= IN[0]
+
+request = WebRequest.Create(url)
+response = request.GetResponse()
+bitmap = Image.FromStream(response.GetResponseStream())
+
+OUT = bitmap</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="c116f567-5c93-4172-97bd-37ce0bc36c7c" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="1199.08148872322" y="169.540048807977" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//url for WMS webrequest&#xD;&#xA;WMSwebrequest: string" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="23ddaef2-6abc-4f7f-b057-fa476ee8d0f1" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1929.96867809465" y="161.61252484555" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Image.Image" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="1b4ad9c3-0e07-4fd2-a939-0ade50231b70" start_index="0" end="23ddaef2-6abc-4f7f-b057-fa476ee8d0f1" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c116f567-5c93-4172-97bd-37ce0bc36c7c" start_index="0" end="1b4ad9c3-0e07-4fd2-a939-0ade50231b70" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>
