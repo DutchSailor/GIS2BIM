@@ -26,3 +26,5 @@ Notice that this version is very much a beta version, although it is in our opin
 https://dutchrevitblog.blogspot.nl/
 
 https://revitstructure-nl.blogspot.nl/
+
+Have a look at the wiki! Every node has a description! https://github.com/DutchSailor/GIS2BIM/wiki
