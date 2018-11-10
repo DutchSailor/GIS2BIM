@@ -1,4 +1,4 @@
-<Workspace Version="1.3.1.1736" X="-3894.53254351456" Y="-3423.58752604271" zoom="0.852028147767231" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+<Workspace Version="1.3.3.4111" X="-3028.13975666334" Y="-2171.60030682323" zoom="0.582772727207298" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
   <NamespaceResolutionMap />
   <Elements>
     <Dynamo.Graph.Nodes.CustomNodes.Function guid="750bcb68-643c-4542-9120-b7cfc952c7e3" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.SetSharedCoordinate" x="1217.68482885903" y="436.264614614545" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
@@ -135,19 +135,22 @@
         <Input value="BoundingBox" />
       </Inputs>
       <Outputs>
-        <Output value="1 kadastrale grenzen(WFS)" />
-        <Output value="2 ruimtelijke plannen(WFS)" />
-        <Output value="3 bag verblijfsobject(WFS)" />
-        <Output value="4 bag pand(WFS)" />
-        <Output value="5 luchtfoto 2016(WMS)" />
-        <Output value="6 CBS-WOZ 2011 100m(WMS)" />
+        <Output value="1 kadastrale grenzen(OGC WFS)" />
+        <Output value="2 ruimtelijke plannen(OGC WFS)" />
+        <Output value="3 bag verblijfsobject(OGC WFS)" />
+        <Output value="4 bag pand(OGC WFS)" />
+        <Output value="5 luchtfoto 2016(OGC WMS)" />
+        <Output value="6 CBS-WOZ 2011 100m(OGC WMS)" />
         <Output value="6 legenda" />
-        <Output value="7 kadastrale annotatie" />
-        <Output value="8 kadastrale perceel" />
-        <Output value="9 rijksmonumenten" />
-        <Output value="10 bestemmingsplan bouwvlak(WMS)" />
-        <Output value="11 AHN2 webrequest bladindex" />
-        <Output value="12 ruimtelijkeplannen(WMS) " />
+        <Output value="7 kadastrale annotatie(OGC WFS)" />
+        <Output value="8 kadastrale perceel(OGC WFS)" />
+        <Output value="9 rijksmonumenten(OGC WFS)" />
+        <Output value="10 bestemmingsplan bouwvlak(OGC WMS)" />
+        <Output value="11 AHN2 webrequest bladindex(OGC WFS)" />
+        <Output value="12 ruimtelijkeplannen(OGC WMS)" />
+        <Output value="Zeeland Schouwen Duiveland Kadastrale Percelen 1832(OGC:WMS)" />
+        <Output value="Zeeland Bebouwing Kadaster 1832(OGC:WMS)" />
+        <Output value="Luchtfoto 2017(OGC WMS)" />
       </Outputs>
     </Dynamo.Graph.Nodes.CustomNodes.Function>
     <Dynamo.Graph.Nodes.CustomNodes.Function guid="b9b28f46-e622-49e0-aa97-e75945ba4b0d" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.GetLocationdataNetherlands" x="1219.20535938472" y="1941.08850222954" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
@@ -300,7 +303,7 @@
         <Input value="Rdy" />
         <Input value="Zoomlevel" />
         <Input value="Boundingboxwidth" />
-        <Input value="TemppathFiles" />
+        <Input value="TemppathFileName" />
         <Input value="View" />
         <Input value="Layer" />
       </Inputs>
@@ -1156,10 +1159,10 @@
         <Input value="BoundingboxString" />
       </Inputs>
       <Outputs>
-        <Output value="CadastreParcels(GRB:ADP)(WFS GML)" />
-        <Output value="BuildingOutlines(GRB:GBG)(WFS GML)" />
-        <Output value="Housenumbers(GRB:TBLGBGADR)(WFS GML)" />
-        <Output value="AerialPhoto(OGWRGB13_15VL)(WMS IMAGE)" />
+        <Output value="CadastreParcels(GRB:ADP)(OGC WFS)" />
+        <Output value="BuildingOutlines(GRB:GBG)OGC WFS)" />
+        <Output value="Housenumbers(GRB:TBLGBGADR)(OGC WFS)" />
+        <Output value="AerialPhoto(OGWRGB13_15VL)(OGC WMS)" />
       </Outputs>
     </Dynamo.Graph.Nodes.CustomNodes.Function>
     <Dynamo.Graph.Nodes.CustomNodes.Function guid="0325f5d2-15ee-4bcb-87ac-8de98c84c995" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.SpainGeoservicesLibrary" x="5236.91053187881" y="4168.82163919453" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
@@ -1171,7 +1174,7 @@
         <Input value="BoundingboxString" />
       </Inputs>
       <Outputs>
-        <Output value="Cadastre Parcels" />
+        <Output value="Cadastre Parcels(OGC WFS)" />
       </Outputs>
     </Dynamo.Graph.Nodes.CustomNodes.Function>
     <Dynamo.Graph.Nodes.CustomNodes.Function guid="4b2e880c-d6d1-4f8c-a0d7-cdb311108f4e" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.GetRevitSiteLocation" x="5236.77601620666" y="4304.04350557431" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
@@ -1282,7 +1285,13 @@
         <Input value="Zoomlevel" />
       </Inputs>
       <Outputs>
-        <Output value="GoogleEarthURLs" />
+        <Output value="URL Google Earth Satellite" />
+        <Output value="URL Google Roads Only" />
+        <Output value="URL Google Standard Roadmap" />
+        <Output value="URL Google Terrain" />
+        <Output value="URL Google Alterned Roadmap" />
+        <Output value="URL Google Terrain Only" />
+        <Output value="URL Google Hybrid" />
       </Outputs>
     </Dynamo.Graph.Nodes.CustomNodes.Function>
     <Dynamo.Graph.Nodes.CustomNodes.Function guid="131605cc-e2c1-4aa2-9e44-e27aef37579d" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.TMS_WMTS_WebrequestAndCombineImages" x="5235.53144203384" y="5494.47207555545" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
@@ -1299,7 +1308,7 @@
         <Input value="UniqueTileNumbersColumnX" />
         <Input value="UniqueTileNumbersRowY" />
         <Input value="Pixels" />
-        <Input value="ReverseYaxis" />
+        <Input value="WMTSorTMS" />
       </Inputs>
       <Outputs>
         <Output value="Image" />
@@ -1376,6 +1385,99 @@
         <Output value="WidthM" />
         <Output value="DeltaXmm" />
         <Output value="DeltaYmm" />
+        <Output value="HeightM" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="7b54a981-a98d-4474-9e10-bd0b150c445b" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.GeocodingNomatimAPI" x="6317.66038616529" y="3819.72395939365" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="4fb426a8-9bdb-453a-9334-d5dc1ebe8055" />
+      <Name value="GIS2BIM.GeocodingNomatimAPI" />
+      <Description value="gets WGS-84 coordinate from address with Open Streets Maps API" />
+      <Inputs>
+        <Input value="Streetname" />
+        <Input value="Housenumber" />
+        <Input value="Place" />
+        <Input value="Country" />
+      </Inputs>
+      <Outputs>
+        <Output value="latitude" />
+        <Output value="longitude" />
+        <Output value="postcode" />
+        <Output value="xml" />
+        <Output value="link webrequest" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="e9383284-2cfc-4ee7-85e2-5f62389d766f" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CzechRepublicGeoservicesLibrary" x="6313.6731634013" y="4054.68450379722" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <ID value="29385947-d3d1-4f83-8a3f-0ad503ef1f9a" />
+      <Name value="GIS2BIM.CzechRepublicGeoservicesLibrary" />
+      <Description value="Geoservices in the Czech Republic" />
+      <Inputs>
+        <Input value="Boundingboxstring" />
+      </Inputs>
+      <Outputs>
+        <Output value="Cadastral Parcel(OGC WFS)" />
+        <Output value="Cadastral Boundary(OGC WFS)" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="6320839c-c034-4836-aebb-0d3cba428297" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.TMS_WMTS_WebrequestAndCombineImages" x="6309.09823908412" y="4212.19261243153" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="True" />
+      <PortInfo index="4" default="True" />
+      <ID value="6f1c4b64-0ef7-451a-a5be-526e34d565c7" />
+      <Name value="GIS2BIM.TMS_WMTS_WebrequestAndCombineImages" />
+      <Description value="Webrequest for list of WMTS or TMS/Google webrequests for tiles. Combines them to 1 image." />
+      <Inputs>
+        <Input value="URLlist" />
+        <Input value="UniqueTileNumbersColumnX" />
+        <Input value="UniqueTileNumbersRowY" />
+        <Input value="Pixels" />
+        <Input value="WMTSorTMS" />
+      </Inputs>
+      <Outputs>
+        <Output value="Image" />
+        <Output value="TileImages" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="e6a455f3-fc75-4bea-af70-d168ebeca94e" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CropImage" x="6307.1401700533" y="4445.18958511871" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="False" />
+      <PortInfo index="5" default="False" />
+      <PortInfo index="6" default="False" />
+      <ID value="7e52bce4-c4e9-4818-a5af-79272c95f7af" />
+      <Name value="GIS2BIM.CropImage" />
+      <Description value="Crop an image" />
+      <Inputs>
+        <Input value="image" />
+        <Input value="SourceWidthM" />
+        <Input value="SourceHeightM" />
+        <Input value="dxM" />
+        <Input value="dyM" />
+        <Input value="NewWidthM" />
+        <Input value="NewHeightM" />
+      </Inputs>
+      <Outputs>
+        <Output value="CroppedImage" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="54ec928d-bd15-4b4d-86b7-8062b48be9b2" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.MergeImages" x="6307.79373067004" y="4722.95284723316" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <ID value="21bf444a-3e40-48cc-9986-9547189ad7fd" />
+      <Name value="GIS2BIM.MergeImages" />
+      <Description value="Merges a list of images to 1 image" />
+      <Inputs>
+        <Input value="images" />
+      </Inputs>
+      <Outputs>
+        <Output value="image" />
       </Outputs>
     </Dynamo.Graph.Nodes.CustomNodes.Function>
   </Elements>
@@ -1398,7 +1500,7 @@
       <Models ModelGuid="12b3d1da-094f-4f1a-b084-5eaf7f677682" />
       <Models ModelGuid="687a7800-b668-446f-922d-f596f2db274a" />
     </Dynamo.Graph.Annotations.AnnotationModel>
-    <Dynamo.Graph.Annotations.AnnotationModel guid="7992cce7-8f19-4f6e-ace0-d757f8376c5a" annotationText="NEW IN 0.5" left="5216.31112161551" top="3758.44918068293" width="532.820256903871" height="2681.41568077257" fontSize="30" InitialTop="3804.44918068293" InitialHeight="2665.41568077257" TextblockHeight="36" backgrouund="#FFFFB8D8">
+    <Dynamo.Graph.Annotations.AnnotationModel guid="7992cce7-8f19-4f6e-ace0-d757f8376c5a" annotationText="NEW IN 0.5" left="5216.31112161551" top="3758.44918068293" width="532.820256903871" height="2707.81568077257" fontSize="30" InitialTop="3804.44918068293" InitialHeight="2665.41568077257" TextblockHeight="36" backgrouund="#FFFFB8D8">
       <Models ModelGuid="cd28e6f6-6c07-443f-a75a-9b5fdf3bd2fc" />
       <Models ModelGuid="e4e77bb7-922b-4cd9-becb-0cbaa90146f3" />
       <Models ModelGuid="0325f5d2-15ee-4bcb-87ac-8de98c84c995" />
@@ -1413,6 +1515,13 @@
       <Models ModelGuid="33576f9d-80bf-4fa4-bafc-52f7d0288870" />
       <Models ModelGuid="0f52b858-885f-428e-89e1-7f943bc864c7" />
       <Models ModelGuid="d38e8673-cd3a-4384-b8bb-5867da6f77ab" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="38eb0dc3-0ccf-4efd-82a3-770d5f60c693" annotationText="NEW IN 0.6" left="6297.1401700533" top="3773.72395939365" width="445.732993348001" height="1041.82888783951" fontSize="30" InitialTop="3819.72395939365" InitialHeight="1025.82888783951" TextblockHeight="36" backgrouund="#FFC1D676">
+      <Models ModelGuid="7b54a981-a98d-4474-9e10-bd0b150c445b" />
+      <Models ModelGuid="e9383284-2cfc-4ee7-85e2-5f62389d766f" />
+      <Models ModelGuid="6320839c-c034-4836-aebb-0d3cba428297" />
+      <Models ModelGuid="e6a455f3-fc75-4bea-af70-d168ebeca94e" />
+      <Models ModelGuid="54ec928d-bd15-4b4d-86b7-8062b48be9b2" />
     </Dynamo.Graph.Annotations.AnnotationModel>
   </Annotations>
   <Presets />
