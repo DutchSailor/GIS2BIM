@@ -3,7 +3,7 @@
 GIS2BIM is a collection of custom nodes for the Dynamo visual programming environment.  It imports GIS-information to Autodesk Revit-models. 
 
 ## Version
-Version 0.8.2 released on 05-04-2019. 
+Version 0.8.3 released on 05-04-2019. 
 
 ## Installation
 Installation is possible via the dynamo built-in package manager.
