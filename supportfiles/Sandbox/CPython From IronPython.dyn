@@ -1,0 +1,170 @@
+{
+  "Uuid": "4f838a43-2d49-42e3-8bd8-08aafa6e1d2c",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "CPython From IronPython",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonStringNode, PythonNodeModels",
+      "VariableInputPorts": true,
+      "NodeType": "ExtensionNode",
+      "Id": "2880e9fb259540db99b616561a6fb567",
+      "Inputs": [
+        {
+          "Id": "2fa2ed8b1b164f639fa4adb51d207c10",
+          "Name": "script",
+          "Description": "Python script to run.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8108b83b6f4b49a88f69f636a9807ca4",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "34739067f8d84f21950dd92d6918cd60",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs a IronPython script from a string."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import sys       \r\n#ADD LIBRARIES OF IRON PYTHON \r\nsys.path.append(r'C:\\Program Files (x86)\\IronPython 2.7\\Lib') \r\n \r\n#IMPORT SUBPROCESS TO RUN THE .PY AND RECEIVE OUTPUT DATA  \r\nimport subprocess \r\nfrom subprocess import Popen, PIPE \r\n \r\n#LINE TO SEND TO COMMAND PROMPT \r\ncmd = IN[0] \r\n \r\n#ADD LIST OF .PY FILE OUTPUTS \r\nout = [] \r\n \r\n#OPEN SUBPROCESS PIPE \r\nprocess = subprocess.Popen( cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) \r\nfor line in process.stdout: \r\n    out.append(line) \r\nprocess.wait() \r\n\r\nprocess.returncode \r\nOUT= out ",
+      "VariableInputPorts": true,
+      "Id": "b9f79017172249f584f5576753402aed",
+      "Inputs": [
+        {
+          "Id": "ba5625a77e874bc58ab3ed831626f531",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2d4dea0d319540d7901a11c13f131337",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"Python File as input\";",
+      "Id": "885fb4d8fe794c6283897a4adf2383a5",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c1456a1336c34027813177d1a296d2a4",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "c1456a1336c34027813177d1a296d2a4",
+      "End": "ba5625a77e874bc58ab3ed831626f531",
+      "Id": "f7fb73799f114dd7b45ccd29aaf6b1d4"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.2.6826",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script From String",
+        "Id": "2880e9fb259540db99b616561a6fb567",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1009.0266814750853,
+        "Y": 580.28871971026342
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "b9f79017172249f584f5576753402aed",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 917.21151866667742,
+        "Y": 192.37813554970552
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "885fb4d8fe794c6283897a4adf2383a5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 516.0,
+        "Y": 213.0
+      }
+    ],
+    "Annotations": [],
+    "X": 159.63611934176242,
+    "Y": 74.848004916395155,
+    "Zoom": 0.86797750764901571
+  }
+}
