@@ -1,0 +1,1341 @@
+<Workspace Version="1.3.1.1736" X="135.861124638506" Y="-213.791558198425" zoom="0.642289334966989" ScaleFactor="1" Name="Home" Description="" RunType="Automatic" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="String" resolvedName="DSCore.String" assemblyName="DSCoreNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="6aa60ab1-d65d-47d8-8c4f-31109af31ccb" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-866.21736742662" y="1521.97280980225" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;werf van schouten&quot;;&#xA;&quot;501&quot;;&#xA;&quot;dordrecht&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="b30970c8-a5a3-44eb-ade6-6496f0b669c8" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="516.409585986411" y="1658.79111380891" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="19;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="45c09d14-4bdb-45b0-9aad-f57ba4e6ca67" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Desired Width" x="527.944343034155" y="1791.43193473348" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="400;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="09525f23-d348-466c-a0c6-05c7d35e81b7" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.GetLocationdataNetherlands" x="-627.166805621191" y="1393.43301121905" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <ID value="ca221294-195d-4ff9-8a69-ca487b9bd328" />
+      <Name value="GIS2BIM.GetLocationdataNetherlands" />
+      <Description value="Gives locationdata based on an adress in the Netherlands" />
+      <Inputs>
+        <Input value="City" />
+        <Input value="Streetname" />
+        <Input value="Housenumber" />
+      </Inputs>
+      <Outputs>
+        <Output value="RDcoordinateX[meters]:double" />
+        <Output value="RDcoordinateY[meters]:double" />
+        <Output value="Postalcode" />
+        <Output value="SectieKadaster" />
+        <Output value="PerceelKadaster" />
+        <Output value="Longitude" />
+        <Output value="Latitude" />
+        <Output value="URLWebrequest" />
+        <Output value="GemeenteCodeKadaster" />
+        <Output value="Provincie" />
+        <Output value="Windgebied" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="eddbf145-413e-467a-9909-9f1a220b36b5" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="2383.91923062917" y="1254.02972696129" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" CodeText="deltax=x2-x1;&#xA;deltay=y2-y1;&#xA;listx=x1..x2..#deltax+1;&#xA;listy=y2..y1..#deltay+1;" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <PythonNodeModels.PythonNode guid="fe8451db-43bd-4340-8ebc-28fcfa34c38d" type="PythonNodeModels.PythonNode" nickname="Python Script" x="4882.80993015594" y="1510.78878705379" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference("System.Drawing")
+clr.AddReference("System")
+from System.Drawing import Image
+from System.Drawing import Bitmap
+from System.Drawing import Graphics
+from System.Drawing.Imaging import ImageFormat
+from System.Net import WebRequest
+url= IN[0]
+
+bitmap = []
+for i in url:
+	request = WebRequest.Create(i)
+	request.Accept = "text/html"
+	request.UserAgent = "Mozilla/5.0"
+	response = request.GetResponse()
+	bitmap.append(Image.FromStream(response.GetResponseStream()))
+
+OUT = bitmap</Script>
+    </PythonNodeModels.PythonNode>
+    <PythonNodeModels.PythonNode guid="4871b2ff-abe6-43cb-8f66-0c16ecf9bf2e" type="PythonNodeModels.PythonNode" nickname="Python Script" x="3153.31632884945" y="1536.01777363386" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+
+x=IN[0]
+y=IN[1]
+
+n = len(y)
+xl1=[]
+for i in x:
+	xl1.append([i]*n)
+
+xl2=[]
+for sublist in xl1:
+    for item in sublist:
+        xl2.append(item)
+        
+yl1=[]
+for i in x:
+	yl1.append(y)
+
+yl2=[]
+for sublist in yl1:
+    for item in sublist:
+        yl2.append(item)
+
+#Assign your output to the OUT variable.
+OUT = xl2,yl2</Script>
+    </PythonNodeModels.PythonNode>
+    <CoreNodeModels.Watch guid="026ff194-086a-4b2b-a52a-0eecb21f7c3c" type="CoreNodeModels.Watch" nickname="Watch" x="2953.03641051364" y="1596.68561270513" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.Watch>
+    <CoreNodeModels.Watch guid="64351945-4d3b-4d37-90d2-be5d5e5a537d" type="CoreNodeModels.Watch" nickname="Watch" x="2963.82654232139" y="1835.83059021568" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.Watch>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="a6113f46-3935-4072-9fe5-a8c243a265d2" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="List.FirstItem" x="4010.48595635452" y="1956.77985897158" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.List.FirstItem@var[]..[]">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction guid="a30785ed-a4cb-4dfc-8bde-be8c0b36515b" type="Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction" nickname="String.Split" x="3742.25815439735" y="1955.8094526758" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.Split@string,string[]" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction>
+    <CoreNodeModels.FromObject guid="93e83d14-c6c8-415b-9765-f5685d8799a2" type="CoreNodeModels.FromObject" nickname="String from Object" x="3565.35951229262" y="1926.59872643899" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.FromObject>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="c9790e0f-af72-47cc-9448-caef25468056" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="3921.34379260591" y="1482.19334492836" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;https://mt1.google.com/vt/lyrs=s&quot;;&#xA;&quot;&amp;x=&quot;;&#xA;&quot;&amp;y=&quot;;&#xA;&quot;&amp;z=&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="05700f02-879f-420b-a433-5d7a52c19842" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="3567.06512149782" y="2020.64181133105" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;,&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="6db13291-658d-4b49-997e-bbdd76798c69" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="3376.83638340242" y="1560.76327229803" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="out[0];&#xA;out[1];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <CoreNodeModels.FromObject guid="ea5d1900-7fd5-4745-bffe-2fbf98bf592a" type="CoreNodeModels.FromObject" nickname="String from Object" x="3764.93594313876" y="1568.36261838128" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.FromObject>
+    <CoreNodeModels.FromObject guid="a300da05-34eb-436e-8860-d5b23f95c095" type="CoreNodeModels.FromObject" nickname="String from Object" x="3775.45330344982" y="1668.18942827614" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.FromObject>
+    <PythonNodeModels.PythonNode guid="0854f7a3-c15a-4b68-9646-dd5d8f13fdd7" type="PythonNodeModels.PythonNode" nickname="Python Script" x="4491.11448438803" y="1502.5822709983" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="7">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="False" />
+      <PortInfo index="5" default="False" />
+      <PortInfo index="6" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+
+str1=IN[0]
+str2=IN[1]
+lst3=IN[2]
+str4=IN[3]
+lst5=IN[4]
+str6=IN[5]
+zooml=IN[6]
+
+n=len(lst3)
+
+lst1=[str1]*n
+lst2=[str2]*n
+lst4=[str4]*n
+lst6=[str6]*n
+lst7=[zooml]*n
+
+lstout=[a+b+c+d+e+f+g for a,b,c,d,e,f,g in zip(lst1,lst2,lst3,lst4,lst5,lst6,lst7)]
+
+OUT = lstout</Script>
+    </PythonNodeModels.PythonNode>
+    <CoreNodeModels.WatchImageCore guid="16cb5986-afce-491c-b469-29f3fe27f410" type="CoreNodeModels.WatchImageCore" nickname="Watch Image" x="5763.07160753655" y="1521.38446920213" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.WatchImageCore>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="d9d78507-671d-417c-8567-9e13b43eb672" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="5381.71464067894" y="1610.61932652213" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="256;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="7b759795-1603-4cd4-a50c-da538eacf5a9" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="5792.55893982875" y="2037.7909864771" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;C:/TEMP/map9.jpg&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="24324d11-46ff-4672-afa6-d81d88dca432" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.SystemDrawingBitmapToJPG" x="6291.49254901009" y="1926.48447109729" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="true" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <ID value="3206c909-fabc-47f8-822c-68173ef2c15b" />
+      <Name value="GIS2BIM.SystemDrawingBitmapToJPG" />
+      <Description value="Save an System.Drawing.Bitmap object as a jpg-file" />
+      <Inputs>
+        <Input value="SystemDrawingBitmap" />
+        <Input value="FileName" />
+      </Inputs>
+      <Outputs>
+        <Output value="FileName" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="b4fb8a8f-daff-4596-8d7a-84c54b78dfa3" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.ImportImageInView" x="6261.33739947782" y="2282.7345346239" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="True" />
+      <PortInfo index="4" default="True" />
+      <ID value="81a15fb2-530d-475b-b934-75fc9f82653e" />
+      <Name value="GIS2BIM.ImportImageInView" />
+      <Description value="Import rasterimage in view" />
+      <Inputs>
+        <Input value="ImageWidthMeters" />
+        <Input value="View" />
+        <Input value="ImagePath" />
+        <Input value="DeltaX" />
+        <Input value="DeltaY" />
+      </Inputs>
+      <Outputs>
+        <Output value="Element" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="41204fc0-b8a0-400a-adca-d5bf01368e62" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Document.Current" x="5718.2074570277" y="2178.27623418455" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="RevitNodes.dll" function="Revit.Application.Document.Current" />
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="f3946164-e612-496b-8c5b-ac0ea505f3b5" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Document.ActiveView" x="5907.00854678966" y="2178.48042892224" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="RevitNodes.dll" function="Revit.Application.Document.ActiveView">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="a2445d21-01a0-46d2-ad84-342add80b458" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.SetRevitSiteLocation" x="282.698462965106" y="2093.9435002798" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="True" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="True" />
+      <ID value="e43be926-b495-4056-98e7-aa71bff79bec" />
+      <Name value="GIS2BIM.SetRevitSiteLocation" />
+      <Description value="Sets the properties of the current Site Location of the active Revit Project" />
+      <Inputs>
+        <Input value="toggle" />
+        <Input value="lat" />
+        <Input value="lon" />
+        <Input value="name" />
+      </Inputs>
+      <Outputs>
+        <Output value="Location" />
+        <Output value="lat" />
+        <Output value="lon" />
+        <Output value="name" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <PythonNodeModels.PythonNode guid="58d2dd51-24c0-4979-986e-4310d1606de1" type="PythonNodeModels.PythonNode" nickname="Python Script" x="5539.2808794779" y="1520.65451867251" isVisible="true" isUpstreamVisible="false" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="4">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <Script>import sys
+
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+from math import *
+import itertools
+from itertools import islice
+
+import clr
+
+clr.AddReference("System.Drawing")
+from System.Drawing import Image
+from System.Drawing import Bitmap
+from System.Drawing import Graphics
+from System.Drawing.Imaging import ImageFormat
+from System.IO import Path
+from os import listdir
+
+# The inputs to this node will be stored as a list in the IN variables.
+bitmaps=IN[0]
+x=IN[1]
+y=IN[2]
+pixels=IN[3]
+
+TotalWidth= len(x)*pixels
+TotalHeight= len(y)*pixels
+
+# create image object for the new image
+img = Bitmap(TotalWidth,TotalHeight)
+g= Graphics.FromImage(img)
+
+LPx=[]
+n=0
+for i in x:
+	LPx.append(n*pixels)
+	n=n+1
+
+LPy=[]
+n=0
+for i in y:
+	LPy.append(n*pixels)
+	n=n+1
+
+LPx2=[]
+n=len(LPy)
+for i in LPx:
+	LPx2.append([i]*n)
+
+LPx3=[]
+for sublist in LPx2:
+    for item in sublist:
+        LPx3.append(item)
+
+LPy2=[]
+#n=len(LPy)
+for i in LPx:
+	LPy2.append(LPy)
+
+LPy3=[]
+for sublist in LPy2:
+    for item in sublist:
+        LPy3.append(item)
+        
+LPy4=reversed(LPy3)
+
+for i,j,k in zip(bitmaps,LPx3,LPy4):
+	g.DrawImage(i,j,k)
+
+#h= Bitmap(512,512,g)
+
+OUT = img</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="bb0265ca-85ff-4cd5-a060-f2418d8b3c0b" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.SearchCRS" x="219.560623317644" y="869.37351674977" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="True" />
+      <ID value="7b795053-f3a1-4ee5-8ef9-22e00cea8a74" />
+      <Name value="GIS2BIM.SearchCRS" />
+      <Description value="Search for a Coordinate Reference System " />
+      <Inputs>
+        <Input value="EPSG_Code" />
+      </Inputs>
+      <Outputs>
+        <Output value="Name CRS" />
+        <Output value="URL CRS" />
+        <Output value="All CRS-systems" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="0a33dec8-aece-47f7-87b8-f6781eaca884" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.TransformCRS_epsg" x="204.490317515545" y="1347.35419777649" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="True" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="1813c488-6cc1-4cc0-aaf5-ea0606534144" />
+      <Name value="GIS2BIM.TransformCRS_epsg" />
+      <Description value="Uses the API of http://epsg.io to transform Coordinate Reference Systems" />
+      <Inputs>
+        <Input value="sourceCRS" />
+        <Input value="targetCRS" />
+        <Input value="xCoordinate" />
+        <Input value="yCoordinate" />
+      </Inputs>
+      <Outputs>
+        <Output value="Xtransformed" />
+        <Output value="Ytransformed" />
+        <Output value="URL" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="9d1673ab-1273-48dc-bcc9-8fe468b12609" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-161.704105625045" y="1276.08673773757" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;3857&quot;;" ShouldFocus="false" />
+    <PythonNodeModels.PythonNode guid="f68d51c5-601b-4815-b2d4-da0f9e45c8da" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1546.82940234525" y="1069.1370093813" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script>import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+import math
+
+x = IN[0]
+y = IN[1]
+zoom = IN[2]
+
+class GlobalMercator(object):
+    """
+    TMS Global Mercator Profile
+    ---------------------------
+
+    Functions necessary for generation of tiles in Spherical Mercator projection,
+    EPSG:900913 (EPSG:gOOglE, Google Maps Global Mercator), EPSG:3785, OSGEO:41001.
+
+    Such tiles are compatible with Google Maps, Microsoft Virtual Earth, Yahoo Maps,
+    UK Ordnance Survey OpenSpace API, ...
+    and you can overlay them on top of base maps of those web mapping applications.
+    
+    Pixel and tile coordinates are in TMS notation (origin [0,0] in bottom-left).
+
+    What coordinate conversions do we need for TMS Global Mercator tiles::
+
+         LatLon      &lt;-&gt;       Meters      &lt;-&gt;     Pixels    &lt;-&gt;       Tile     
+
+     WGS84 coordinates   Spherical Mercator  Pixels in pyramid  Tiles in pyramid
+         lat/lon            XY in metres     XY pixels Z zoom      XYZ from TMS 
+        EPSG:4326           EPSG:900913                                         
+         .----.              ---------               --                TMS      
+        /      \     &lt;-&gt;     |       |     &lt;-&gt;     /----/    &lt;-&gt;      Google    
+        \      /             |       |           /--------/          QuadTree   
+         -----               ---------         /------------/                   
+       KML, public         WebMapService         Web Clients      TileMapService
+
+    What is the coordinate extent of Earth in EPSG:900913?
+
+      [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244]
+      Constant 20037508.342789244 comes from the circumference of the Earth in meters,
+      which is 40 thousand kilometers, the coordinate origin is in the middle of extent.
+      In fact you can calculate the constant as: 2 * math.pi * 6378137 / 2.0
+      $ echo 180 85 | gdaltransform -s_srs EPSG:4326 -t_srs EPSG:900913
+      Polar areas with abs(latitude) bigger then 85.05112878 are clipped off.
+
+    What are zoom level constants (pixels/meter) for pyramid with EPSG:900913?
+
+      whole region is on top of pyramid (zoom=0) covered by 256x256 pixels tile,
+      every lower zoom level resolution is always divided by two
+      initialResolution = 20037508.342789244 * 2 / 256 = 156543.03392804062
+
+    What is the difference between TMS and Google Maps/QuadTree tile name convention?
+
+      The tile raster itself is the same (equal extent, projection, pixel size),
+      there is just different identification of the same raster tile.
+      Tiles in TMS are counted from [0,0] in the bottom-left corner, id is XYZ.
+      Google placed the origin [0,0] to the top-left corner, reference is XYZ.
+      Microsoft is referencing tiles by a QuadTree name, defined on the website:
+      http://msdn2.microsoft.com/en-us/library/bb259689.aspx
+
+    The lat/lon coordinates are using WGS84 datum, yeh?
+
+      Yes, all lat/lon we are mentioning should use WGS84 Geodetic Datum.
+      Well, the web clients like Google Maps are projecting those coordinates by
+      Spherical Mercator, so in fact lat/lon coordinates on sphere are treated as if
+      the were on the WGS84 ellipsoid.
+     
+      From MSDN documentation:
+      To simplify the calculations, we use the spherical form of projection, not
+      the ellipsoidal form. Since the projection is used only for map display,
+      and not for displaying numeric coordinates, we don't need the extra precision
+      of an ellipsoidal projection. The spherical projection causes approximately
+      0.33 percent scale distortion in the Y direction, which is not visually noticable.
+
+    How do I create a raster in EPSG:900913 and convert coordinates with PROJ.4?
+
+      You can use standard GIS tools like gdalwarp, cs2cs or gdaltransform.
+      All of the tools supports -t_srs 'epsg:900913'.
+
+      For other GIS programs check the exact definition of the projection:
+      More info at http://spatialreference.org/ref/user/google-projection/
+      The same projection is degined as EPSG:3785. WKT definition is in the official
+      EPSG database.
+
+      Proj4 Text:
+        +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0
+        +k=1.0 +units=m +nadgrids=@null +no_defs
+
+      Human readable WKT format of EPGS:900913:
+         PROJCS["Google Maps Global Mercator",
+             GEOGCS["WGS 84",
+                 DATUM["WGS_1984",
+                     SPHEROID["WGS 84",6378137,298.2572235630016,
+                         AUTHORITY["EPSG","7030"]],
+                     AUTHORITY["EPSG","6326"]],
+                 PRIMEM["Greenwich",0],
+                 UNIT["degree",0.0174532925199433],
+                 AUTHORITY["EPSG","4326"]],
+             PROJECTION["Mercator_1SP"],
+             PARAMETER["central_meridian",0],
+             PARAMETER["scale_factor",1],
+             PARAMETER["false_easting",0],
+             PARAMETER["false_northing",0],
+             UNIT["metre",1,
+                 AUTHORITY["EPSG","9001"]]]
+    """
+
+    def __init__(self, tileSize=256):
+        "Initialize the TMS Global Mercator pyramid"
+        self.tileSize = tileSize
+        self.initialResolution = 2 * math.pi * 6378137 / self.tileSize
+        # 156543.03392804062 for tileSize 256 pixels
+        self.originShift = 2 * math.pi * 6378137 / 2.0
+        # 20037508.342789244
+
+    def LatLonToMeters(self, lat, lon ):
+        "Converts given lat/lon in WGS84 Datum to XY in Spherical Mercator EPSG:900913"
+
+        mx = lon * self.originShift / 180.0
+        my = math.log( math.tan((90 + lat) * math.pi / 360.0 )) / (math.pi / 180.0)
+
+        my = my * self.originShift / 180.0
+        return mx, my
+
+    def MetersToLatLon(self, mx, my ):
+        "Converts XY point from Spherical Mercator EPSG:900913 to lat/lon in WGS84 Datum"
+
+        lon = (mx / self.originShift) * 180.0
+        lat = (my / self.originShift) * 180.0
+
+        lat = 180 / math.pi * (2 * math.atan( math.exp( lat * math.pi / 180.0)) - math.pi / 2.0)
+        return lat, lon
+
+    def PixelsToMeters(self, px, py, zoom):
+        "Converts pixel coordinates in given zoom level of pyramid to EPSG:900913"
+
+        res = self.Resolution( zoom )
+        mx = px * res - self.originShift
+        my = py * res - self.originShift
+        return mx, my
+        
+    def MetersToPixels(self, mx, my, zoom):
+        "Converts EPSG:900913 to pyramid pixel coordinates in given zoom level"
+                
+        res = self.Resolution( zoom )
+        px = (mx + self.originShift) / res
+        py = (my + self.originShift) / res
+        return px, py
+    
+    def PixelsToTile(self, px, py):
+        "Returns a tile covering region in given pixel coordinates"
+
+        tx = int( math.ceil( px / float(self.tileSize) ) - 1 )
+        ty = int( math.ceil( py / float(self.tileSize) ) - 1 )
+        return tx, ty
+
+    def PixelsToRaster(self, px, py, zoom):
+        "Move the origin of pixel coordinates to top-left corner"
+        
+        mapSize = self.tileSize &lt;&lt; zoom
+        return px, mapSize - py
+        
+    def MetersToTile(self, mx, my, zoom):
+        "Returns tile for given mercator coordinates"
+        
+        px, py = self.MetersToPixels( mx, my, zoom)
+        return self.PixelsToTile( px, py)
+
+    def TileBounds(self, tx, ty, zoom):
+        "Returns bounds of the given tile in EPSG:900913 coordinates"
+        
+        minx, miny = self.PixelsToMeters( tx*self.tileSize, ty*self.tileSize, zoom )
+        maxx, maxy = self.PixelsToMeters( (tx+1)*self.tileSize, (ty+1)*self.tileSize, zoom )
+        return ( minx, miny, maxx, maxy )
+
+    def TileLatLonBounds(self, tx, ty, zoom ):
+        "Returns bounds of the given tile in latutude/longitude using WGS84 datum"
+
+        bounds = self.TileBounds( tx, ty, zoom)
+        minLat, minLon = self.MetersToLatLon(bounds[0], bounds[1])
+        maxLat, maxLon = self.MetersToLatLon(bounds[2], bounds[3])
+         
+        return ( minLat, minLon, maxLat, maxLon )
+        
+    def Resolution(self, zoom ):
+        "Resolution (meters/pixel) for given zoom level (measured at Equator)"
+        
+        # return (2 * math.pi * 6378137) / (self.tileSize * 2**zoom)
+        return self.initialResolution / (2**zoom)
+        
+    def ZoomForPixelSize(self, pixelSize ):
+        "Maximal scaledown zoom of the pyramid closest to the pixelSize."
+        
+        for i in range(30):
+            if pixelSize &gt; self.Resolution(i):
+                return i-1 if i!=0 else 0 # We don't want to scale up
+
+    def GoogleTile(self, tx, ty, zoom):
+        "Converts TMS tile coordinates to Google Tile coordinates"
+        
+        # coordinate origin is moved from bottom-left to top-left corner of the extent
+        return tx, (2**zoom - 1) - ty
+
+    def QuadTree(self, tx, ty, zoom ):
+        "Converts TMS tile coordinates to Microsoft QuadTree"
+        
+        quadKey = ""
+        ty = (2**zoom - 1) - ty
+        for i in range(zoom, 0, -1):
+            digit = 0
+            mask = 1 &lt;&lt; (i-1)
+            if (tx &amp; mask) != 0:
+                digit += 1
+            if (ty &amp; mask) != 0:
+                digit += 2
+            quadKey += str(digit)
+            
+        return quadKey
+
+#---------------------
+a = GlobalMercator()
+
+#b = GlobalMercator.self
+b = a.MetersToTile(x,y, zoom)
+c = a.GoogleTile(b[0],b[1],zoom)
+d = a.PixelsToTile(c[0],c[1])
+e = a.TileBounds(b[0],b[1], zoom)
+
+OUT = c,e</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="75c783b7-fa14-4c89-bc2c-797b48ea1956" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreateBoundingBox" x="770.953554399323" y="1233.61721840236" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="1b8585e3-81f4-499f-8e18-81d010124896" />
+      <Name value="GIS2BIM.CreateBoundingBox" />
+      <Description value="create boundingboxstring for webrequests based on coördinates and dimensions" />
+      <Inputs>
+        <Input value="CoordinateX" />
+        <Input value="CoordinateY" />
+        <Input value="BoxWidth" />
+        <Input value="BoxHeight" />
+      </Inputs>
+      <Outputs>
+        <Output value="Boxstring" />
+        <Output value="Boxstring2" />
+        <Output value="Xmin" />
+        <Output value="Xmax" />
+        <Output value="Ymin" />
+        <Output value="Ymax" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="7caa68f7-8924-4c8e-b70a-75273a4f7e6f" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="String.ToNumber" x="1189.9475027688" y="1073.11615625854" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.ToNumber@string">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="55235e1c-3bac-4eef-a960-15e7adcaa11b" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="String.ToNumber" x="1189.15245825987" y="1188.99300319974" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.ToNumber@string">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <PythonNodeModels.PythonNode guid="3483a871-1e0e-4f66-b85a-c9480818280f" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1513.34454524241" y="1473.28223208267" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script>import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+import math
+
+x = IN[0]
+y = IN[1]
+zoom1 = IN[2]
+
+class GlobalMercator(object):
+    """
+    TMS Global Mercator Profile
+    ---------------------------
+
+    Functions necessary for generation of tiles in Spherical Mercator projection,
+    EPSG:900913 (EPSG:gOOglE, Google Maps Global Mercator), EPSG:3785, OSGEO:41001.
+
+    Such tiles are compatible with Google Maps, Microsoft Virtual Earth, Yahoo Maps,
+    UK Ordnance Survey OpenSpace API, ...
+    and you can overlay them on top of base maps of those web mapping applications.
+    
+    Pixel and tile coordinates are in TMS notation (origin [0,0] in bottom-left).
+
+    What coordinate conversions do we need for TMS Global Mercator tiles::
+
+         LatLon      &lt;-&gt;       Meters      &lt;-&gt;     Pixels    &lt;-&gt;       Tile     
+
+     WGS84 coordinates   Spherical Mercator  Pixels in pyramid  Tiles in pyramid
+         lat/lon            XY in metres     XY pixels Z zoom      XYZ from TMS 
+        EPSG:4326           EPSG:900913                                         
+         .----.              ---------               --                TMS      
+        /      \     &lt;-&gt;     |       |     &lt;-&gt;     /----/    &lt;-&gt;      Google    
+        \      /             |       |           /--------/          QuadTree   
+         -----               ---------         /------------/                   
+       KML, public         WebMapService         Web Clients      TileMapService
+
+    What is the coordinate extent of Earth in EPSG:900913?
+
+      [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244]
+      Constant 20037508.342789244 comes from the circumference of the Earth in meters,
+      which is 40 thousand kilometers, the coordinate origin is in the middle of extent.
+      In fact you can calculate the constant as: 2 * math.pi * 6378137 / 2.0
+      $ echo 180 85 | gdaltransform -s_srs EPSG:4326 -t_srs EPSG:900913
+      Polar areas with abs(latitude) bigger then 85.05112878 are clipped off.
+
+    What are zoom level constants (pixels/meter) for pyramid with EPSG:900913?
+
+      whole region is on top of pyramid (zoom=0) covered by 256x256 pixels tile,
+      every lower zoom level resolution is always divided by two
+      initialResolution = 20037508.342789244 * 2 / 256 = 156543.03392804062
+
+    What is the difference between TMS and Google Maps/QuadTree tile name convention?
+
+      The tile raster itself is the same (equal extent, projection, pixel size),
+      there is just different identification of the same raster tile.
+      Tiles in TMS are counted from [0,0] in the bottom-left corner, id is XYZ.
+      Google placed the origin [0,0] to the top-left corner, reference is XYZ.
+      Microsoft is referencing tiles by a QuadTree name, defined on the website:
+      http://msdn2.microsoft.com/en-us/library/bb259689.aspx
+
+    The lat/lon coordinates are using WGS84 datum, yeh?
+
+      Yes, all lat/lon we are mentioning should use WGS84 Geodetic Datum.
+      Well, the web clients like Google Maps are projecting those coordinates by
+      Spherical Mercator, so in fact lat/lon coordinates on sphere are treated as if
+      the were on the WGS84 ellipsoid.
+     
+      From MSDN documentation:
+      To simplify the calculations, we use the spherical form of projection, not
+      the ellipsoidal form. Since the projection is used only for map display,
+      and not for displaying numeric coordinates, we don't need the extra precision
+      of an ellipsoidal projection. The spherical projection causes approximately
+      0.33 percent scale distortion in the Y direction, which is not visually noticable.
+
+    How do I create a raster in EPSG:900913 and convert coordinates with PROJ.4?
+
+      You can use standard GIS tools like gdalwarp, cs2cs or gdaltransform.
+      All of the tools supports -t_srs 'epsg:900913'.
+
+      For other GIS programs check the exact definition of the projection:
+      More info at http://spatialreference.org/ref/user/google-projection/
+      The same projection is degined as EPSG:3785. WKT definition is in the official
+      EPSG database.
+
+      Proj4 Text:
+        +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0
+        +k=1.0 +units=m +nadgrids=@null +no_defs
+
+      Human readable WKT format of EPGS:900913:
+         PROJCS["Google Maps Global Mercator",
+             GEOGCS["WGS 84",
+                 DATUM["WGS_1984",
+                     SPHEROID["WGS 84",6378137,298.2572235630016,
+                         AUTHORITY["EPSG","7030"]],
+                     AUTHORITY["EPSG","6326"]],
+                 PRIMEM["Greenwich",0],
+                 UNIT["degree",0.0174532925199433],
+                 AUTHORITY["EPSG","4326"]],
+             PROJECTION["Mercator_1SP"],
+             PARAMETER["central_meridian",0],
+             PARAMETER["scale_factor",1],
+             PARAMETER["false_easting",0],
+             PARAMETER["false_northing",0],
+             UNIT["metre",1,
+                 AUTHORITY["EPSG","9001"]]]
+    """
+
+    def __init__(self, tileSize=256):
+        "Initialize the TMS Global Mercator pyramid"
+        self.tileSize = tileSize
+        self.initialResolution = 2 * math.pi * 6378137 / self.tileSize
+        # 156543.03392804062 for tileSize 256 pixels
+        self.originShift = 2 * math.pi * 6378137 / 2.0
+        # 20037508.342789244
+
+    def LatLonToMeters(self, lat, lon ):
+        "Converts given lat/lon in WGS84 Datum to XY in Spherical Mercator EPSG:900913"
+
+        mx = lon * self.originShift / 180.0
+        my = math.log( math.tan((90 + lat) * math.pi / 360.0 )) / (math.pi / 180.0)
+
+        my = my * self.originShift / 180.0
+        return mx, my
+
+    def MetersToLatLon(self, mx, my ):
+        "Converts XY point from Spherical Mercator EPSG:900913 to lat/lon in WGS84 Datum"
+
+        lon = (mx / self.originShift) * 180.0
+        lat = (my / self.originShift) * 180.0
+
+        lat = 180 / math.pi * (2 * math.atan( math.exp( lat * math.pi / 180.0)) - math.pi / 2.0)
+        return lat, lon
+
+    def PixelsToMeters(self, px, py, zoom):
+        "Converts pixel coordinates in given zoom level of pyramid to EPSG:900913"
+
+        res = self.Resolution( zoom )
+        mx = px * res - self.originShift
+        my = py * res - self.originShift
+        return mx, my
+        
+    def MetersToPixels(self, mx, my, zoom):
+        "Converts EPSG:900913 to pyramid pixel coordinates in given zoom level"
+                
+        res = self.Resolution( zoom )
+        px = (mx + self.originShift) / res
+        py = (my + self.originShift) / res
+        return px, py
+    
+    def PixelsToTile(self, px, py):
+        "Returns a tile covering region in given pixel coordinates"
+
+        tx = int( math.ceil( px / float(self.tileSize) ) - 1 )
+        ty = int( math.ceil( py / float(self.tileSize) ) - 1 )
+        return tx, ty
+
+    def PixelsToRaster(self, px, py, zoom):
+        "Move the origin of pixel coordinates to top-left corner"
+        
+        mapSize = self.tileSize &lt;&lt; zoom
+        return px, mapSize - py
+        
+    def MetersToTile(self, mx, my, zoom):
+        "Returns tile for given mercator coordinates"
+        
+        px, py = self.MetersToPixels( mx, my, zoom)
+        return self.PixelsToTile( px, py)
+
+    def TileBounds(self, tx, ty, zoom):
+        "Returns bounds of the given tile in EPSG:900913 coordinates"
+        
+        minx, miny = self.PixelsToMeters( tx*self.tileSize, ty*self.tileSize, zoom )
+        maxx, maxy = self.PixelsToMeters( (tx+1)*self.tileSize, (ty+1)*self.tileSize, zoom )
+        return ( minx, miny, maxx, maxy )
+
+    def TileLatLonBounds(self, tx, ty, zoom ):
+        "Returns bounds of the given tile in latutude/longitude using WGS84 datum"
+
+        bounds = self.TileBounds( tx, ty, zoom)
+        minLat, minLon = self.MetersToLatLon(bounds[0], bounds[1])
+        maxLat, maxLon = self.MetersToLatLon(bounds[2], bounds[3])
+         
+        return ( minLat, minLon, maxLat, maxLon )
+        
+    def Resolution(self, zoom ):
+        "Resolution (meters/pixel) for given zoom level (measured at Equator)"
+        
+        # return (2 * math.pi * 6378137) / (self.tileSize * 2**zoom)
+        return self.initialResolution / (2**zoom)
+        
+    def ZoomForPixelSize(self, pixelSize ):
+        "Maximal scaledown zoom of the pyramid closest to the pixelSize."
+        
+        for i in range(30):
+            if pixelSize &gt; self.Resolution(i):
+                return i-1 if i!=0 else 0 # We don't want to scale up
+
+    def GoogleTile(self, tx, ty, zoom):
+        "Converts TMS tile coordinates to Google Tile coordinates"
+        
+        # coordinate origin is moved from bottom-left to top-left corner of the extent
+        return tx, (2**zoom - 1) - ty
+
+    def QuadTree(self, tx, ty, zoom ):
+        "Converts TMS tile coordinates to Microsoft QuadTree"
+        
+        quadKey = ""
+        ty = (2**zoom - 1) - ty
+        for i in range(zoom, 0, -1):
+            digit = 0
+            mask = 1 &lt;&lt; (i-1)
+            if (tx &amp; mask) != 0:
+                digit += 1
+            if (ty &amp; mask) != 0:
+                digit += 2
+            quadKey += str(digit)
+            
+        return quadKey
+
+#---------------------
+a = GlobalMercator()
+
+#b = GlobalMercator.self
+b = a.MetersToTile(x,y, zoom1)
+c = a.GoogleTile(b[0],b[1],zoom1)
+d = a.TileBounds(b[0],b[1],zoom1)
+OUT = c,d</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="3a3da178-0181-45ec-90ed-a700f41aacbb" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="String.ToNumber" x="1180.27913876869" y="1397.85351048294" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.ToNumber@string">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="f1a362ef-b831-4848-9480-27da0eb5a90c" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="String.ToNumber" x="1181.75524525569" y="1484.65962467634" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.ToNumber@string">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="72fdc48e-8ffe-4b30-816e-37d510481c72" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1751.46900561989" y="1095.54812411416" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="a[0][0];&#xA;a[0][1];&#xA;xmin=a[1][0];&#xA;ymin=-1*a[1][1];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="1971aa60-df4e-47a0-91aa-6c275d4f7146" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1759.3352196449" y="1440.21431596619" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" CodeText="a[0][0];&#xA;a[0][1];&#xA;xmax=a[1][2];&#xA;ymax=-1*a[1][3];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <PythonNodeModels.PythonNode guid="2d7bb2c8-ee57-4d48-ad6a-fa6614e317fd" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1490.81092923901" y="1763.96914519129" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script>import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+import math
+
+x = IN[0]
+y = IN[1]
+zoom = IN[2]
+
+class GlobalMercator(object):
+    """
+    TMS Global Mercator Profile
+    ---------------------------
+
+    Functions necessary for generation of tiles in Spherical Mercator projection,
+    EPSG:900913 (EPSG:gOOglE, Google Maps Global Mercator), EPSG:3785, OSGEO:41001.
+
+    Such tiles are compatible with Google Maps, Microsoft Virtual Earth, Yahoo Maps,
+    UK Ordnance Survey OpenSpace API, ...
+    and you can overlay them on top of base maps of those web mapping applications.
+    
+    Pixel and tile coordinates are in TMS notation (origin [0,0] in bottom-left).
+
+    What coordinate conversions do we need for TMS Global Mercator tiles::
+
+         LatLon      &lt;-&gt;       Meters      &lt;-&gt;     Pixels    &lt;-&gt;       Tile     
+
+     WGS84 coordinates   Spherical Mercator  Pixels in pyramid  Tiles in pyramid
+         lat/lon            XY in metres     XY pixels Z zoom      XYZ from TMS 
+        EPSG:4326           EPSG:900913                                         
+         .----.              ---------               --                TMS      
+        /      \     &lt;-&gt;     |       |     &lt;-&gt;     /----/    &lt;-&gt;      Google    
+        \      /             |       |           /--------/          QuadTree   
+         -----               ---------         /------------/                   
+       KML, public         WebMapService         Web Clients      TileMapService
+
+    What is the coordinate extent of Earth in EPSG:900913?
+
+      [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244]
+      Constant 20037508.342789244 comes from the circumference of the Earth in meters,
+      which is 40 thousand kilometers, the coordinate origin is in the middle of extent.
+      In fact you can calculate the constant as: 2 * math.pi * 6378137 / 2.0
+      $ echo 180 85 | gdaltransform -s_srs EPSG:4326 -t_srs EPSG:900913
+      Polar areas with abs(latitude) bigger then 85.05112878 are clipped off.
+
+    What are zoom level constants (pixels/meter) for pyramid with EPSG:900913?
+
+      whole region is on top of pyramid (zoom=0) covered by 256x256 pixels tile,
+      every lower zoom level resolution is always divided by two
+      initialResolution = 20037508.342789244 * 2 / 256 = 156543.03392804062
+
+    What is the difference between TMS and Google Maps/QuadTree tile name convention?
+
+      The tile raster itself is the same (equal extent, projection, pixel size),
+      there is just different identification of the same raster tile.
+      Tiles in TMS are counted from [0,0] in the bottom-left corner, id is XYZ.
+      Google placed the origin [0,0] to the top-left corner, reference is XYZ.
+      Microsoft is referencing tiles by a QuadTree name, defined on the website:
+      http://msdn2.microsoft.com/en-us/library/bb259689.aspx
+
+    The lat/lon coordinates are using WGS84 datum, yeh?
+
+      Yes, all lat/lon we are mentioning should use WGS84 Geodetic Datum.
+      Well, the web clients like Google Maps are projecting those coordinates by
+      Spherical Mercator, so in fact lat/lon coordinates on sphere are treated as if
+      the were on the WGS84 ellipsoid.
+     
+      From MSDN documentation:
+      To simplify the calculations, we use the spherical form of projection, not
+      the ellipsoidal form. Since the projection is used only for map display,
+      and not for displaying numeric coordinates, we don't need the extra precision
+      of an ellipsoidal projection. The spherical projection causes approximately
+      0.33 percent scale distortion in the Y direction, which is not visually noticable.
+
+    How do I create a raster in EPSG:900913 and convert coordinates with PROJ.4?
+
+      You can use standard GIS tools like gdalwarp, cs2cs or gdaltransform.
+      All of the tools supports -t_srs 'epsg:900913'.
+
+      For other GIS programs check the exact definition of the projection:
+      More info at http://spatialreference.org/ref/user/google-projection/
+      The same projection is degined as EPSG:3785. WKT definition is in the official
+      EPSG database.
+
+      Proj4 Text:
+        +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0
+        +k=1.0 +units=m +nadgrids=@null +no_defs
+
+      Human readable WKT format of EPGS:900913:
+         PROJCS["Google Maps Global Mercator",
+             GEOGCS["WGS 84",
+                 DATUM["WGS_1984",
+                     SPHEROID["WGS 84",6378137,298.2572235630016,
+                         AUTHORITY["EPSG","7030"]],
+                     AUTHORITY["EPSG","6326"]],
+                 PRIMEM["Greenwich",0],
+                 UNIT["degree",0.0174532925199433],
+                 AUTHORITY["EPSG","4326"]],
+             PROJECTION["Mercator_1SP"],
+             PARAMETER["central_meridian",0],
+             PARAMETER["scale_factor",1],
+             PARAMETER["false_easting",0],
+             PARAMETER["false_northing",0],
+             UNIT["metre",1,
+                 AUTHORITY["EPSG","9001"]]]
+    """
+
+    def __init__(self, tileSize=256):
+        "Initialize the TMS Global Mercator pyramid"
+        self.tileSize = tileSize
+        self.initialResolution = 2 * math.pi * 6378137 / self.tileSize
+        # 156543.03392804062 for tileSize 256 pixels
+        self.originShift = 2 * math.pi * 6378137 / 2.0
+        # 20037508.342789244
+
+    def LatLonToMeters(self, lat, lon ):
+        "Converts given lat/lon in WGS84 Datum to XY in Spherical Mercator EPSG:900913"
+
+        mx = lon * self.originShift / 180.0
+        my = math.log( math.tan((90 + lat) * math.pi / 360.0 )) / (math.pi / 180.0)
+
+        my = my * self.originShift / 180.0
+        return mx, my
+
+    def MetersToLatLon(self, mx, my ):
+        "Converts XY point from Spherical Mercator EPSG:900913 to lat/lon in WGS84 Datum"
+
+        lon = (mx / self.originShift) * 180.0
+        lat = (my / self.originShift) * 180.0
+
+        lat = 180 / math.pi * (2 * math.atan( math.exp( lat * math.pi / 180.0)) - math.pi / 2.0)
+        return lat, lon
+
+    def PixelsToMeters(self, px, py, zoom):
+        "Converts pixel coordinates in given zoom level of pyramid to EPSG:900913"
+
+        res = self.Resolution( zoom )
+        mx = px * res - self.originShift
+        my = py * res - self.originShift
+        return mx, my
+        
+    def MetersToPixels(self, mx, my, zoom):
+        "Converts EPSG:900913 to pyramid pixel coordinates in given zoom level"
+                
+        res = self.Resolution( zoom )
+        px = (mx + self.originShift) / res
+        py = (my + self.originShift) / res
+        return px, py
+    
+    def PixelsToTile(self, px, py):
+        "Returns a tile covering region in given pixel coordinates"
+
+        tx = int( math.ceil( px / float(self.tileSize) ) - 1 )
+        ty = int( math.ceil( py / float(self.tileSize) ) - 1 )
+        return tx, ty
+
+    def PixelsToRaster(self, px, py, zoom):
+        "Move the origin of pixel coordinates to top-left corner"
+        
+        mapSize = self.tileSize &lt;&lt; zoom
+        return px, mapSize - py
+        
+    def MetersToTile(self, mx, my, zoom):
+        "Returns tile for given mercator coordinates"
+        
+        px, py = self.MetersToPixels( mx, my, zoom)
+        return self.PixelsToTile( px, py)
+
+    def TileBounds(self, tx, ty, zoom):
+        "Returns bounds of the given tile in EPSG:900913 coordinates"
+        
+        minx, miny = self.PixelsToMeters( tx*self.tileSize, ty*self.tileSize, zoom )
+        maxx, maxy = self.PixelsToMeters( (tx+1)*self.tileSize, (ty+1)*self.tileSize, zoom )
+        return ( minx, miny, maxx, maxy )
+
+    def TileLatLonBounds(self, tx, ty, zoom ):
+        "Returns bounds of the given tile in latutude/longitude using WGS84 datum"
+
+        bounds = self.TileBounds( tx, ty, zoom)
+        minLat, minLon = self.MetersToLatLon(bounds[0], bounds[1])
+        maxLat, maxLon = self.MetersToLatLon(bounds[2], bounds[3])
+         
+        return ( minLat, minLon, maxLat, maxLon )
+        
+    def Resolution(self, zoom ):
+        "Resolution (meters/pixel) for given zoom level (measured at Equator)"
+        
+        # return (2 * math.pi * 6378137) / (self.tileSize * 2**zoom)
+        return self.initialResolution / (2**zoom)
+        
+    def ZoomForPixelSize(self, pixelSize ):
+        "Maximal scaledown zoom of the pyramid closest to the pixelSize."
+        
+        for i in range(30):
+            if pixelSize &gt; self.Resolution(i):
+                return i-1 if i!=0 else 0 # We don't want to scale up
+
+    def GoogleTile(self, tx, ty, zoom):
+        "Converts TMS tile coordinates to Google Tile coordinates"
+        
+        # coordinate origin is moved from bottom-left to top-left corner of the extent
+        return tx, (2**zoom - 1) - ty
+
+    def QuadTree(self, tx, ty, zoom ):
+        "Converts TMS tile coordinates to Microsoft QuadTree"
+        
+        quadKey = ""
+        ty = (2**zoom - 1) - ty
+        for i in range(zoom, 0, -1):
+            digit = 0
+            mask = 1 &lt;&lt; (i-1)
+            if (tx &amp; mask) != 0:
+                digit += 1
+            if (ty &amp; mask) != 0:
+                digit += 2
+            quadKey += str(digit)
+            
+        return quadKey
+
+#---------------------
+a = GlobalMercator()
+
+#b = GlobalMercator.self
+b = a.MetersToTile(x,y, zoom)
+c = a.GoogleTile(b[0],b[1],zoom)
+d = a.TileBounds(b[0],b[1],zoom)
+OUT = d</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="cba189ba-7710-4d48-99d1-db2b62a0573e" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="2171.3298319974" y="1599.23160791105" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="widthtile=xmax-xmin;&#xA;heighttile=ymax-ymin;&#xA;dx=widthtile-width;&#xA;dy=heighttile-height;&#xA;dxcoord=-1*(xmin-xleftbottomcalc);&#xA;dycoord=-1*(ymin-yleftbottomcalc);&#xA;ew=0.5*width+dxcoord-0.5*widthtile;&#xA;ew*-1000;&#xA;eh=0.5*height+dycoord-0.5*heighttile;&#xA;eh*-1000;" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="False" />
+      <PortInfo index="5" default="False" />
+      <PortInfo index="6" default="False" />
+      <PortInfo index="7" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <CoreNodeModels.Watch guid="ccf9ade1-def4-4b5a-98a8-4c3ef780a565" type="CoreNodeModels.Watch" nickname="Watch" x="2671.90234626412" y="1964.10855102972" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.Watch>
+    <CoreNodeModels.Watch guid="fceab7a3-26cd-481b-a8b1-a46e84cfbb98" type="CoreNodeModels.Watch" nickname="Watch" x="2686.5263398847" y="2131.83515623612" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.Watch>
+    <CoreNodeModels.Watch guid="b34a89c5-a398-4631-b166-efd2c39287ae" type="CoreNodeModels.Watch" nickname="Watch" x="2750.09186316286" y="1654.87534353828" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.Watch>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="deac753b-b9cf-41fb-9316-cf8854a21b77" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="3442.29386380121" y="1769.40918998366" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="276;&#xA;ca 0,6;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="d2944331-68fe-444b-a94c-362c5029a389" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreateBoundingBoxLATLONG" x="229.850682065918" y="553.254446738734" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <ID value="1dce3f92-a7f6-4f10-8b33-384ce92015dc" />
+      <Name value="GIS2BIM.CreateBoundingBoxLATLONG" />
+      <Description value="create boundingbox with from lat/long coordinate in degrees" />
+      <Inputs>
+        <Input value="Lat" />
+        <Input value="Long" />
+        <Input value="WidthMeters" />
+      </Inputs>
+      <Outputs>
+        <Output value="West" />
+        <Output value="East" />
+        <Output value="North" />
+        <Output value="South" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="a0c33f2a-d7ed-4a68-9490-d537108cf971" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.DistanceBetweenCoordinatesWGS84" x="875.118441167659" y="159.093944175306" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="38535868-cc16-4d73-8e6b-07eb4082c07b" />
+      <Name value="GIS2BIM.DistanceBetweenCoordinatesWGS84" />
+      <Description value="Calculate the distance between 2 lat/lon coördinates in meters" />
+      <Inputs>
+        <Input value="Latitude1" />
+        <Input value="Longitude1" />
+        <Input value="Latitude2" />
+        <Input value="Longitude2" />
+      </Inputs>
+      <Outputs>
+        <Output value="DistanceMeters" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="53d929ae-6bbf-4ef2-9db1-6177996ed0e8" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.TransformCRS_epsg" x="1504.52640599044" y="361.752897872718" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="True" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="1813c488-6cc1-4cc0-aaf5-ea0606534144" />
+      <Name value="GIS2BIM.TransformCRS_epsg" />
+      <Description value="Uses the API of http://epsg.io to transform Coordinate Reference Systems" />
+      <Inputs>
+        <Input value="sourceCRS" />
+        <Input value="targetCRS" />
+        <Input value="xCoordinate" />
+        <Input value="yCoordinate" />
+      </Inputs>
+      <Outputs>
+        <Output value="Xtransformed" />
+        <Output value="Ytransformed" />
+        <Output value="URL" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="1df8a912-4a9c-40bf-b956-632aca89759a" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Element.ToString" x="562.123233179265" y="944.464556931587" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="RevitNodes.dll" function="Revit.Elements.Element.ToString@string,var">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="f51d4af0-5231-4b07-b0ab-7fa9a6a20a04" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.DoubleToString" x="804.666936219661" y="523.422902721837" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <ID value="6a88439b-8705-4902-a437-51d6eb1a0540" />
+      <Name value="GIS2BIM.DoubleToString" />
+      <Description value="Converts a double to a string" />
+      <Inputs>
+        <Input value="CoordinateDouble" />
+      </Inputs>
+      <Outputs>
+        <Output value="CoordinateString" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="4ec1c893-7710-427b-8c3b-f8c80b41f352" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.DoubleToString" x="802.513957621642" y="611.717303296144" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <ID value="6a88439b-8705-4902-a437-51d6eb1a0540" />
+      <Name value="GIS2BIM.DoubleToString" />
+      <Description value="Converts a double to a string" />
+      <Inputs>
+        <Input value="CoordinateDouble" />
+      </Inputs>
+      <Outputs>
+        <Output value="CoordinateString" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="31f51112-6db4-4613-add8-3ec629405289" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.DoubleToString" x="798.700959413374" y="723.337440567877" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <ID value="6a88439b-8705-4902-a437-51d6eb1a0540" />
+      <Name value="GIS2BIM.DoubleToString" />
+      <Description value="Converts a double to a string" />
+      <Inputs>
+        <Input value="CoordinateDouble" />
+      </Inputs>
+      <Outputs>
+        <Output value="CoordinateString" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="9ff55cab-e718-455b-a4d8-597fdddb146a" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.DoubleToString" x="813.111132423684" y="422.997745030415" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <ID value="6a88439b-8705-4902-a437-51d6eb1a0540" />
+      <Name value="GIS2BIM.DoubleToString" />
+      <Description value="Converts a double to a string" />
+      <Inputs>
+        <Input value="CoordinateDouble" />
+      </Inputs>
+      <Outputs>
+        <Output value="CoordinateString" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="fdb75e26-53d1-41e0-a3c6-d1c1ea99978b" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.TransformCRS_epsg" x="1492.50043455778" y="661.455730687822" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="True" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="1813c488-6cc1-4cc0-aaf5-ea0606534144" />
+      <Name value="GIS2BIM.TransformCRS_epsg" />
+      <Description value="Uses the API of http://epsg.io to transform Coordinate Reference Systems" />
+      <Inputs>
+        <Input value="sourceCRS" />
+        <Input value="targetCRS" />
+        <Input value="xCoordinate" />
+        <Input value="yCoordinate" />
+      </Inputs>
+      <Outputs>
+        <Output value="Xtransformed" />
+        <Output value="Ytransformed" />
+        <Output value="URL" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="1351d406-ddd9-4b8a-a93a-1993a0e3317b" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1982.73376457876" y="550.623507924217" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="bm=x2-x1;&#xA;fact=width/bm;&#xA;1/fact;" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="6aa60ab1-d65d-47d8-8c4f-31109af31ccb" start_index="0" end="09525f23-d348-466c-a0c6-05c7d35e81b7" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6aa60ab1-d65d-47d8-8c4f-31109af31ccb" start_index="1" end="09525f23-d348-466c-a0c6-05c7d35e81b7" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6aa60ab1-d65d-47d8-8c4f-31109af31ccb" start_index="2" end="09525f23-d348-466c-a0c6-05c7d35e81b7" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b30970c8-a5a3-44eb-ade6-6496f0b669c8" start_index="0" end="93e83d14-c6c8-415b-9765-f5685d8799a2" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b30970c8-a5a3-44eb-ade6-6496f0b669c8" start_index="0" end="f68d51c5-601b-4815-b2d4-da0f9e45c8da" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b30970c8-a5a3-44eb-ade6-6496f0b669c8" start_index="0" end="3483a871-1e0e-4f66-b85a-c9480818280f" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b30970c8-a5a3-44eb-ade6-6496f0b669c8" start_index="0" end="2d7bb2c8-ee57-4d48-ad6a-fa6614e317fd" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="45c09d14-4bdb-45b0-9aad-f57ba4e6ca67" start_index="0" end="75c783b7-fa14-4c89-bc2c-797b48ea1956" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="45c09d14-4bdb-45b0-9aad-f57ba4e6ca67" start_index="0" end="75c783b7-fa14-4c89-bc2c-797b48ea1956" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="45c09d14-4bdb-45b0-9aad-f57ba4e6ca67" start_index="0" end="cba189ba-7710-4d48-99d1-db2b62a0573e" end_index="4" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="45c09d14-4bdb-45b0-9aad-f57ba4e6ca67" start_index="0" end="cba189ba-7710-4d48-99d1-db2b62a0573e" end_index="5" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="45c09d14-4bdb-45b0-9aad-f57ba4e6ca67" start_index="0" end="d2944331-68fe-444b-a94c-362c5029a389" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="45c09d14-4bdb-45b0-9aad-f57ba4e6ca67" start_index="0" end="1351d406-ddd9-4b8a-a93a-1993a0e3317b" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="09525f23-d348-466c-a0c6-05c7d35e81b7" start_index="5" end="a2445d21-01a0-46d2-ad84-342add80b458" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="09525f23-d348-466c-a0c6-05c7d35e81b7" start_index="5" end="0a33dec8-aece-47f7-87b8-f6781eaca884" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="09525f23-d348-466c-a0c6-05c7d35e81b7" start_index="5" end="d2944331-68fe-444b-a94c-362c5029a389" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="09525f23-d348-466c-a0c6-05c7d35e81b7" start_index="6" end="a2445d21-01a0-46d2-ad84-342add80b458" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="09525f23-d348-466c-a0c6-05c7d35e81b7" start_index="6" end="0a33dec8-aece-47f7-87b8-f6781eaca884" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="09525f23-d348-466c-a0c6-05c7d35e81b7" start_index="6" end="d2944331-68fe-444b-a94c-362c5029a389" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="eddbf145-413e-467a-9909-9f1a220b36b5" start_index="2" end="4871b2ff-abe6-43cb-8f66-0c16ecf9bf2e" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="eddbf145-413e-467a-9909-9f1a220b36b5" start_index="2" end="026ff194-086a-4b2b-a52a-0eecb21f7c3c" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="eddbf145-413e-467a-9909-9f1a220b36b5" start_index="3" end="4871b2ff-abe6-43cb-8f66-0c16ecf9bf2e" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="eddbf145-413e-467a-9909-9f1a220b36b5" start_index="3" end="64351945-4d3b-4d37-90d2-be5d5e5a537d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="fe8451db-43bd-4340-8ebc-28fcfa34c38d" start_index="0" end="58d2dd51-24c0-4979-986e-4310d1606de1" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4871b2ff-abe6-43cb-8f66-0c16ecf9bf2e" start_index="0" end="6db13291-658d-4b49-997e-bbdd76798c69" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="026ff194-086a-4b2b-a52a-0eecb21f7c3c" start_index="0" end="58d2dd51-24c0-4979-986e-4310d1606de1" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="64351945-4d3b-4d37-90d2-be5d5e5a537d" start_index="0" end="58d2dd51-24c0-4979-986e-4310d1606de1" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a6113f46-3935-4072-9fe5-a8c243a265d2" start_index="0" end="0854f7a3-c15a-4b68-9646-dd5d8f13fdd7" end_index="6" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a30785ed-a4cb-4dfc-8bde-be8c0b36515b" start_index="0" end="a6113f46-3935-4072-9fe5-a8c243a265d2" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="93e83d14-c6c8-415b-9765-f5685d8799a2" start_index="0" end="a30785ed-a4cb-4dfc-8bde-be8c0b36515b" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c9790e0f-af72-47cc-9448-caef25468056" start_index="0" end="0854f7a3-c15a-4b68-9646-dd5d8f13fdd7" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c9790e0f-af72-47cc-9448-caef25468056" start_index="1" end="0854f7a3-c15a-4b68-9646-dd5d8f13fdd7" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c9790e0f-af72-47cc-9448-caef25468056" start_index="2" end="0854f7a3-c15a-4b68-9646-dd5d8f13fdd7" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c9790e0f-af72-47cc-9448-caef25468056" start_index="3" end="0854f7a3-c15a-4b68-9646-dd5d8f13fdd7" end_index="5" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="05700f02-879f-420b-a433-5d7a52c19842" start_index="0" end="a30785ed-a4cb-4dfc-8bde-be8c0b36515b" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6db13291-658d-4b49-997e-bbdd76798c69" start_index="0" end="ea5d1900-7fd5-4745-bffe-2fbf98bf592a" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6db13291-658d-4b49-997e-bbdd76798c69" start_index="1" end="a300da05-34eb-436e-8860-d5b23f95c095" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ea5d1900-7fd5-4745-bffe-2fbf98bf592a" start_index="0" end="0854f7a3-c15a-4b68-9646-dd5d8f13fdd7" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a300da05-34eb-436e-8860-d5b23f95c095" start_index="0" end="0854f7a3-c15a-4b68-9646-dd5d8f13fdd7" end_index="4" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0854f7a3-c15a-4b68-9646-dd5d8f13fdd7" start_index="0" end="fe8451db-43bd-4340-8ebc-28fcfa34c38d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="16cb5986-afce-491c-b469-29f3fe27f410" start_index="0" end="24324d11-46ff-4672-afa6-d81d88dca432" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d9d78507-671d-417c-8567-9e13b43eb672" start_index="0" end="58d2dd51-24c0-4979-986e-4310d1606de1" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7b759795-1603-4cd4-a50c-da538eacf5a9" start_index="0" end="24324d11-46ff-4672-afa6-d81d88dca432" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="24324d11-46ff-4672-afa6-d81d88dca432" start_index="0" end="b4fb8a8f-daff-4596-8d7a-84c54b78dfa3" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="41204fc0-b8a0-400a-adca-d5bf01368e62" start_index="0" end="f3946164-e612-496b-8c5b-ac0ea505f3b5" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f3946164-e612-496b-8c5b-ac0ea505f3b5" start_index="0" end="b4fb8a8f-daff-4596-8d7a-84c54b78dfa3" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="58d2dd51-24c0-4979-986e-4310d1606de1" start_index="0" end="16cb5986-afce-491c-b469-29f3fe27f410" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0a33dec8-aece-47f7-87b8-f6781eaca884" start_index="0" end="75c783b7-fa14-4c89-bc2c-797b48ea1956" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0a33dec8-aece-47f7-87b8-f6781eaca884" start_index="1" end="75c783b7-fa14-4c89-bc2c-797b48ea1956" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9d1673ab-1273-48dc-bcc9-8fe468b12609" start_index="0" end="bb0265ca-85ff-4cd5-a060-f2418d8b3c0b" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9d1673ab-1273-48dc-bcc9-8fe468b12609" start_index="0" end="0a33dec8-aece-47f7-87b8-f6781eaca884" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9d1673ab-1273-48dc-bcc9-8fe468b12609" start_index="0" end="53d929ae-6bbf-4ef2-9db1-6177996ed0e8" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9d1673ab-1273-48dc-bcc9-8fe468b12609" start_index="0" end="fdb75e26-53d1-41e0-a3c6-d1c1ea99978b" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f68d51c5-601b-4815-b2d4-da0f9e45c8da" start_index="0" end="72fdc48e-8ffe-4b30-816e-37d510481c72" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="75c783b7-fa14-4c89-bc2c-797b48ea1956" start_index="2" end="7caa68f7-8924-4c8e-b70a-75273a4f7e6f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="75c783b7-fa14-4c89-bc2c-797b48ea1956" start_index="3" end="3a3da178-0181-45ec-90ed-a700f41aacbb" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="75c783b7-fa14-4c89-bc2c-797b48ea1956" start_index="4" end="55235e1c-3bac-4eef-a960-15e7adcaa11b" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="75c783b7-fa14-4c89-bc2c-797b48ea1956" start_index="5" end="f1a362ef-b831-4848-9480-27da0eb5a90c" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7caa68f7-8924-4c8e-b70a-75273a4f7e6f" start_index="0" end="f68d51c5-601b-4815-b2d4-da0f9e45c8da" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7caa68f7-8924-4c8e-b70a-75273a4f7e6f" start_index="0" end="cba189ba-7710-4d48-99d1-db2b62a0573e" end_index="6" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="55235e1c-3bac-4eef-a960-15e7adcaa11b" start_index="0" end="f68d51c5-601b-4815-b2d4-da0f9e45c8da" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="55235e1c-3bac-4eef-a960-15e7adcaa11b" start_index="0" end="cba189ba-7710-4d48-99d1-db2b62a0573e" end_index="7" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3483a871-1e0e-4f66-b85a-c9480818280f" start_index="0" end="1971aa60-df4e-47a0-91aa-6c275d4f7146" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3a3da178-0181-45ec-90ed-a700f41aacbb" start_index="0" end="3483a871-1e0e-4f66-b85a-c9480818280f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3a3da178-0181-45ec-90ed-a700f41aacbb" start_index="0" end="2d7bb2c8-ee57-4d48-ad6a-fa6614e317fd" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f1a362ef-b831-4848-9480-27da0eb5a90c" start_index="0" end="3483a871-1e0e-4f66-b85a-c9480818280f" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f1a362ef-b831-4848-9480-27da0eb5a90c" start_index="0" end="2d7bb2c8-ee57-4d48-ad6a-fa6614e317fd" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="72fdc48e-8ffe-4b30-816e-37d510481c72" start_index="0" end="eddbf145-413e-467a-9909-9f1a220b36b5" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="72fdc48e-8ffe-4b30-816e-37d510481c72" start_index="1" end="eddbf145-413e-467a-9909-9f1a220b36b5" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="72fdc48e-8ffe-4b30-816e-37d510481c72" start_index="2" end="cba189ba-7710-4d48-99d1-db2b62a0573e" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="72fdc48e-8ffe-4b30-816e-37d510481c72" start_index="3" end="cba189ba-7710-4d48-99d1-db2b62a0573e" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="1971aa60-df4e-47a0-91aa-6c275d4f7146" start_index="0" end="eddbf145-413e-467a-9909-9f1a220b36b5" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="1971aa60-df4e-47a0-91aa-6c275d4f7146" start_index="1" end="eddbf145-413e-467a-9909-9f1a220b36b5" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="1971aa60-df4e-47a0-91aa-6c275d4f7146" start_index="2" end="cba189ba-7710-4d48-99d1-db2b62a0573e" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="1971aa60-df4e-47a0-91aa-6c275d4f7146" start_index="3" end="cba189ba-7710-4d48-99d1-db2b62a0573e" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="cba189ba-7710-4d48-99d1-db2b62a0573e" start_index="0" end="b4fb8a8f-daff-4596-8d7a-84c54b78dfa3" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="cba189ba-7710-4d48-99d1-db2b62a0573e" start_index="0" end="b34a89c5-a398-4631-b166-efd2c39287ae" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="cba189ba-7710-4d48-99d1-db2b62a0573e" start_index="7" end="ccf9ade1-def4-4b5a-98a8-4c3ef780a565" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="cba189ba-7710-4d48-99d1-db2b62a0573e" start_index="9" end="fceab7a3-26cd-481b-a8b1-a46e84cfbb98" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ccf9ade1-def4-4b5a-98a8-4c3ef780a565" start_index="0" end="b4fb8a8f-daff-4596-8d7a-84c54b78dfa3" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="fceab7a3-26cd-481b-a8b1-a46e84cfbb98" start_index="0" end="b4fb8a8f-daff-4596-8d7a-84c54b78dfa3" end_index="4" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d2944331-68fe-444b-a94c-362c5029a389" start_index="0" end="a0c33f2a-d7ed-4a68-9490-d537108cf971" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d2944331-68fe-444b-a94c-362c5029a389" start_index="0" end="9ff55cab-e718-455b-a4d8-597fdddb146a" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d2944331-68fe-444b-a94c-362c5029a389" start_index="1" end="a0c33f2a-d7ed-4a68-9490-d537108cf971" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d2944331-68fe-444b-a94c-362c5029a389" start_index="1" end="f51d4af0-5231-4b07-b0ab-7fa9a6a20a04" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d2944331-68fe-444b-a94c-362c5029a389" start_index="2" end="a0c33f2a-d7ed-4a68-9490-d537108cf971" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d2944331-68fe-444b-a94c-362c5029a389" start_index="2" end="a0c33f2a-d7ed-4a68-9490-d537108cf971" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d2944331-68fe-444b-a94c-362c5029a389" start_index="2" end="4ec1c893-7710-427b-8c3b-f8c80b41f352" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d2944331-68fe-444b-a94c-362c5029a389" start_index="3" end="31f51112-6db4-4613-add8-3ec629405289" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="53d929ae-6bbf-4ef2-9db1-6177996ed0e8" start_index="0" end="1351d406-ddd9-4b8a-a93a-1993a0e3317b" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f51d4af0-5231-4b07-b0ab-7fa9a6a20a04" start_index="0" end="fdb75e26-53d1-41e0-a3c6-d1c1ea99978b" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ec1c893-7710-427b-8c3b-f8c80b41f352" start_index="0" end="53d929ae-6bbf-4ef2-9db1-6177996ed0e8" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ec1c893-7710-427b-8c3b-f8c80b41f352" start_index="0" end="fdb75e26-53d1-41e0-a3c6-d1c1ea99978b" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9ff55cab-e718-455b-a4d8-597fdddb146a" start_index="0" end="53d929ae-6bbf-4ef2-9db1-6177996ed0e8" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="fdb75e26-53d1-41e0-a3c6-d1c1ea99978b" start_index="0" end="1351d406-ddd9-4b8a-a93a-1993a0e3317b" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="9bc4e4e2-b52c-49ac-a835-c0dfb90096af" annotationText="LEFT BOTTOM XMIN YMIN" left="1179.15245825987" top="1023.1370093813" width="763.91654736002" height="258.45599381844" fontSize="30" InitialTop="1069.1370093813" InitialHeight="238.476846941196" TextblockHeight="36" backgrouund="#FFC1D676">
+      <Models ModelGuid="f68d51c5-601b-4815-b2d4-da0f9e45c8da" />
+      <Models ModelGuid="7caa68f7-8924-4c8e-b70a-75273a4f7e6f" />
+      <Models ModelGuid="55235e1c-3bac-4eef-a960-15e7adcaa11b" />
+      <Models ModelGuid="72fdc48e-8ffe-4b30-816e-37d510481c72" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="ac440dfd-18a1-4c03-b322-17ea70e7f3d1" annotationText="RIGHT TOP XMAX YMAX" left="1170.27913876869" top="1351.85351048294" width="780.65608087621" height="266.02872159973" fontSize="30" InitialTop="1397.85351048294" InitialHeight="235.680914538893" TextblockHeight="36" backgrouund="#FFC1D676">
+      <Models ModelGuid="3483a871-1e0e-4f66-b85a-c9480818280f" />
+      <Models ModelGuid="3a3da178-0181-45ec-90ed-a700f41aacbb" />
+      <Models ModelGuid="f1a362ef-b831-4848-9480-27da0eb5a90c" />
+      <Models ModelGuid="1971aa60-df4e-47a0-91aa-6c275d4f7146" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

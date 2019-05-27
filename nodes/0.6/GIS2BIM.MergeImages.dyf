@@ -1,0 +1,54 @@
+<Workspace Version="1.3.2.2480" X="0" Y="0" zoom="1" ScaleFactor="1" Name="GIS2BIM.MergeImages" Description="Merges a list of images to 1 image" ID="21bf444a-3e40-48cc-9986-9547189ad7fd" Category="GIS2BIM.Image">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="92b7b6e9-b820-4131-a85c-16b3617abb51" type="PythonNodeModels.PythonNode" nickname="Python Script" x="490.8" y="198" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+
+clr.AddReference("System.Drawing")
+from System.Drawing import Image
+from System.Drawing import Bitmap
+from System.Drawing import Graphics
+from System import Drawing
+from System.Drawing.Imaging import ImageFormat
+
+Images=IN[0]
+
+width=[]
+for i in Images:
+	width.append(i.Width)
+w=max(width)
+
+height=[]
+for i in Images:
+	height.append(i.Height)
+h=max(width)
+
+img= Bitmap(w,h)
+g= Graphics.FromImage(img)
+
+for i in Images:
+	g.DrawImage(i,Drawing.Rectangle(0,0,img.Width,img.Height))
+
+#Assign your output to the OUT variable.
+OUT = img</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="4898b805-6dde-4d60-ad1d-12d5e4e4ff29" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="99.2" y="196.8" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//List of images to merge/combine&#xD;&#xA;images" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="0acb48c5-2f54-4d38-a5df-6fddb4e9e3ce" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="686" y="198.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="image" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="92b7b6e9-b820-4131-a85c-16b3617abb51" start_index="0" end="0acb48c5-2f54-4d38-a5df-6fddb4e9e3ce" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4898b805-6dde-4d60-ad1d-12d5e4e4ff29" start_index="0" end="92b7b6e9-b820-4131-a85c-16b3617abb51" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-409049.09375" eyeY="117880.2109375" eyeZ="-146381.359375" lookX="409044.09375" lookY="-117869.2109375" lookZ="146373.359375" upX="0.0459936745464802" upY="0.998806118965149" upZ="0.0164584927260876" />
+  </Cameras>
+</Workspace>

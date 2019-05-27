@@ -1,0 +1,101 @@
+<Workspace Version="1.3.2.2480" X="264.292272658828" Y="72.286783555088" zoom="0.24361679191196" ScaleFactor="1" Name="GIS2BIM.SetSharedCoordinate" Description="Set shared coordinate/project basepoint" ID="da4af9e2-1688-4b45-8fa1-1ccb8a821143" Category="GIS2BIM.Coordinates">
+  <NamespaceResolutionMap />
+  <Elements>
+    <DSRevitNodesUI.Categories guid="836085b9-1bff-4c91-99f5-113568a9b27a" type="DSRevitNodesUI.Categories" nickname="Categories" x="198.169439034823" y="1312.39910888865" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="441:ProjectBasePoint" />
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="321151a1-d980-4eef-9901-fb2ea11ad349" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="195.877811413683" y="1395.7227424984" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//E/W&#xD;&#xA;x: double " />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="22187aed-8758-4fe3-ada1-270c7bc65923" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="195.877811413683" y="1537.65538396509" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//N/S&#xD;&#xA;y: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <CoreNodeModels.CreateList guid="16a8106f-e085-4e03-8504-81406d562332" type="CoreNodeModels.CreateList" nickname="List.Create" x="404.683586166546" y="1394.03631865459" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+    </CoreNodeModels.CreateList>
+    <DSRevitNodesUI.ElementsOfCategory guid="ccc58ff1-160d-454c-aaa3-c128044018c9" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="524.569439034826" y="1312.39910888865" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </DSRevitNodesUI.ElementsOfCategory>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="b17ef127-fc08-4c75-b752-2efcc970d8e8" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Element.SetParameterByName" x="1013.03971484469" y="1419.78429514795" isVisible="true" isUpstreamVisible="true" lacing="Longest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="RevitNodes.dll" function="Revit.Elements.Element.SetParameterByName@string,var">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="ce9a2c7d-22ae-4ca0-9b00-20e83bb51479" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="195.877811413683" y="1668.82396883671" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//Elev&#xD;&#xA;z: double=0" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="c43c72d4-1496-490f-afe0-15353229fab0" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="192.490005328888" y="1777.66440059035" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//GIS units are usually in meters&#xD;&#xA;scale: double=1000" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="3cbd0773-a9b5-461b-8b3c-69725cc684b2" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="550.556536674937" y="1471.5347500304" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="list*scale;" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="0bb841eb-4e30-4fc8-9ad5-da5673d56947" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="558.969103273066" y="1839.98093669448" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="{&quot;E/W&quot;,&quot;N/S&quot;,&quot;Elev&quot;,&quot;Angle to True North&quot;};" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="76216251-5c82-4e82-a389-63dfb3b089d1" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="189.16093072892" y="1889.11804434147" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//Angle to True North&#xD;&#xA;angle: double=0" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction guid="174f6a3f-7ad5-424b-bbd0-3edd3da32ee5" type="Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction" nickname="List.Join" x="751.752150946406" y="1471.94057295448" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.List.Join@var[]..[]" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="f0c3dc29-ba1f-4fe2-812d-5ad48a636bde" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Element.GetParameterValueByName" x="1270.06773606948" y="1735.17904730254" isVisible="true" isUpstreamVisible="true" lacing="Longest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="RevitNodes.dll" function="Revit.Elements.Element.GetParameterValueByName@string">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="4ffb15c6-0c5b-435f-89c9-0e5b6330a803" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="List.UniqueItems" x="1361.39724326403" y="1420.61521610639" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.List.UniqueItems@var[]..[]">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="aefaaed2-a5b5-4372-9aac-e57fa53f16dd" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1714.63087701905" y="1548.03870125906" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Element" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="958c5d3d-eb66-4dee-9bf0-112b9e1f810a" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1711.3422973714" y="1636.50209595529" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="E/W" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="e54ca147-5740-49c4-b0f9-8d9cd5d4a696" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1711.3422973714" y="1718.4336835917" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="N/S" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="8e4bb8b0-f310-44dc-b329-d40391c53a36" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1716.88428487041" y="1837.96432430695" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Elev" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="b02ad2e6-a608-4ae5-b3ea-76cd26fdbf02" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1567.64069096362" y="1733.96492898245" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="x[0];&#xA;x[1];&#xA;x[2];&#xA;x[3];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="2543b9f0-91a3-4722-b5d0-3d8b5cad1dc4" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1718.23997510016" y="1938.1118206743" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Angle to True North" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="836085b9-1bff-4c91-99f5-113568a9b27a" start_index="0" end="ccc58ff1-160d-454c-aaa3-c128044018c9" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="321151a1-d980-4eef-9901-fb2ea11ad349" start_index="0" end="16a8106f-e085-4e03-8504-81406d562332" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="22187aed-8758-4fe3-ada1-270c7bc65923" start_index="0" end="16a8106f-e085-4e03-8504-81406d562332" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="16a8106f-e085-4e03-8504-81406d562332" start_index="0" end="3cbd0773-a9b5-461b-8b3c-69725cc684b2" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ccc58ff1-160d-454c-aaa3-c128044018c9" start_index="0" end="b17ef127-fc08-4c75-b752-2efcc970d8e8" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b17ef127-fc08-4c75-b752-2efcc970d8e8" start_index="0" end="f0c3dc29-ba1f-4fe2-812d-5ad48a636bde" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b17ef127-fc08-4c75-b752-2efcc970d8e8" start_index="0" end="4ffb15c6-0c5b-435f-89c9-0e5b6330a803" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ce9a2c7d-22ae-4ca0-9b00-20e83bb51479" start_index="0" end="16a8106f-e085-4e03-8504-81406d562332" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c43c72d4-1496-490f-afe0-15353229fab0" start_index="0" end="3cbd0773-a9b5-461b-8b3c-69725cc684b2" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3cbd0773-a9b5-461b-8b3c-69725cc684b2" start_index="0" end="174f6a3f-7ad5-424b-bbd0-3edd3da32ee5" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0bb841eb-4e30-4fc8-9ad5-da5673d56947" start_index="0" end="b17ef127-fc08-4c75-b752-2efcc970d8e8" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0bb841eb-4e30-4fc8-9ad5-da5673d56947" start_index="0" end="f0c3dc29-ba1f-4fe2-812d-5ad48a636bde" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="76216251-5c82-4e82-a389-63dfb3b089d1" start_index="0" end="174f6a3f-7ad5-424b-bbd0-3edd3da32ee5" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="174f6a3f-7ad5-424b-bbd0-3edd3da32ee5" start_index="0" end="b17ef127-fc08-4c75-b752-2efcc970d8e8" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f0c3dc29-ba1f-4fe2-812d-5ad48a636bde" start_index="0" end="b02ad2e6-a608-4ae5-b3ea-76cd26fdbf02" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ffb15c6-0c5b-435f-89c9-0e5b6330a803" start_index="0" end="aefaaed2-a5b5-4372-9aac-e57fa53f16dd" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b02ad2e6-a608-4ae5-b3ea-76cd26fdbf02" start_index="0" end="958c5d3d-eb66-4dee-9bf0-112b9e1f810a" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b02ad2e6-a608-4ae5-b3ea-76cd26fdbf02" start_index="1" end="e54ca147-5740-49c4-b0f9-8d9cd5d4a696" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b02ad2e6-a608-4ae5-b3ea-76cd26fdbf02" start_index="2" end="8e4bb8b0-f310-44dc-b329-d40391c53a36" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b02ad2e6-a608-4ae5-b3ea-76cd26fdbf02" start_index="3" end="2543b9f0-91a3-4722-b5d0-3d8b5cad1dc4" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-52551.80078125" eyeY="56920.4375" eyeZ="253741.453125" lookX="52502.33984375" lookY="-56877.53125" lookZ="-253761.296875" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

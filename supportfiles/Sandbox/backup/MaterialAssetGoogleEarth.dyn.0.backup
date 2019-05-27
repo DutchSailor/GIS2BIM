@@ -1,0 +1,122 @@
+<Workspace Version="1.3.1.1736" X="-14.1206858219329" Y="80.7667049470166" zoom="1.05429821501133" ScaleFactor="1" Name="Home" Description="" RunType="Automatic" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="26cb3284-828a-4c04-87ea-e99b9f0ad66f" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Temp Filepath Image" x="-1134.85279913761" y="1197.2167171057" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;C:/TEMP/map24.jpg&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="324246cc-eefc-4224-8cdf-c380f43e1c19" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Temp Filepath Image" x="80.2294157702697" y="64.8043791488099" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;C:/TEMP/map24.jpg&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="5a2246ff-91ae-46e1-9b9e-1ef9f2ee0b59" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Material.ByName" x="334.786585258963" y="201.103514466279" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="RevitNodes.dll" function="Revit.Elements.Material.ByName@string">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="08a555aa-6711-41d2-a404-67ff2dfbdf57" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="32.24533243234" y="228.782741111036" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;a_terrein_luchtfoto&quot;;" ShouldFocus="false" />
+    <PythonNodeModels.PythonNode guid="ce9fdf94-a5a6-49a1-be13-8583580b7c8f" type="PythonNodeModels.PythonNode" nickname="Python Script" x="725.05625836824" y="177.383420374167" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+
+#Assign your output to the OUT variable.
+OUT = 0</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="366cf16d-3331-465e-993e-442ceee70d38" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="Material.SetMaterialAssetByMaterial" x="653.525349621715" y="-75.3838322948989" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <ID value="fc21f065-cc91-48c9-a5fb-02d2f0af721e" />
+      <Name value="Material.SetMaterialAssetByMaterial" />
+      <Description value="This node will copy a material asset element from source Material to a list of target materials. It esentially makes all materials inherit its Rendering Appearance. Useful for &quot;clay&quot; renderings. " />
+      <Inputs>
+        <Input value="TargetMaterial" />
+        <Input value="SourceMaterial" />
+      </Inputs>
+      <Outputs>
+        <Output value="Material" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <PythonNodeModels.PythonNode guid="8ea6a92f-0d24-4599-a58e-925e7310bc57" type="PythonNodeModels.PythonNode" nickname="Python Script" x="650.13179136481" y="309.498866395197" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <Script># Copyright(c) 2015, Konrad K Sobon
+# @arch_laboratory, http://archi-lab.net
+
+# Import Element wrapper extension methods
+import clr
+clr.AddReference("RevitNodes")
+import Revit
+clr.ImportExtensions(Revit.Elements)
+
+# Import RevitAPI
+clr.AddReference("RevitAPI")
+import Autodesk
+from Autodesk.Revit.DB import *
+
+# Import DocumentManager and TransactionManager
+clr.AddReference("RevitServices")
+import RevitServices
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+doc = DocumentManager.Instance.CurrentDBDocument
+
+import sys
+pyt_path = r'C:\Program Files (x86)\IronPython 2.7\Lib'
+sys.path.append(pyt_path)
+
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+
+def ProcessList(_func, _list):
+	return map(lambda x: ProcessList(_func, x) if type(x)==list else _func(x), _list)
+
+def ProcessListArg(_func, _list, _arg):
+    return map( lambda x: ProcessListArg(_func, x, _arg) if type(x)==list else _func(x, _arg), _list )
+
+def SetMaterialAsset(mat, assetId):
+	mat.AppearanceAssetId = assetId
+	return mat
+		
+def TryGetAsset(mat):
+	doc = DocumentManager.Instance.CurrentDBDocument
+	appearanceId = mat.AppearanceAssetId
+	if appearanceId != ElementId.InvalidElementId:
+		return appearanceId
+	else:
+		return None
+
+def Unwrap(item):
+	return UnwrapElement(item)
+
+if isinstance(IN[0], list):
+	elements = ProcessList(Unwrap, IN[0])
+else:
+	elements = [Unwrap(IN[0])]
+
+try:
+	errorReport = None
+	sourceMat = UnwrapElement(IN[1])
+	asset = TryGetAsset(sourceMat)
+	
+	TransactionManager.Instance.EnsureInTransaction(doc)
+	output = ProcessListArg(SetMaterialAsset, elements, asset)
+	TransactionManager.Instance.TransactionTaskDone()
+	
+except:
+	# if error accurs anywhere in the process catch it
+	import traceback
+	errorReport = traceback.format_exc()
+
+#Assign your output to the OUT variable
+if errorReport == None:
+	OUT = output
+else:
+	OUT = errorReport</Script>
+    </PythonNodeModels.PythonNode>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="08a555aa-6711-41d2-a404-67ff2dfbdf57" start_index="0" end="5a2246ff-91ae-46e1-9b9e-1ef9f2ee0b59" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

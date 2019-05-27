@@ -1,0 +1,84 @@
+<Workspace Version="1.3.1.1736" X="-129.641003621411" Y="188.156105202811" zoom="0.712594832628489" ScaleFactor="1" Name="GIS2BIM.TMSWebServices" Description="Library With TMS Webservices" ID="7c2877c1-420f-4ba3-9ed7-292820524228" Category="GIS2BIM.WMTS/TMS">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="561d16fe-e5f2-479e-b2ae-1e24c4f94a3c" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="481.357043074571" y="83.4825149954604" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="TileX" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="9c23517a-d8b9-47ff-8862-a9b9dd7cbc0c" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="481.357043074571" y="172.124590089033" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="TileY" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="bfa8ae37-c64e-4bca-90eb-15690ded6660" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="481.357043074571" y="262.624264912484" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Zoomlevel: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <CoreNodeModels.FromObject guid="88c2aeea-e466-4b04-89cd-e3f1a06e502a" type="CoreNodeModels.FromObject" nickname="String from Object" x="764.604156175821" y="331.195207315962" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.FromObject>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="7babdebd-4f20-4054-9328-c92eae36240f" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="760.518444518201" y="407.825243044031" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;,&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="a466fe7e-4082-4bd1-9f27-9cbb8d851134" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="List.FirstItem" x="1187.53557550272" y="342.818846228375" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.List.FirstItem@var[]..[]">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction guid="4d9811b9-d492-4f6a-8c34-369ec543ca1c" type="Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction" nickname="String.Split" x="934.109651018772" y="427.694072003455" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.Split@string,string[]" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction>
+    <PythonNodeModels.PythonNode guid="eae105cb-84de-42f1-a454-b03d5272e829" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1560.56237061098" y="-103.775959460054" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="7">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="False" />
+      <PortInfo index="5" default="False" />
+      <PortInfo index="6" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+
+str1=IN[0]
+str2=IN[1]
+lst3=IN[2]
+str4=IN[3]
+lst5=IN[4]
+str6=IN[5]
+zooml=IN[6]
+
+n=len(lst3)
+
+lst1=[str1]*n
+lst2=[str2]*n
+lst4=[str4]*n
+lst6=[str6]*n
+lst7=[zooml]*n
+
+lstout=[a+b+c+d+e+f+g for a,b,c,d,e,f,g in zip(lst1,lst2,lst3,lst4,lst5,lst6,lst7)]
+
+OUT = lstout</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="3896abb7-6ad2-4fdc-bb7f-b4baad63856d" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="914.583029461865" y="-98.480915559146" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;https://mt1.google.com/vt/lyrs=s&quot;;&#xA;&quot;&amp;x=&quot;;&#xA;&quot;&amp;y=&quot;;&#xA;&quot;&amp;z=&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="15d1209d-80fe-401e-b385-00c9c3650627" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1890.61292888128" y="-79.9277550087219" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="GoogleEarthURLs" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="561d16fe-e5f2-479e-b2ae-1e24c4f94a3c" start_index="0" end="eae105cb-84de-42f1-a454-b03d5272e829" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="9c23517a-d8b9-47ff-8862-a9b9dd7cbc0c" start_index="0" end="eae105cb-84de-42f1-a454-b03d5272e829" end_index="4" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="bfa8ae37-c64e-4bca-90eb-15690ded6660" start_index="0" end="88c2aeea-e466-4b04-89cd-e3f1a06e502a" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="88c2aeea-e466-4b04-89cd-e3f1a06e502a" start_index="0" end="4d9811b9-d492-4f6a-8c34-369ec543ca1c" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7babdebd-4f20-4054-9328-c92eae36240f" start_index="0" end="4d9811b9-d492-4f6a-8c34-369ec543ca1c" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a466fe7e-4082-4bd1-9f27-9cbb8d851134" start_index="0" end="eae105cb-84de-42f1-a454-b03d5272e829" end_index="6" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4d9811b9-d492-4f6a-8c34-369ec543ca1c" start_index="0" end="a466fe7e-4082-4bd1-9f27-9cbb8d851134" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="eae105cb-84de-42f1-a454-b03d5272e829" start_index="0" end="15d1209d-80fe-401e-b385-00c9c3650627" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3896abb7-6ad2-4fdc-bb7f-b4baad63856d" start_index="0" end="eae105cb-84de-42f1-a454-b03d5272e829" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3896abb7-6ad2-4fdc-bb7f-b4baad63856d" start_index="1" end="eae105cb-84de-42f1-a454-b03d5272e829" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3896abb7-6ad2-4fdc-bb7f-b4baad63856d" start_index="2" end="eae105cb-84de-42f1-a454-b03d5272e829" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3896abb7-6ad2-4fdc-bb7f-b4baad63856d" start_index="3" end="eae105cb-84de-42f1-a454-b03d5272e829" end_index="5" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

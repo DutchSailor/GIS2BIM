@@ -1,0 +1,53 @@
+<Workspace Version="1.3.1.1736" X="0" Y="0" zoom="1" ScaleFactor="1" Name="GIS2BIM.SystemDrawingBitmapToJPG" Description="Save an System.Drawing.Bitmap object as a jpg-file" ID="3206c909-fabc-47f8-822c-68173ef2c15b" Category="GIS2BIM.Image">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="System.Drawing.Bitmap" resolvedName="System.Drawing.Bitmap" assemblyName="" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="e37e2361-4d2f-4aee-a5ee-0912096c6be3" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="204.4" y="233.6" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="SystemDrawingBitmap" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="7873d046-9f22-4223-8067-b25b38aae828" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="208.4" y="355.2" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="FileName" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <PythonNodeModels.PythonNode guid="554a1e6a-9b18-461d-8128-ba58d183f91f" type="PythonNodeModels.PythonNode" nickname="Python Script" x="578.8" y="274" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <Script>import sys
+
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+from math import *
+import itertools
+from itertools import islice
+
+import clr
+
+clr.AddReference("System.Drawing")
+from System.Drawing import Image
+from System.Drawing import Bitmap
+from System.Drawing import Graphics
+from System.Drawing.Imaging import ImageFormat
+from System.IO import Path
+from os import listdir
+
+bmp = IN[0]
+filoc=IN[1]
+
+bmp.Save(filoc, ImageFormat.Jpeg)
+
+OUT = filoc
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="6cdcce82-c89a-430a-876d-30cda75208b3" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="886.4" y="272.8" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="FileName" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="e37e2361-4d2f-4aee-a5ee-0912096c6be3" start_index="0" end="554a1e6a-9b18-461d-8128-ba58d183f91f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7873d046-9f22-4223-8067-b25b38aae828" start_index="0" end="554a1e6a-9b18-461d-8128-ba58d183f91f" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="554a1e6a-9b18-461d-8128-ba58d183f91f" start_index="0" end="6cdcce82-c89a-430a-876d-30cda75208b3" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>
