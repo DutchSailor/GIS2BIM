@@ -4,7 +4,7 @@ GIS2BIM is a collection of custom nodes for the Dynamo visual programming enviro
 
 To get an impression of GIS2BIM have a look at the workflows in the wiki: https://github.com/DutchSailor/GIS2BIM/wiki/Workflows
 
-!Image(GIS2BIMOpeningImage.png)
+![Image](GIS2BIMOpeningImage.png)
 
 ## Version
 Version 0.9.1 released on 20-07-2019. 
