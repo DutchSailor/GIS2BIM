@@ -5,7 +5,7 @@ GIS2BIM is a collection of custom nodes for the Dynamo visual programming enviro
 To get an impression of GIS2BIM have a look at the workflows in the wiki: https://github.com/DutchSailor/GIS2BIM/wiki/Workflows
 
 ## Version
-Version 0.9.0 released on 18-06-2019. 
+Version 0.9.1 released on 20-07-2019. 
 
 ## Installation
 Installation is possible via the dynamo built-in package manager.
