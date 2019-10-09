@@ -7,13 +7,15 @@ To get an impression of GIS2BIM have a look at the workflows in the wiki: https:
 ![Image](GIS2BIMOpeningImage.png)
 
 ## Version
-Version 0.10.0 released on 10-09-2019. 
+Version 0.10.0 released on 10-09-2019. This is the last version for Dynamo 1.x.(Revit 2019 and Dynamo 1.3.3.)
+Version 0.11.1 released on 09-10-2019. This is the version for Dynamo 2.x. This dynamopackage is called 'GIS2BIM for Dynamo 2.x'
+(Revit 2020 and Dynamo 2.x)
 
 ## Installation
 Installation is possible via the dynamo built-in package manager.
 
 ## Dynamo, Revit-version
-The current nodes are tested with Revit 2019 and Dynamo 1.3.3.
+The current nodes are tested with 
 It had not been tested with older or newer versions of Revit and Dynamo.
 
 ## Material on this repository
