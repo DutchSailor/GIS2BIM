@@ -1,0 +1,77 @@
+<Workspace Version="1.3.1.1736" X="-52.7935368179254" Y="40.8929550513972" zoom="0.747692817123325" ScaleFactor="1" Name="GIS2BIM_TMSTileNumberFromCoordinate" Description="Calculate TMS(Tile Map Service) Number from a lat/lon coördinate" ID="5e1a07c7-5c7e-40f4-8d7a-a90aa9c534f9" Category="GIS2BIM.WMTS/TMS">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="6122e242-3d49-467f-af75-c9d674704051" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="268.942479399783" y="155.6" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Latitude:double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="e310cada-e04c-4221-be73-cc19d9a4a2e7" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="270.547416577884" y="258.043204010279" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Longitude:double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="3a98983a-3149-4ef4-a549-50364f04b8ce" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="267.337542221682" y="356.740625139915" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Zoomlevel:double=19" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <CoreNodeModels.FromObject guid="e0ee84a6-a76e-45b0-aedd-8715a968ea5c" type="CoreNodeModels.FromObject" nickname="String from Object" x="1049.07980424296" y="101.453310639227" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.FromObject>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="d32826ac-776e-478a-aad8-4c359e820cd3" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="List.FirstItem" x="830.419176445928" y="100.40965328328" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.List.FirstItem@var[]..[]">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <CoreNodeModels.FromObject guid="07a75578-0e77-4393-8dc9-1daad7122fc7" type="CoreNodeModels.FromObject" nickname="String from Object" x="1046.41353354927" y="194.855180979136" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.FromObject>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="eeaffe76-b1c4-4efd-b392-4eefa1a8e49c" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="List.LastItem" x="830.419176445928" y="194.801651266056" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.List.LastItem@var[]..[]">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <PythonNodeModels.PythonNode guid="292fe22c-56cf-4bca-a31f-ffad88b95a49" type="PythonNodeModels.PythonNode" nickname="Python Script" x="617.944574578139" y="133.13604891538" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script>import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+import math
+
+lat_deg = IN[0]
+lon_deg = IN[1]
+zoom = IN[2]
+
+lat_rad = math.radians(lat_deg)
+n = 2.0 ** zoom
+xtile = int((lon_deg + 180.0) / 360.0 * n)
+ytile = int((1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n)
+
+OUT = xtile, ytile</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="14433400-1e19-4db1-968b-86ba22a12991" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1311.49540650066" y="97.8598340482706" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="strXTile: string" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="e1842652-76b3-48e9-a0c9-635dc4053653" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1311.49540650066" y="214.864374945551" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="strYTile: string" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="3476b054-7312-4987-be21-0fbf5816fd70" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1311.49540650066" y="310.466274350882" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="dblXTile: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="dbac69f0-f1c9-40f8-b0d6-7c14b4bef6b0" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1311.49540650066" y="433.425387278907" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="dblYTile: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="6122e242-3d49-467f-af75-c9d674704051" start_index="0" end="292fe22c-56cf-4bca-a31f-ffad88b95a49" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e310cada-e04c-4221-be73-cc19d9a4a2e7" start_index="0" end="292fe22c-56cf-4bca-a31f-ffad88b95a49" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3a98983a-3149-4ef4-a549-50364f04b8ce" start_index="0" end="292fe22c-56cf-4bca-a31f-ffad88b95a49" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e0ee84a6-a76e-45b0-aedd-8715a968ea5c" start_index="0" end="14433400-1e19-4db1-968b-86ba22a12991" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d32826ac-776e-478a-aad8-4c359e820cd3" start_index="0" end="e0ee84a6-a76e-45b0-aedd-8715a968ea5c" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d32826ac-776e-478a-aad8-4c359e820cd3" start_index="0" end="3476b054-7312-4987-be21-0fbf5816fd70" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="07a75578-0e77-4393-8dc9-1daad7122fc7" start_index="0" end="e1842652-76b3-48e9-a0c9-635dc4053653" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="eeaffe76-b1c4-4efd-b392-4eefa1a8e49c" start_index="0" end="07a75578-0e77-4393-8dc9-1daad7122fc7" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="eeaffe76-b1c4-4efd-b392-4eefa1a8e49c" start_index="0" end="dbac69f0-f1c9-40f8-b0d6-7c14b4bef6b0" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="292fe22c-56cf-4bca-a31f-ffad88b95a49" start_index="0" end="d32826ac-776e-478a-aad8-4c359e820cd3" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="292fe22c-56cf-4bca-a31f-ffad88b95a49" start_index="0" end="eeaffe76-b1c4-4efd-b392-4eefa1a8e49c" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>

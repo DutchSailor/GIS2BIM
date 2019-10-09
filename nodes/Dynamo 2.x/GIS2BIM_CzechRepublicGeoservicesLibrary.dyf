@@ -1,0 +1,51 @@
+<Workspace Version="1.3.1.1736" X="-1.49284768722532" Y="64.2728260725105" zoom="0.558504695848862" ScaleFactor="1" Name="GIS2BIM_CzechRepublicGeoservicesLibrary" Description="Geoservices in the Czech Republic" ID="29385947-d3d1-4f83-8a3f-0ad503ef1f9a" Category="GIS2BIM.Geoservices.Europe">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="05414af3-a2e2-4968-9982-0464c5e0e110" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-140.700179470202" y="361.081490000313" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Boundingboxstring: string" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction guid="29f7c780-9a4d-4b09-ac31-2eb7057c4377" type="Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction" nickname="String.Concat" x="1109.20609064071" y="87.356858788525" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.Concat@string[]" inputcount="5">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="d78dc498-85ba-41c2-b079-673daec5510a" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="210.279531316707" y="99.8427751310251" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;http://services.cuzk.cz/wfs/inspire-cp-wfs.asp?service=wfs&amp;version=2.0.0&quot;;&#xA;&quot;&amp;REQUEST=GetFeature&quot;;&#xA;&quot;&amp;typeName=cp:CadastralParcel&quot;;&#xA;&quot;&amp;bbox=&quot;;&#xA;&#xA;&quot;&amp;typeName=cp:CadastralBoundary&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="5c24237d-639a-4448-a608-c121db7397b9" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1449.59712680943" y="90.0085192051318" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Cadastral Parcel(OGC WFS)" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="f62e5a7a-8229-43e9-9451-6203ede4ac4c" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1451.19334628305" y="328.414774862545" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Cadastral Boundary(OGC WFS)" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction guid="087cefe6-d86c-415f-a759-cdfbae88e39d" type="Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction" nickname="String.Concat" x="1129.18036054484" y="322.169391780816" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.Concat@string[]" inputcount="5">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="05414af3-a2e2-4968-9982-0464c5e0e110" start_index="0" end="29f7c780-9a4d-4b09-ac31-2eb7057c4377" end_index="4" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="05414af3-a2e2-4968-9982-0464c5e0e110" start_index="0" end="087cefe6-d86c-415f-a759-cdfbae88e39d" end_index="4" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="29f7c780-9a4d-4b09-ac31-2eb7057c4377" start_index="0" end="5c24237d-639a-4448-a608-c121db7397b9" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d78dc498-85ba-41c2-b079-673daec5510a" start_index="0" end="29f7c780-9a4d-4b09-ac31-2eb7057c4377" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d78dc498-85ba-41c2-b079-673daec5510a" start_index="0" end="087cefe6-d86c-415f-a759-cdfbae88e39d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d78dc498-85ba-41c2-b079-673daec5510a" start_index="1" end="29f7c780-9a4d-4b09-ac31-2eb7057c4377" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d78dc498-85ba-41c2-b079-673daec5510a" start_index="1" end="087cefe6-d86c-415f-a759-cdfbae88e39d" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d78dc498-85ba-41c2-b079-673daec5510a" start_index="2" end="29f7c780-9a4d-4b09-ac31-2eb7057c4377" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d78dc498-85ba-41c2-b079-673daec5510a" start_index="3" end="29f7c780-9a4d-4b09-ac31-2eb7057c4377" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d78dc498-85ba-41c2-b079-673daec5510a" start_index="3" end="087cefe6-d86c-415f-a759-cdfbae88e39d" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d78dc498-85ba-41c2-b079-673daec5510a" start_index="4" end="087cefe6-d86c-415f-a759-cdfbae88e39d" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="087cefe6-d86c-415f-a759-cdfbae88e39d" start_index="0" end="f62e5a7a-8229-43e9-9451-6203ede4ac4c" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="1231254.29755374" eyeY="11023444.9411006" eyeZ="7510106.87339467" lookX="-1231259.29755374" lookY="-11023433.9411006" lookZ="-7510114.87339467" upX="-0.110338412225246" upY="0.73135370016098" upZ="-0.673013508319855" />
+  </Cameras>
+</Workspace>

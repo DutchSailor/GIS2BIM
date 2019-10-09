@@ -1,0 +1,183 @@
+<Workspace Version="1.3.1.1736" X="0" Y="0" zoom="1" ScaleFactor="1" Name="GIS2BIM_DistanceBetweenCoordinatesWGS84" Description="Calculate the distance between 2 lat/lon coördinates in meters" ID="38535868-cc16-4d73-8e6b-07eb4082c07b" Category="GIS2BIM.Coordinates">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="db96df69-b4e5-4880-97a5-cf486d7cb979" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="307.6" y="262" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Latitude1: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="1905593a-a8dd-4c69-9c16-459dd6b125d4" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="801.16357009044" y="394.1678539725" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="3;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="c0510095-c0c0-4b57-a401-815aeea05b60" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Math.Round" x="944.76210675866" y="335.6" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="DSCoreNodes.dll" function="DSCore.Math.Round@double,int">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <PythonNodeModels.PythonNode guid="f84f6dca-e28f-4cc6-8576-60ea54f72a89" type="PythonNodeModels.PythonNode" nickname="Python Script" x="648.8" y="335.25852189491" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="4">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+import math
+
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+lat1 = IN[0]
+lon1 = IN[1]
+lat2 = IN[2]
+lon2 = IN[3]
+
+class GeoLocation:
+    '''
+
+#    Class representing a coordinate on a sphere, most likely Earth.
+#    This class is based from the code smaple in this paper:
+#        http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
+#    The owner of that website, Jan Philip Matuschek, is the full owner of
+#    his intellectual property. This class is simply a Python port of his very
+#    useful Java code. All code written by Jan Philip Matuschek and ported by me
+#    (which is all of this class) is owned by Jan Philip Matuschek.
+#    '''
+
+    MIN_LAT = math.radians(-90)
+    MAX_LAT = math.radians(90)
+    MIN_LON = math.radians(-180)
+    MAX_LON = math.radians(180)
+    EARTH_RADIUS = 6378.1  # kilometers
+
+    @classmethod
+    def from_degrees(cls, deg_lat, deg_lon):
+        rad_lat = math.radians(deg_lat)
+        rad_lon = math.radians(deg_lon)
+        return GeoLocation(rad_lat, rad_lon, deg_lat, deg_lon)
+
+    @classmethod
+    def from_radians(cls, rad_lat, rad_lon):
+        deg_lat = math.degrees(rad_lat)
+        deg_lon = math.degrees(rad_lon)
+        return GeoLocation(rad_lat, rad_lon, deg_lat, deg_lon)
+
+    def __init__(
+            self,
+            rad_lat,
+            rad_lon,
+            deg_lat,
+            deg_lon
+    ):
+        self.rad_lat = float(rad_lat)
+        self.rad_lon = float(rad_lon)
+        self.deg_lat = float(deg_lat)
+        self.deg_lon = float(deg_lon)
+        self._check_bounds()
+
+    def __str__(self):
+        degree_sign = u'\N{DEGREE SIGN}'
+        return ("({0:.10f}deg, {1:.15f}deg) = ({2:.15f}rad, {3:.15f}rad)").format(
+            self.deg_lat, self.deg_lon, self.rad_lat, self.rad_lon)
+
+    def _check_bounds(self):
+
+        if (self.rad_lat &lt; GeoLocation.MIN_LAT
+            or self.rad_lat &gt; GeoLocation.MAX_LAT
+            or self.rad_lon &lt; GeoLocation.MIN_LON
+            or self.rad_lon &gt; GeoLocation.MAX_LON):
+            raise Exception("Illegal arguments")
+
+    def distance_to(self, other, radius=EARTH_RADIUS):
+
+        '''
+
+        Computes the great circle distance between this GeoLocation instance
+        and the other.
+        '''
+
+        return radius * math.acos(
+            math.sin(self.rad_lat) * math.sin(other.rad_lat) +
+            math.cos(self.rad_lat) *
+            math.cos(other.rad_lat) *
+            math.cos(self.rad_lon - other.rad_lon)
+        )
+
+    def bounding_locations(self, distance, radius=EARTH_RADIUS):
+
+        '''
+        Computes the bounding coordinates of all points on the surface
+        of a sphere that has a great circle distance to the point represented
+        by this GeoLocation instance that is less or equal to the distance argument.
+
+        Param:
+            distance - the distance from the point represented by this GeoLocation
+                       instance. Must be measured in the same unit as the radius
+                       argument (which is kilometers by default)
+            radius   - the radius of the sphere. defaults to Earth's radius.
+        Returns a list of two GeoLoations - the SW corner and the NE corner - that
+        represents the bounding box.
+        '''
+
+        if radius &lt; 0 or distance &lt; 0:
+            raise Exception("Illegal arguments")
+
+        # angular distance in radians on a great circle
+
+        rad_dist = distance / radius
+        min_lat = self.rad_lat - rad_dist
+        max_lat = self.rad_lat + rad_dist
+
+        if min_lat &gt; GeoLocation.MIN_LAT and max_lat &lt; GeoLocation.MAX_LAT:
+            delta_lon = math.asin(math.sin(rad_dist) / math.cos(self.rad_lat))
+            min_lon = self.rad_lon - delta_lon
+            if min_lon &lt; GeoLocation.MIN_LON:
+                min_lon += 2 * math.pi
+            max_lon = self.rad_lon + delta_lon
+
+            if max_lon &gt; GeoLocation.MAX_LON:
+                max_lon -= 2 * math.pi
+
+        # a pole is within the distance
+        else:
+
+            min_lat = max(min_lat, GeoLocation.MIN_LAT)
+            max_lat = min(max_lat, GeoLocation.MAX_LAT)
+            min_lon = GeoLocation.MIN_LON
+            max_lon = GeoLocation.MAX_LON
+
+        return [GeoLocation.from_radians(min_lat, min_lon),
+                GeoLocation.from_radians(max_lat, max_lon)]
+
+loc1 = GeoLocation.from_degrees(lat1,lon1)
+loc2 = GeoLocation.from_degrees(lat2,lon2)
+
+dst = 1000*GeoLocation.distance_to(loc1,loc2,GeoLocation.EARTH_RADIUS)
+
+#Assign your output to the OUT variable.
+OUT = dst</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="22532e8e-97cd-4420-8b24-2678492b650a" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="307.6" y="344.133333333333" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Longitude1: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="802fa0d0-d7af-4be9-ac10-ad1174ad2709" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="307.6" y="426.266666666667" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Latitude2: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="8bdb710c-51c9-440b-b72d-69a9fadbc477" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="307.6" y="508.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Longitude2: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="adff53d5-754e-444a-a4df-ae06de84febf" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1310.52621289364" y="333.54777521393" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="DistanceMeters: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="db96df69-b4e5-4880-97a5-cf486d7cb979" start_index="0" end="f84f6dca-e28f-4cc6-8576-60ea54f72a89" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="1905593a-a8dd-4c69-9c16-459dd6b125d4" start_index="0" end="c0510095-c0c0-4b57-a401-815aeea05b60" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c0510095-c0c0-4b57-a401-815aeea05b60" start_index="0" end="adff53d5-754e-444a-a4df-ae06de84febf" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f84f6dca-e28f-4cc6-8576-60ea54f72a89" start_index="0" end="c0510095-c0c0-4b57-a401-815aeea05b60" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="22532e8e-97cd-4420-8b24-2678492b650a" start_index="0" end="f84f6dca-e28f-4cc6-8576-60ea54f72a89" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="802fa0d0-d7af-4be9-ac10-ad1174ad2709" start_index="0" end="f84f6dca-e28f-4cc6-8576-60ea54f72a89" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8bdb710c-51c9-440b-b72d-69a9fadbc477" start_index="0" end="f84f6dca-e28f-4cc6-8576-60ea54f72a89" end_index="3" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

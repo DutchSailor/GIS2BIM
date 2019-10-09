@@ -1,0 +1,110 @@
+<Workspace Version="1.3.4.6666" X="-169.415464140751" Y="-90.5728093038524" zoom="0.827702570441191" ScaleFactor="1" Name="GIS2BIM_SetRevitSiteLocation" Description="Sets the properties of the current Site Location of the active Revit Project" ID="e43be926-b495-4056-98e7-aa71bff79bec" Category="GIS2BIM.Revit">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="dc57ee8d-ce56-4f4e-a234-51cd6454c543" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="333.4" y="339.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="toggle: bool=true" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <PythonNodeModels.PythonNode guid="02ffcd0f-6455-43d5-95ed-bc95ca423c08" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1140.63061852391" y="339.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="4">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <Script>#©2017 Ekko Nap, ekko@groosman.com
+#licensed under MIT
+
+import clr
+clr.AddReference("RevitServices")
+import RevitServices
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+import math
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+projectLocation = doc.ActiveProjectLocation
+siteLocation = projectLocation.SiteLocation
+
+#SiteLocation = projectLocation.GetSiteLocation(); // 2018
+#from https://github.com/jeremytammik/the_building_coder_samples/blob/master/BuildingCoder/BuildingCoder/CmdUnrotateNorth.cs
+#untested
+
+bool = IN[0]
+latitude = IN[1]
+longitude = IN[2]
+name = IN[3]
+
+if bool==1:
+	TransactionManager.Instance.EnsureInTransaction(doc)
+
+	newLatitude=siteLocation.Latitude=latitude*math.pi/180
+	newLongitude=siteLocation.Longitude=longitude*math.pi/180
+	newName=siteLocation.PlaceName=name
+	
+	TransactionManager.Instance.TransactionTaskDone()
+
+OUT = newLatitude*180/math.pi, newLongitude*180/math.pi, newName
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="7b116496-47fd-489c-90de-ceee410d9dec" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="333.4" y="489.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//latitude, between -90 and 90&#xD;&#xA;lat: string" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="e5861992-8be5-4f1b-8c3f-220760556494" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1332.4" y="338.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="lat=out[0];&#xA;lon=out[1];&#xA;name=out[2];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="973e1187-ba81-4291-8050-9711819f43b1" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="333.4" y="639.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//longitude, between -180 and 180&#xD;&#xA;lon: string" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="f7786bd4-32dc-442b-900a-37070668451d" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="332.4" y="729.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//address or place name&#xD;&#xA;name: string = &quot;User Defined&quot;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="40f0dbef-6261-438f-b05f-0fe35957daac" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Location.ByLatitudeAndLongitude" x="1536.68148334292" y="236" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DynamoUnits.dll" function="DynamoUnits.Location.ByLatitudeAndLongitude@double,double,string">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="e9d8eb84-d499-47e0-9eaf-eff1161609f8" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1804.68148334292" y="237.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Location" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="2c647002-2997-4379-9434-94260c820bb2" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1799.68148334292" y="392.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="lat" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="14d6d5dc-5086-40e1-86e6-b79b0c43d9be" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1800.68148334292" y="470.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="lon" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="2a0acb1a-09da-49cb-bf99-bdf9905ae4c7" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1801.68148334292" y="538.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="name" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="0c52b735-daa2-4ef5-897b-adfcff833ee5" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="String.ToNumber" x="687.007525360841" y="624.853973589461" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.ToNumber@string">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="a21f3e8d-dfb5-4d49-812c-5b91d3ddcb25" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="String.ToNumber" x="675.798534711597" y="471.691623984458" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.ToNumber@string">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="dc57ee8d-ce56-4f4e-a234-51cd6454c543" start_index="0" end="02ffcd0f-6455-43d5-95ed-bc95ca423c08" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="02ffcd0f-6455-43d5-95ed-bc95ca423c08" start_index="0" end="e5861992-8be5-4f1b-8c3f-220760556494" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7b116496-47fd-489c-90de-ceee410d9dec" start_index="0" end="a21f3e8d-dfb5-4d49-812c-5b91d3ddcb25" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="0" end="40f0dbef-6261-438f-b05f-0fe35957daac" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="0" end="2c647002-2997-4379-9434-94260c820bb2" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="1" end="40f0dbef-6261-438f-b05f-0fe35957daac" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="1" end="14d6d5dc-5086-40e1-86e6-b79b0c43d9be" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="2" end="2a0acb1a-09da-49cb-bf99-bdf9905ae4c7" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="2" end="40f0dbef-6261-438f-b05f-0fe35957daac" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="973e1187-ba81-4291-8050-9711819f43b1" start_index="0" end="0c52b735-daa2-4ef5-897b-adfcff833ee5" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f7786bd4-32dc-442b-900a-37070668451d" start_index="0" end="02ffcd0f-6455-43d5-95ed-bc95ca423c08" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="40f0dbef-6261-438f-b05f-0fe35957daac" start_index="0" end="e9d8eb84-d499-47e0-9eaf-eff1161609f8" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0c52b735-daa2-4ef5-897b-adfcff833ee5" start_index="0" end="02ffcd0f-6455-43d5-95ed-bc95ca423c08" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a21f3e8d-dfb5-4d49-812c-5b91d3ddcb25" start_index="0" end="02ffcd0f-6455-43d5-95ed-bc95ca423c08" end_index="1" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="25272.021484375" eyeY="277168.125" eyeZ="279762.78125" lookX="-13735.302734375" lookY="-229918.640625" lookZ="-279774.75" upX="-0.0222614649683237" upY="0.891006529331207" upZ="-0.453444361686707" />
+  </Cameras>
+</Workspace>

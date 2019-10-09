@@ -1,0 +1,465 @@
+{
+  "Uuid": "f26895eb-6abb-4bca-964b-77cbc189a974",
+  "IsCustomNode": true,
+  "Category": "GIS2BIM.Pointcloud",
+  "Description": "download and unzip laszip ",
+  "Name": "GIS2BIM.DownloadLASZIP",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"/laszip.zip\";\n\"/laszip.exe\";",
+      "Id": "9d79ef0e4a524a4792da77792fff0609",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "3d05d86fb83c4ee49b687fcba7e4332a",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4b5233e2915744f99b260579a0706218",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"https://github.com/DutchSailor/GIS2BIM/raw/master/supportfiles/laszip.zip\";",
+      "Id": "be29543f24224021843b907bbae05726",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "df8056c9f2584899b3548f5ec676d9ea",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import sys\r\nsys.path.append(\"C:\\Program Files (x86)\\IronPython 2.7\\Lib\")\r\nfrom System.Net import WebClient\r\n\r\nurl= IN[0]\r\nfiloc= IN[1]\r\n\r\nWebClient().DownloadFile(url, filoc)\r\n\r\nOUT= filoc",
+      "VariableInputPorts": true,
+      "Id": "1315a98fc65341fbbc6db5c6197b1ce0",
+      "Inputs": [
+        {
+          "Id": "ec24dfb16bda40038f4bf96ae53e07ef",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b5666a01a41143c7abf5303f6694831c",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b9596d202f374f2f931e7ecc5ebc2098",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
+      "FunctionSignature": "DSCore.String.Concat@string[]",
+      "FunctionType": "VariableArgument",
+      "NodeType": "FunctionNode",
+      "Id": "2d6ba59cf9e94748929bb890565f1998",
+      "Inputs": [
+        {
+          "Id": "0895cbfb6b81478babb3ccbda3d96306",
+          "Name": "string0",
+          "Description": "List of strings to concatenate.\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3bc89168eb704fa79a577f059af7226d",
+          "Name": "string1",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "75870ffdf34648ec9e63f3cd48f56566",
+          "Name": "str",
+          "Description": "String made from list of strings.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Concatenates multiple strings into a single string.\n\nString.Concat (strings: string[]): string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
+      "FunctionSignature": "DSCore.String.Concat@string[]",
+      "FunctionType": "VariableArgument",
+      "NodeType": "FunctionNode",
+      "Id": "252ea455864f493aa192a65ad8e9852b",
+      "Inputs": [
+        {
+          "Id": "fab2b41ec89d41a3b89ea23468475366",
+          "Name": "string0",
+          "Description": "List of strings to concatenate.\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a95af705d1a74014a123a15f1009b8a9",
+          "Name": "string1",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7bfd046358ad41d1815d63f1c7517869",
+          "Name": "str",
+          "Description": "String made from list of strings.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Concatenates multiple strings into a single string.\n\nString.Concat (strings: string[]): string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Directory",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "e07c1194b95d427badb777c81362ff85",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "ad3da5a5dad94aaa86d1fce5d834e667",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Laszip",
+      "Id": "74dc0d4053094367b2b2655d9facdfc4",
+      "Inputs": [
+        {
+          "Id": "baa66c8b28b5480fa73571bc1ec58f20",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Pathzipfile",
+      "Id": "75dad0f54e2f4b24a274b1b17df38dc8",
+      "Inputs": [
+        {
+          "Id": "de7b430e3c2e47948982eef0887c95c9",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "d0610af9-3856-4d69-8d1d-dc42c595d5e4",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "7628a4152e6b4905a972b1ef74e3203f",
+      "Inputs": [
+        {
+          "Id": "d1586e1a1e214612bc3a770296112f1f",
+          "Name": "FilePathZipFile",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "be61db5dbf554ef2bc0b5101db071559",
+          "Name": "DirectoryToExtractTo",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7ede450181c149f6833c72797260d379",
+          "Name": "Directory",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Unzip zip-file"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "3d05d86fb83c4ee49b687fcba7e4332a",
+      "End": "3bc89168eb704fa79a577f059af7226d",
+      "Id": "00d081920fad42c6b8bdc69eb849fdfd"
+    },
+    {
+      "Start": "4b5233e2915744f99b260579a0706218",
+      "End": "a95af705d1a74014a123a15f1009b8a9",
+      "Id": "e233adb7e4f64c9d87370a4a186fcb73"
+    },
+    {
+      "Start": "df8056c9f2584899b3548f5ec676d9ea",
+      "End": "ec24dfb16bda40038f4bf96ae53e07ef",
+      "Id": "f7032487ae1441afa6f78a0e7ede12e8"
+    },
+    {
+      "Start": "b9596d202f374f2f931e7ecc5ebc2098",
+      "End": "d1586e1a1e214612bc3a770296112f1f",
+      "Id": "3e9090eae89a4e2aa6b27b63df82c0ef"
+    },
+    {
+      "Start": "75870ffdf34648ec9e63f3cd48f56566",
+      "End": "b5666a01a41143c7abf5303f6694831c",
+      "Id": "893b1af5d276451186030f3d35c3c4b4"
+    },
+    {
+      "Start": "75870ffdf34648ec9e63f3cd48f56566",
+      "End": "de7b430e3c2e47948982eef0887c95c9",
+      "Id": "b1ca4229602647aabe8d63084b7de5d7"
+    },
+    {
+      "Start": "7bfd046358ad41d1815d63f1c7517869",
+      "End": "baa66c8b28b5480fa73571bc1ec58f20",
+      "Id": "03673665ebf640c59068eb4fc85c208c"
+    },
+    {
+      "Start": "ad3da5a5dad94aaa86d1fce5d834e667",
+      "End": "fab2b41ec89d41a3b89ea23468475366",
+      "Id": "9c5f559efed74855820f22994de7d815"
+    },
+    {
+      "Start": "ad3da5a5dad94aaa86d1fce5d834e667",
+      "End": "0895cbfb6b81478babb3ccbda3d96306",
+      "Id": "029a0c90fab941d080f1486c580fe82c"
+    },
+    {
+      "Start": "ad3da5a5dad94aaa86d1fce5d834e667",
+      "End": "be61db5dbf554ef2bc0b5101db071559",
+      "Id": "5650749d41e7473aa01ae26966813060"
+    }
+  ],
+  "Dependencies": [
+    "d0610af9-3856-4d69-8d1d-dc42c595d5e4"
+  ],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.2.1.5175",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -173586.3372948663,
+      "EyeY": 149907.67147407745,
+      "EyeZ": 201874.67792459222,
+      "LookX": 173581.3372948663,
+      "LookY": -149896.67147407745,
+      "LookZ": -201882.67792459222,
+      "UpX": 0.1906139918075499,
+      "UpY": 0.95630475596303577,
+      "UpZ": -0.22169239916981917
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "9d79ef0e4a524a4792da77792fff0609",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 468.0,
+        "Y": 381.26438552957
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "be29543f24224021843b907bbae05726",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 470.912041861149,
+        "Y": 265.6
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "1315a98fc65341fbbc6db5c6197b1ce0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1175.35035420614,
+        "Y": 362.66217735004
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.Concat",
+        "Id": "2d6ba59cf9e94748929bb890565f1998",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 715.339642725655,
+        "Y": 322.961816279886
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.Concat",
+        "Id": "252ea455864f493aa192a65ad8e9852b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 690.97259236433,
+        "Y": 594.174741346514
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "e07c1194b95d427badb777c81362ff85",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -13.2615726142492,
+        "Y": 419.191714906201
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "74dc0d4053094367b2b2655d9facdfc4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1782.75113373318,
+        "Y": 630.186291853952
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "75dad0f54e2f4b24a274b1b17df38dc8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1767.73397249704,
+        "Y": 737.174060856073
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_UnzipFile",
+        "Id": "7628a4152e6b4905a972b1ef74e3203f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1418.899609934922,
+        "Y": 288.85729801021455
+      }
+    ],
+    "Annotations": [],
+    "X": -247.42167378979002,
+    "Y": -93.02634700926194,
+    "Zoom": 0.832737936913065
+  }
+}

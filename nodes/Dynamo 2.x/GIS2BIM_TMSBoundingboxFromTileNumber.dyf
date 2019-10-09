@@ -1,0 +1,69 @@
+<Workspace Version="1.3.1.1736" X="-345.236541102904" Y="-102.210844025231" zoom="0.910063803931438" ScaleFactor="1" Name="GIS2BIM_TMSBoundingboxFromTileNumber" Description="Calculate Lat/Lon boundaries from a TileNumber in TMS(Tile Map Service)" ID="6d25c29d-0ac3-4140-aba9-021b6a0fab94" Category="GIS2BIM.WMTS/TMS">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="612c9f40-4343-497b-aea0-d03245d0d859" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="264.221420009511" y="183.963900428012" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="TileX: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="3f0f9341-b771-44b9-90f1-a42b311e41e9" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="264.221420009511" y="283.963900428012" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="TileY: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="c0bbe906-6280-481e-881c-65d84712fbc3" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="265.957159980977" y="375.477740922605" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Zoomlevel: double" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <PythonNodeModels.PythonNode guid="064240c9-15db-4c39-807d-15836a66a596" type="PythonNodeModels.PythonNode" nickname="Python Script" x="674.4" y="196" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script>import sys
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+import math
+
+xtile = IN[0]
+ytile = IN[1]
+zoom = IN[2]
+
+n = 2.0 ** zoom
+W_deg = xtile / n * 360.0 - 180.0
+N_rad = math.atan(math.sinh(math.pi * (1 - 2 * ytile / n)))
+N_deg = math.degrees(N_rad)
+
+E_deg = (xtile+1) / n * 360.0 - 180.0
+S_rad = math.atan(math.sinh(math.pi * (1 - 2 * (ytile+1) / n)))
+S_deg = math.degrees(S_rad)
+
+OUT = N_deg,E_deg,S_deg,W_deg</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="ca1084ec-e4f6-4499-96e1-b6fe58fec524" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="860.6" y="192.8" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="a[0];&#xA;a[1];&#xA;a[2];&#xA;a[3];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="5a441959-f143-4d6b-ae60-1560adf57a1d" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1291.6" y="188.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="West" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="d8f68952-f101-4ba8-821f-ed301726e2f3" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1292.4" y="254.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="East" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="8de73e8e-181b-4f5b-b5e7-da6dcc37eef6" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1296.4" y="335.2" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="North" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="fa03b8b2-533d-44e5-a323-b2162201170f" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1299.2" y="399.6" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="South" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="612c9f40-4343-497b-aea0-d03245d0d859" start_index="0" end="064240c9-15db-4c39-807d-15836a66a596" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3f0f9341-b771-44b9-90f1-a42b311e41e9" start_index="0" end="064240c9-15db-4c39-807d-15836a66a596" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c0bbe906-6280-481e-881c-65d84712fbc3" start_index="0" end="064240c9-15db-4c39-807d-15836a66a596" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="064240c9-15db-4c39-807d-15836a66a596" start_index="0" end="ca1084ec-e4f6-4499-96e1-b6fe58fec524" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ca1084ec-e4f6-4499-96e1-b6fe58fec524" start_index="0" end="8de73e8e-181b-4f5b-b5e7-da6dcc37eef6" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ca1084ec-e4f6-4499-96e1-b6fe58fec524" start_index="1" end="d8f68952-f101-4ba8-821f-ed301726e2f3" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ca1084ec-e4f6-4499-96e1-b6fe58fec524" start_index="2" end="fa03b8b2-533d-44e5-a323-b2162201170f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ca1084ec-e4f6-4499-96e1-b6fe58fec524" start_index="3" end="5a441959-f143-4d6b-ae60-1560adf57a1d" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>

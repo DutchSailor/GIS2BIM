@@ -1,0 +1,1155 @@
+{
+  "Uuid": "5cd36168-71dc-428b-833a-5070f5835858",
+  "IsCustomNode": true,
+  "Category": "GIS2BIM.Geoservices.Europe",
+  "Description": "Webservices in Scotland",
+  "Name": "GIS2BIM_ScotlandGeoservicesLibrary",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "BoundingBoxEPSG27700",
+        "TypeName": "DSCore.String",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "5ea9d7c4efbd45d988f376599fec3c91",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "8688ba43021f4da9b0d116192e0d0f8f",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"https://cagmap.snh.gov.uk/arcgis/services/\";\n\"snh_habitats_and_species/MapServer/WMSServer?\";\n\"&request=GetMap\";\n\"&VERSION=1.3.0\";\n\"&STYLES=default\";\n\"&layers=1\";\n\"&bbox=\";\n\"&width=3000\";\n\"&height=3000\";\n\"&format=image/png\";\n\"&crs=EPSG:27700\";\n//Scottish Natural Heritage Habitats and Species",
+      "Id": "8a570117dc1d4145834fea3760b71114",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "9fc18e2ef9174afba3b7ffb02b42cc9a",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "59e0d6474ed64fd79ac02a1d5bac5c26",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "801fbdc5184e4415a631b7aa5fb20dca",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1d6472e4c110426eb56379479896d873",
+          "Name": "",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1c5191fd45444ceeaa63d39fcb2c4fdf",
+          "Name": "",
+          "Description": "Value of expression at line 5",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "36c23697e2a74dccb002006242138080",
+          "Name": "",
+          "Description": "Value of expression at line 6",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fcd45ef167234a1781312d8d44608896",
+          "Name": "",
+          "Description": "Value of expression at line 7",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ffca955dbae147a185d898123245442a",
+          "Name": "",
+          "Description": "Value of expression at line 8",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3386d1b8877b48f599aed12cc5d2dd41",
+          "Name": "",
+          "Description": "Value of expression at line 9",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "08337fa48d684ec1ae9fe03268779c63",
+          "Name": "",
+          "Description": "Value of expression at line 10",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "eacd1c79475141c1b88b9fd3054f4f7e",
+          "Name": "",
+          "Description": "Value of expression at line 11",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"http://ros.datafeed.locationcentre.co.uk/\";\n\"geoserver/wms?\";\n\"&request=GetMap\";\n\"&VERSION=1.3.0\";\n\"&STYLES=CP.CadastralParcel\";\n\"&layers=CP.CadastralParcel\";\n\"&bbox=\";\n\"&width=2000\";\n\"&height=2000\";\n\"&format=image/png\";\n\"&crs=EPSG:27700\";\n//ELF Cadastral Parcel",
+      "Id": "602c25ebf03741dfb868dc5c52390f30",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "f049219158b3440c87e65400f66296f1",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b780840b79d24fbcaec201c33399db63",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f82300436ae94eadac1185b5bfe1114d",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "81bf641687fd44f892475076fe467996",
+          "Name": "",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "491ed8d1db714a27b0cd5a258f647594",
+          "Name": "",
+          "Description": "Value of expression at line 5",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8484cf97e59c48299ee5ed860cc30391",
+          "Name": "",
+          "Description": "Value of expression at line 6",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3856d6b5b69b43d4b605b4aa5c8d9874",
+          "Name": "",
+          "Description": "Value of expression at line 7",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "db6e810b99254b2d9c1bae09be1c44b3",
+          "Name": "",
+          "Description": "Value of expression at line 8",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c3a606d5efee405ebd203215d971a500",
+          "Name": "",
+          "Description": "Value of expression at line 9",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8bd8232ae6d246cd8da3333c53f59697",
+          "Name": "",
+          "Description": "Value of expression at line 10",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "de21e3e7dd524f88a9a485d3786c8a55",
+          "Name": "",
+          "Description": "Value of expression at line 11",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
+      "FunctionSignature": "DSCore.String.Concat@string[]",
+      "FunctionType": "VariableArgument",
+      "NodeType": "FunctionNode",
+      "Id": "743d7e0197cc482098966c1de3e44bb4",
+      "Inputs": [
+        {
+          "Id": "9568b0cae14d4f5da4c4fb8e4cc18cba",
+          "Name": "string0",
+          "Description": "List of strings to concatenate.\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e94f5c139ba541ce9d9fb1e8421336d7",
+          "Name": "string1",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f1d2d8762b5c44fca1f3ec02058b0bd5",
+          "Name": "string2",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "31f6fe184e70483eada3986355b5751f",
+          "Name": "string3",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a214ca8438e0410ebdab8855541fd72f",
+          "Name": "string4",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ce94737e79eb476c9ec36f970668a631",
+          "Name": "string5",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3af2469732b74edbb2e7488285ebd9cb",
+          "Name": "string6",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "570e4074bf474c25b1003d9a1aef7bbf",
+          "Name": "string7",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "08d766f9b6ef4406b7805894a6a1ec58",
+          "Name": "string8",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "275ec38817ef4365a752c1dc3a399302",
+          "Name": "string9",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ed9f313f2baa4b0e88a446288caddce8",
+          "Name": "string10",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "001a2e4af17848edb4be6a9177c26b5c",
+          "Name": "string11",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f1c485eb900f42e28211ded56dabfcba",
+          "Name": "str",
+          "Description": "String made from list of strings.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Concatenates multiple strings into a single string.\n\nString.Concat (strings: string[]): string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
+      "FunctionSignature": "DSCore.String.Concat@string[]",
+      "FunctionType": "VariableArgument",
+      "NodeType": "FunctionNode",
+      "Id": "2a336498f322484a946e8f3f4bb89ee6",
+      "Inputs": [
+        {
+          "Id": "9f025b19c6f44126a129d92ba0d60aa5",
+          "Name": "string0",
+          "Description": "List of strings to concatenate.\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4b29f1787fd34d37b31c4857911439f4",
+          "Name": "string1",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8ed7df3118fc4a0bba46da161e3bb20b",
+          "Name": "string2",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a728066eaf1a4cc98dd2ec49764b74b3",
+          "Name": "string3",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3b94f2a6b6d8405b8d17e81167976750",
+          "Name": "string4",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fcc75a563db640ffa68d42c6319161b4",
+          "Name": "string5",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "21f38adf4e4c408991c829572ec1b52e",
+          "Name": "string6",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "dcf007048aa3422c9eeb819938faa3dc",
+          "Name": "string7",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5a813d127a09471ca3e5d3d3bcd2ddd2",
+          "Name": "string8",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "39358a37491e4e4c8790e0095a5537d2",
+          "Name": "string9",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "33fdb76a70fc40e2aa77777e764d84f5",
+          "Name": "string10",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e48c7d16603c40dca58322b563839126",
+          "Name": "string11",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "bb71c01aeb0f47c59ca50f9873425609",
+          "Name": "str",
+          "Description": "String made from list of strings.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Concatenates multiple strings into a single string.\n\nString.Concat (strings: string[]): string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
+      "FunctionSignature": "DSCore.String.Concat@string[]",
+      "FunctionType": "VariableArgument",
+      "NodeType": "FunctionNode",
+      "Id": "a6b6fdfbd6e54ad583db45639c03f970",
+      "Inputs": [
+        {
+          "Id": "8ceb70145867429da4325b97abbbada8",
+          "Name": "string0",
+          "Description": "List of strings to concatenate.\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c47609f3fe2c4d6280502779f42f0e6b",
+          "Name": "string1",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fdd5c5784bab4b478ad26f246bcf82aa",
+          "Name": "string2",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2eeef75ef0794fc781ec5a07b691095f",
+          "Name": "string3",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "60a01a8cf7b1434c800fe43809341d70",
+          "Name": "string4",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e4a08bdc7b884761be92c78f366ed1fe",
+          "Name": "string5",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "92e2238d7c574bc88bc91cd2bef4b68d",
+          "Name": "string6",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ea100beda301488f9f25c8ef12110664",
+          "Name": "string7",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7bc025436f894a7a98acbd5a44614679",
+          "Name": "string8",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c5e4d8d2e8d1449d9bb9ebc39af818e8",
+          "Name": "string9",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6792550f8dd447d3bd606550437b9eed",
+          "Name": "string10",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "65360c5c8d4a49fc9e2f766d028febf3",
+          "Name": "string11",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "af35266ecb76432296127d98113261d2",
+          "Name": "str",
+          "Description": "String made from list of strings.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Concatenates multiple strings into a single string.\n\nString.Concat (strings: string[]): string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"https://ons-inspire.esriuk.com/arcgis/services/Electoral_Boundaries/\";\n\"European_Electoral_Regions_December_2016_Boundaries/MapServer/WMSServer?&service=WMS\";\n\"&request=GetMap\";\n\"&VERSION=1.3.0\";\n\"&STYLES=default\";\n\"&layers=1\";\n\"&bbox=\";\n\"&width=2000\";\n\"&height=2000\";\n\"&format=image/png\";\n\"&crs=EPSG:27700\";\n//Boundaries electoral regions december 2016 European Elections",
+      "Id": "3de7071d0c2141028d727b1ffd7b0da2",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "8c45fb052f7e4ff3adde474847a99752",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "48a145f36fdb4bc8a2c2649953dba72f",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "501544804bfd4e588d4b32372aad4f8a",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1664794b3c2c4fe7b89d4354c33b8aa0",
+          "Name": "",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f4f612e4c02d4dad99a05b3bd27704ed",
+          "Name": "",
+          "Description": "Value of expression at line 5",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "435dfb4caa5d44f2aa5d647500670fbd",
+          "Name": "",
+          "Description": "Value of expression at line 6",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e650b96e4126496681517dc86c5d61e2",
+          "Name": "",
+          "Description": "Value of expression at line 7",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8edafe71d11e402a8cd395cffa4ddeee",
+          "Name": "",
+          "Description": "Value of expression at line 8",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "65d89c0e739e40389d9a6b9ee66fe735",
+          "Name": "",
+          "Description": "Value of expression at line 9",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a6ac4ffb740249128970f5a876378025",
+          "Name": "",
+          "Description": "Value of expression at line 10",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1bab27af6ca94827be4cceca4b29041b",
+          "Name": "",
+          "Description": "Value of expression at line 11",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Scottish Natural Heritage Habitats and Species(WMS)",
+      "Id": "cdfa0c862cea47cbabcf05d9ce2c3272",
+      "Inputs": [
+        {
+          "Id": "15480938d96c40f6a2c82a05e39f3e28",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "ELF Cadastral Parcel(WMS)",
+      "Id": "03f3ee48988046da917963bd6725bcf2",
+      "Inputs": [
+        {
+          "Id": "70716ed335ea4225a6e8e9730a5ff5d1",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Boundaries electoral regions december 2016 European Elections(WMS)",
+      "Id": "4735407bae4f4c7b9a45f8f1fe8a3dc9",
+      "Inputs": [
+        {
+          "Id": "d1dc0e2acf6e4de5b9594f165effdd58",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "8688ba43021f4da9b0d116192e0d0f8f",
+      "End": "570e4074bf474c25b1003d9a1aef7bbf",
+      "Id": "3ec8ee75fe0d4c9dbc49e98a573a5641"
+    },
+    {
+      "Start": "8688ba43021f4da9b0d116192e0d0f8f",
+      "End": "dcf007048aa3422c9eeb819938faa3dc",
+      "Id": "ecce80e764334d74801b76960f663fd0"
+    },
+    {
+      "Start": "8688ba43021f4da9b0d116192e0d0f8f",
+      "End": "ea100beda301488f9f25c8ef12110664",
+      "Id": "a99bde3e3c6242b7ae8eb7b8e5437223"
+    },
+    {
+      "Start": "9fc18e2ef9174afba3b7ffb02b42cc9a",
+      "End": "9568b0cae14d4f5da4c4fb8e4cc18cba",
+      "Id": "dab691d58ddf49eaab98000b3424a5d4"
+    },
+    {
+      "Start": "59e0d6474ed64fd79ac02a1d5bac5c26",
+      "End": "e94f5c139ba541ce9d9fb1e8421336d7",
+      "Id": "d827e4d20a6c4d64bada1f318621f430"
+    },
+    {
+      "Start": "801fbdc5184e4415a631b7aa5fb20dca",
+      "End": "f1d2d8762b5c44fca1f3ec02058b0bd5",
+      "Id": "7073772643e542a0988f106d55f93875"
+    },
+    {
+      "Start": "1d6472e4c110426eb56379479896d873",
+      "End": "31f6fe184e70483eada3986355b5751f",
+      "Id": "6af0239980014028902d46d9755dead8"
+    },
+    {
+      "Start": "1c5191fd45444ceeaa63d39fcb2c4fdf",
+      "End": "a214ca8438e0410ebdab8855541fd72f",
+      "Id": "37d5437444fd423b9acc438eb682b4e1"
+    },
+    {
+      "Start": "36c23697e2a74dccb002006242138080",
+      "End": "ce94737e79eb476c9ec36f970668a631",
+      "Id": "456e1ac9375c406a846d1f11618bb17b"
+    },
+    {
+      "Start": "fcd45ef167234a1781312d8d44608896",
+      "End": "3af2469732b74edbb2e7488285ebd9cb",
+      "Id": "d982e2b692cd42a2b76488d59c4f2e82"
+    },
+    {
+      "Start": "ffca955dbae147a185d898123245442a",
+      "End": "08d766f9b6ef4406b7805894a6a1ec58",
+      "Id": "19a3ead158374d00ad4cb0c7f2e98819"
+    },
+    {
+      "Start": "3386d1b8877b48f599aed12cc5d2dd41",
+      "End": "275ec38817ef4365a752c1dc3a399302",
+      "Id": "e9c5a4bca30e4c3ab456747fdb07d0de"
+    },
+    {
+      "Start": "08337fa48d684ec1ae9fe03268779c63",
+      "End": "ed9f313f2baa4b0e88a446288caddce8",
+      "Id": "5b914708fddc4b6188c9fd5012a4035b"
+    },
+    {
+      "Start": "eacd1c79475141c1b88b9fd3054f4f7e",
+      "End": "001a2e4af17848edb4be6a9177c26b5c",
+      "Id": "a99a562f930943a4b4999890c1f39775"
+    },
+    {
+      "Start": "f049219158b3440c87e65400f66296f1",
+      "End": "9f025b19c6f44126a129d92ba0d60aa5",
+      "Id": "9ec4dd8f656c43ad900edb7c21c1caf1"
+    },
+    {
+      "Start": "b780840b79d24fbcaec201c33399db63",
+      "End": "4b29f1787fd34d37b31c4857911439f4",
+      "Id": "0d979d75fb3f4c38aeec22e7525f256c"
+    },
+    {
+      "Start": "f82300436ae94eadac1185b5bfe1114d",
+      "End": "8ed7df3118fc4a0bba46da161e3bb20b",
+      "Id": "0ceb6b5472904571b6be84f4538857da"
+    },
+    {
+      "Start": "81bf641687fd44f892475076fe467996",
+      "End": "a728066eaf1a4cc98dd2ec49764b74b3",
+      "Id": "33c7a0eaf0614130a96eb1dd064a093b"
+    },
+    {
+      "Start": "491ed8d1db714a27b0cd5a258f647594",
+      "End": "3b94f2a6b6d8405b8d17e81167976750",
+      "Id": "f2bf84437d8a430589159647f3777d5f"
+    },
+    {
+      "Start": "8484cf97e59c48299ee5ed860cc30391",
+      "End": "fcc75a563db640ffa68d42c6319161b4",
+      "Id": "42ea561638314c03a2dfe891f4f21520"
+    },
+    {
+      "Start": "3856d6b5b69b43d4b605b4aa5c8d9874",
+      "End": "21f38adf4e4c408991c829572ec1b52e",
+      "Id": "9332283d8a6849ee9a60e489e7530e78"
+    },
+    {
+      "Start": "db6e810b99254b2d9c1bae09be1c44b3",
+      "End": "5a813d127a09471ca3e5d3d3bcd2ddd2",
+      "Id": "26785d0106a94abba379462e63cd42a6"
+    },
+    {
+      "Start": "c3a606d5efee405ebd203215d971a500",
+      "End": "39358a37491e4e4c8790e0095a5537d2",
+      "Id": "0ec9285845eb46d990bf09ff70a465b2"
+    },
+    {
+      "Start": "8bd8232ae6d246cd8da3333c53f59697",
+      "End": "33fdb76a70fc40e2aa77777e764d84f5",
+      "Id": "b9cc378fdad2439cb0a27a11b8aa0beb"
+    },
+    {
+      "Start": "de21e3e7dd524f88a9a485d3786c8a55",
+      "End": "e48c7d16603c40dca58322b563839126",
+      "Id": "f9a010261afa480ea8bc622f382a8c55"
+    },
+    {
+      "Start": "f1c485eb900f42e28211ded56dabfcba",
+      "End": "15480938d96c40f6a2c82a05e39f3e28",
+      "Id": "5a09ae313fa54f7d939cba363ca8c0b9"
+    },
+    {
+      "Start": "bb71c01aeb0f47c59ca50f9873425609",
+      "End": "70716ed335ea4225a6e8e9730a5ff5d1",
+      "Id": "908ac22f2e484047840b8b372b518761"
+    },
+    {
+      "Start": "af35266ecb76432296127d98113261d2",
+      "End": "d1dc0e2acf6e4de5b9594f165effdd58",
+      "Id": "a2ccb31d8db1487ba955a1a87db2f555"
+    },
+    {
+      "Start": "8c45fb052f7e4ff3adde474847a99752",
+      "End": "8ceb70145867429da4325b97abbbada8",
+      "Id": "b0598646eff9412bb3a9d9e886517922"
+    },
+    {
+      "Start": "48a145f36fdb4bc8a2c2649953dba72f",
+      "End": "c47609f3fe2c4d6280502779f42f0e6b",
+      "Id": "421b597009d6402a832dddabab76aa7d"
+    },
+    {
+      "Start": "501544804bfd4e588d4b32372aad4f8a",
+      "End": "fdd5c5784bab4b478ad26f246bcf82aa",
+      "Id": "e02e90d5853d4433b0a863c9542dd328"
+    },
+    {
+      "Start": "1664794b3c2c4fe7b89d4354c33b8aa0",
+      "End": "2eeef75ef0794fc781ec5a07b691095f",
+      "Id": "7f70d5593d1248cda845a334aa2eca97"
+    },
+    {
+      "Start": "f4f612e4c02d4dad99a05b3bd27704ed",
+      "End": "60a01a8cf7b1434c800fe43809341d70",
+      "Id": "ce27eab7047e494ab4f83b7346db984f"
+    },
+    {
+      "Start": "435dfb4caa5d44f2aa5d647500670fbd",
+      "End": "e4a08bdc7b884761be92c78f366ed1fe",
+      "Id": "d213378ef37043b6abcbb7efebb5f8d4"
+    },
+    {
+      "Start": "e650b96e4126496681517dc86c5d61e2",
+      "End": "92e2238d7c574bc88bc91cd2bef4b68d",
+      "Id": "638fc5a2933b4b96864af6ebc4e29b19"
+    },
+    {
+      "Start": "8edafe71d11e402a8cd395cffa4ddeee",
+      "End": "7bc025436f894a7a98acbd5a44614679",
+      "Id": "3b6f33ab716347118704e6a3521869b1"
+    },
+    {
+      "Start": "65d89c0e739e40389d9a6b9ee66fe735",
+      "End": "c5e4d8d2e8d1449d9bb9ebc39af818e8",
+      "Id": "16112a21f59941cd9300f28b2c5e2fd7"
+    },
+    {
+      "Start": "a6ac4ffb740249128970f5a876378025",
+      "End": "6792550f8dd447d3bd606550437b9eed",
+      "Id": "77ef2c7534b540dc862da069961317ad"
+    },
+    {
+      "Start": "1bab27af6ca94827be4cceca4b29041b",
+      "End": "65360c5c8d4a49fc9e2f766d028febf3",
+      "Id": "f2fdce666c6b45d7911db08a1ead7a8a"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.2.1.5175",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -660836.26442234928,
+      "EyeY": 570673.77104805841,
+      "EyeZ": 768567.62798500143,
+      "LookX": 660831.26442234928,
+      "LookY": -570662.77104805841,
+      "LookZ": -768575.62798500143,
+      "UpX": 0.1906139918075499,
+      "UpY": 0.95630475596303577,
+      "UpZ": -0.22169239916981917
+    },
+    "NodeViews": [
+      {
+        "Id": "5ea9d7c4efbd45d988f376599fec3c91",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Input",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 364.846570431303,
+        "Y": 633.331506874529
+      },
+      {
+        "Id": "8a570117dc1d4145834fea3760b71114",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Link Kadaster",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 1238.14950443542,
+        "Y": 252.98311602053
+      },
+      {
+        "Id": "602c25ebf03741dfb868dc5c52390f30",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Link Kadaster",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 1240.73620458678,
+        "Y": 880.19972248438
+      },
+      {
+        "Id": "743d7e0197cc482098966c1de3e44bb4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "String.Concat",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 1951.29646706852,
+        "Y": 199.0
+      },
+      {
+        "Id": "2a336498f322484a946e8f3f4bb89ee6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "String.Concat",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 1953.88316721988,
+        "Y": 826.21660646385
+      },
+      {
+        "Id": "a6b6fdfbd6e54ad583db45639c03f970",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "String.Concat",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 2106.19122692915,
+        "Y": 1444.86870270826
+      },
+      {
+        "Id": "3de7071d0c2141028d727b1ffd7b0da2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Link Kadaster",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 1252.86924052277,
+        "Y": 1496.81043488743
+      },
+      {
+        "Id": "cdfa0c862cea47cbabcf05d9ce2c3272",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 2380.56351536923,
+        "Y": 235.12058703118
+      },
+      {
+        "Id": "03f3ee48988046da917963bd6725bcf2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 2415.20421800155,
+        "Y": 831.25122183695
+      },
+      {
+        "Id": "4735407bae4f4c7b9a45f8f1fe8a3dc9",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 2553.46753088027,
+        "Y": 1441.39536093641
+      }
+    ],
+    "Annotations": [],
+    "X": -317.68923387716575,
+    "Y": -159.87853865301588,
+    "Zoom": 0.5727106533780163
+  }
+}
