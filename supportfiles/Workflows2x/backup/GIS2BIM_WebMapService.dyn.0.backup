@@ -1,0 +1,142 @@
+<Workspace Version="1.3.4.6666" X="81.1157276166011" Y="12.8086982706378" zoom="0.749485239656672" ScaleFactor="1" Name="Home" Description="" RunType="Automatic" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="4470379c-cdad-4b78-941e-69d6ac87cd8f" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.CreateBoundingBox" x="877.923623903694" y="413.94301341061" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="1b8585e3-81f4-499f-8e18-81d010124896" />
+      <Name value="GIS2BIM.CreateBoundingBox" />
+      <Description value="create boundingboxstring for webrequests based on coördinates and dimensions" />
+      <Inputs>
+        <Input value="CoordinateX" />
+        <Input value="CoordinateY" />
+        <Input value="BoxWidth" />
+        <Input value="BoxHeight" />
+      </Inputs>
+      <Outputs>
+        <Output value="Boxstring" />
+        <Output value="Boxstring2" />
+        <Output value="Xmin" />
+        <Output value="Xmax" />
+        <Output value="Ymin" />
+        <Output value="Ymax" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="d5bbaaf2-f0df-48a5-bb81-30be1432e469" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.TransformCRS_epsg" x="872.384737598342" y="97.4715171767436" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="True" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="1813c488-6cc1-4cc0-aaf5-ea0606534144" />
+      <Name value="GIS2BIM.TransformCRS_epsg" />
+      <Description value="Uses the API of http://epsg.io to transform Coordinate Reference Systems" />
+      <Inputs>
+        <Input value="sourceCRS" />
+        <Input value="targetCRS" />
+        <Input value="xCoordinate" />
+        <Input value="yCoordinate" />
+      </Inputs>
+      <Outputs>
+        <Output value="Xtransformed" />
+        <Output value="Ytransformed" />
+        <Output value="URL" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="ca49fd7b-f0c6-4f8f-9674-31e1f8d354d6" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="21.2682367207247" y="-2.01253392647368" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;4326&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="a94ce20e-7e04-4681-a01e-7e8dd7fa69a6" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.SearchCRS" x="1268.6046241244" y="-12.2858242429162" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="True" />
+      <ID value="7b795053-f3a1-4ee5-8ef9-22e00cea8a74" />
+      <Name value="GIS2BIM.SearchCRS" />
+      <Description value="Search for a Coordinate Reference System " />
+      <Inputs>
+        <Input value="EPSG_Code" />
+      </Inputs>
+      <Outputs>
+        <Output value="Name CRS" />
+        <Output value="URL CRS" />
+        <Output value="All CRS-systems" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="d506dc5d-f448-4ae5-9243-74655c435815" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="19.7200512929496" y="94.7665099213839" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;31370&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="e9e2892e-e1cd-4d29-a09c-77910ca2ed51" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="10.2786449027029" y="277.351639061938" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;Grootkanonplein&quot;;&#xA;&quot;2&quot;;&#xA;&quot;Gent&quot;;&#xA;&quot;Belgium&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="a86c2fd0-0ae3-45c2-8a44-d582149ac6e7" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="BoundingboxWidth" x="-0.0307926161623158" y="509.533948155361" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="400;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="b8a81021-55ae-4c55-b4fe-449322c9fe69" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.WebrequestWMS2" x="873.242335665404" y="798.676522114261" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <ID value="1355f94d-cbe1-451b-b6cf-5e7dab407717" />
+      <Name value="GIS2BIM.WebrequestWMS2" />
+      <Description value="a webrequest based on WMS-protocol" />
+      <Inputs>
+        <Input value="WMSwebrequest" />
+      </Inputs>
+      <Outputs>
+        <Output value="Bitmap" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <CoreNodeModels.WatchImageCore guid="95ea0b71-8e6e-40d5-87d9-a192d0c7eb2a" type="CoreNodeModels.WatchImageCore" nickname="Watch Image" x="1253.16634093184" y="692.374061800294" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.WatchImageCore>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="99f52514-763d-45ef-9254-18995f4264c5" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.BelgiumGeoservicesLibrary" x="1257.60043396409" y="417.975712647078" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <ID value="948ee18b-77f5-4e0b-912a-e85fab1994d6" />
+      <Name value="GIS2BIM.BelgiumGeoservicesLibrary" />
+      <Description value="Geoserviceslibrary in Belgium" />
+      <Inputs>
+        <Input value="BoundingboxString" />
+      </Inputs>
+      <Outputs>
+        <Output value="CadastreParcels(GRB:ADP)(OGC WFS)" />
+        <Output value="BuildingOutlines(GRB:GBG)OGC WFS)" />
+        <Output value="Housenumbers(GRB:TBLGBGADR)(OGC WFS)" />
+        <Output value="AerialPhoto(OGWRGB13_15VL)(OGC WMS)" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="093cc619-74e3-454a-9791-a27374787302" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.GeocodingNomatimAPI" x="319.037404304287" y="211.386731280948" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="4fb426a8-9bdb-453a-9334-d5dc1ebe8055" />
+      <Name value="GIS2BIM.GeocodingNomatimAPI" />
+      <Description value="gets WGS-84 coordinate from address with Open Streets Maps API" />
+      <Inputs>
+        <Input value="Streetname" />
+        <Input value="Housenumber" />
+        <Input value="Place" />
+        <Input value="Country" />
+      </Inputs>
+      <Outputs>
+        <Output value="latitude" />
+        <Output value="longitude" />
+        <Output value="postcode" />
+        <Output value="xml" />
+        <Output value="link webrequest" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="4470379c-cdad-4b78-941e-69d6ac87cd8f" start_index="0" end="99f52514-763d-45ef-9254-18995f4264c5" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d5bbaaf2-f0df-48a5-bb81-30be1432e469" start_index="0" end="4470379c-cdad-4b78-941e-69d6ac87cd8f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d5bbaaf2-f0df-48a5-bb81-30be1432e469" start_index="1" end="4470379c-cdad-4b78-941e-69d6ac87cd8f" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ca49fd7b-f0c6-4f8f-9674-31e1f8d354d6" start_index="0" end="d5bbaaf2-f0df-48a5-bb81-30be1432e469" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d506dc5d-f448-4ae5-9243-74655c435815" start_index="0" end="d5bbaaf2-f0df-48a5-bb81-30be1432e469" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d506dc5d-f448-4ae5-9243-74655c435815" start_index="0" end="a94ce20e-7e04-4681-a01e-7e8dd7fa69a6" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e9e2892e-e1cd-4d29-a09c-77910ca2ed51" start_index="0" end="093cc619-74e3-454a-9791-a27374787302" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e9e2892e-e1cd-4d29-a09c-77910ca2ed51" start_index="1" end="093cc619-74e3-454a-9791-a27374787302" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e9e2892e-e1cd-4d29-a09c-77910ca2ed51" start_index="2" end="093cc619-74e3-454a-9791-a27374787302" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e9e2892e-e1cd-4d29-a09c-77910ca2ed51" start_index="3" end="093cc619-74e3-454a-9791-a27374787302" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a86c2fd0-0ae3-45c2-8a44-d582149ac6e7" start_index="0" end="4470379c-cdad-4b78-941e-69d6ac87cd8f" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a86c2fd0-0ae3-45c2-8a44-d582149ac6e7" start_index="0" end="4470379c-cdad-4b78-941e-69d6ac87cd8f" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b8a81021-55ae-4c55-b4fe-449322c9fe69" start_index="0" end="95ea0b71-8e6e-40d5-87d9-a192d0c7eb2a" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="99f52514-763d-45ef-9254-18995f4264c5" start_index="3" end="b8a81021-55ae-4c55-b4fe-449322c9fe69" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="093cc619-74e3-454a-9791-a27374787302" start_index="0" end="d5bbaaf2-f0df-48a5-bb81-30be1432e469" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="093cc619-74e3-454a-9791-a27374787302" start_index="1" end="d5bbaaf2-f0df-48a5-bb81-30be1432e469" end_index="2" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-52551.80078125" eyeY="56920.4375" eyeZ="253741.453125" lookX="52502.33984375" lookY="-56877.53125" lookZ="-253761.296875" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
