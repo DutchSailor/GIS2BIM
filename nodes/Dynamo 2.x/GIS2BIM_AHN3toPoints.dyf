@@ -143,7 +143,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n#The inputs to this node will be stored as a list in the IN variables.\ndataEnteringNode = IN\n\n#Assign your output to the OUT variable.\n\nrdx= IN[0]\nrdy = IN[1]\nGeotiffValues = IN[2]\nWaterbottom = IN[3]\n\nx = []\ny = []\nz = []\n\nfor i in GeotiffValues:\n\t\tx.append(int((i[\"longitude\"]-rdx)*1000))\n\t\ty.append(int((i[\"latitude\"]-rdy)*1000))\n\t\tif int(i[\"elevation\"]) is 0:\n\t\t\tz.append(Waterbottom*1000)\n\t\telse:\n\t\t\tz.append(int(i[\"elevation\"]*1000))\n\nPoints = []\n\nfor i,j,h in zip(x,y,z):\n\tPoints.append(Point.ByCoordinates(i,j,h))\n\t\nOUT = Points",
+      "Code": "import clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n#The inputs to this node will be stored as a list in the IN variables.\ndataEnteringNode = IN\n\n#Assign your output to the OUT variable.\n\nrdx= IN[0]\nrdy = IN[1]\nGeotiffValues = IN[2]\nWaterbottom = IN[3]\n\nx = []\ny = []\nz = []\n\nfor i in GeotiffValues:\n\t\tx.append(int((i[\"longitude\"]-rdx)*1000))\n\t\ty.append(int((i[\"latitude\"]-rdy)*1000))\n\t\tif int(i[\"elevation\"]) > 1000:\n\t\t\tz.append(Waterbottom*1000)\n\t\telse:\n\t\t\tz.append(int(i[\"elevation\"]*1000))\n\nPoints = []\n\nfor i,j,h in zip(x,y,z):\n\tPoints.append(Point.ByCoordinates(i,j,h))\n\t\nOUT = Points",
       "VariableInputPorts": true,
       "Id": "b9f27c2fc52f4bbc8384f23a1b76dc37",
       "Inputs": [
@@ -702,7 +702,7 @@
         {
           "Id": "b33daa183dfd411c9620a81c441fd8d7",
           "Name": "filePath",
-          "Description": "Path of GEOTiff file\n\nstring",
+          "Description": "string",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -713,7 +713,7 @@
         {
           "Id": "303d977ffd654524aa3dc7f951da3333",
           "Name": "var[]..[]",
-          "Description": "returns a list of objects with the following fields: latitude, longitude and elevation",
+          "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -721,7 +721,7 @@
         }
       ],
       "Replication": "Auto",
-      "Description": "Reads a GEOTiff file and returns coordinate and elevation data\n\nHelpers.GEOTiffReader (filePath: string): var[]..[]"
+      "Description": "Helpers.GEOTiffReader (filePath: string): var[]..[]"
     }
   ],
   "Connectors": [
@@ -876,171 +876,171 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -660836.26442234928,
-      "EyeY": 570673.77104805841,
-      "EyeZ": 768567.62798500143,
-      "LookX": 660831.26442234928,
-      "LookY": -570662.77104805841,
-      "LookZ": -768575.62798500143,
-      "UpX": 0.1906139918075499,
-      "UpY": 0.95630475596303577,
-      "UpZ": -0.22169239916981917
+      "EyeX": -215049.09942151658,
+      "EyeY": 247387.760246064,
+      "EyeZ": 106323.06429966328,
+      "LookX": 215044.09942151658,
+      "LookY": -247376.760246064,
+      "LookZ": -106331.06429966328,
+      "UpX": 0.4947586352148361,
+      "UpY": 0.83388582206716866,
+      "UpZ": -0.24463918050000988
     },
     "NodeViews": [
       {
+        "ShowGeometry": true,
+        "Name": "Input",
         "Id": "9a3cb76434924e2bb9557e8964219261",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Input",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 365.48379887044445,
         "Y": 144.253828289396
       },
       {
+        "ShowGeometry": true,
+        "Name": "Input",
         "Id": "e9f44f087cc74b0faed79acd7e60fe50",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Input",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 365.48379887044445,
         "Y": 223.776853747731
       },
       {
+        "ShowGeometry": true,
+        "Name": "Input",
         "Id": "afcf0388f4da427f93a71d11b77045f8",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Input",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 365.48379887044445,
         "Y": 320.416762684781
       },
       {
+        "ShowGeometry": true,
+        "Name": "Input",
         "Id": "499ae840a3d442808c301fb90e317c17",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Input",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 364.56358315873985,
         "Y": 412.38914736533252
       },
       {
+        "ShowGeometry": true,
+        "Name": "Input",
         "Id": "c8968306dc9c468f9bcce049de938261",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Input",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 365.48379887044445,
         "Y": 497.393216449925
       },
       {
+        "ShowGeometry": false,
+        "Name": "Python Script",
         "Id": "b9f27c2fc52f4bbc8384f23a1b76dc37",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Python Script",
-        "ShowGeometry": false,
         "Excluded": false,
         "X": 3555.7552987584641,
         "Y": 550.36476412802631
       },
       {
+        "ShowGeometry": true,
+        "Name": "String.Concat",
         "Id": "062fdf768cad424d8508ab0910d76f78",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "String.Concat",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 2499.9179902142,
         "Y": 124.852501489001
       },
       {
+        "ShowGeometry": true,
+        "Name": "Python Script",
         "Id": "5fe3a5f0aa5e44489aaa1029eaa5e7a3",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Python Script",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 2835.25160222584,
         "Y": 392.227098989142
       },
       {
+        "ShowGeometry": true,
+        "Name": "Code Block",
         "Id": "40d8bc20a3d34e6190377db8981f225c",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Code Block",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 1643.2791198250111,
         "Y": 55.288743590618083
       },
       {
+        "ShowGeometry": true,
+        "Name": "Input",
         "Id": "dd1910a0efc64b5ca0b01564327751bb",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Input",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 365.48379887044445,
         "Y": 562.08418265747855
       },
       {
+        "ShowGeometry": true,
+        "Name": "Input",
         "Id": "3a2e3be6d88c46128976babee2a615f5",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Input",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 365.48379887044445,
         "Y": 644.33895038847879
       },
       {
+        "ShowGeometry": true,
+        "Name": "Output",
         "Id": "df1e5d237bae4cfb9896ec2797b99929",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Output",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 3847.78901548079,
         "Y": 761.996176766773
       },
       {
+        "ShowGeometry": true,
+        "Name": "Output",
         "Id": "0cdf65442f35439588a40c5423481fdc",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Output",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 3848.71774909266,
         "Y": 838.895972027645
       },
       {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_CreateBoundingBox",
         "Id": "4d8b64dc654948779dbba33d1b5da734",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "GIS2BIM_CreateBoundingBox",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 1310.1926171806481,
         "Y": -12.298508917186268
       },
       {
+        "ShowGeometry": true,
+        "Name": "Helpers.GEOTiffReader",
         "Id": "c700d608292b407e9a6b15e45d3389cc",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Helpers.GEOTiffReader",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 3110.32542874617,
         "Y": 374.66699803315913
       }
     ],
     "Annotations": [],
-    "X": -2016.54520049532,
-    "Y": 80.168907486069941,
+    "X": -2584.54520049532,
+    "Y": -200.83109251393006,
     "Zoom": 0.92837398100151325
   }
 }

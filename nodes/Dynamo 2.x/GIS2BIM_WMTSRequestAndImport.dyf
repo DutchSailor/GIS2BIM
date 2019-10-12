@@ -1,206 +1,1126 @@
-<Workspace Version="1.3.1.1736" X="-1456.16560049954" Y="-183.699781369018" zoom="0.708902773456253" ScaleFactor="1" Name="GIS2BIM_WMTSRequestAndImport" Description="total node with WMTS webrequest and import of image in view" ID="85724749-e6a0-40a1-a7a0-912e99ca24f8" Category="GIS2BIM.DutchGEO">
-  <NamespaceResolutionMap />
-  <Elements>
-    <Dynamo.Graph.Nodes.CustomNodes.Function guid="16b707b4-0ab6-4666-a444-4e5089465ef5" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.WMTSScaleSetNetherlands" x="1339.74890683516" y="366.85303774425" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
-      <PortInfo index="0" default="True" />
-      <ID value="b5a6feb8-913f-4937-8370-0198c198c1ca" />
-      <Name value="GIS2BIM.WMTSScaleSetNetherlands" />
-      <Description value="gives resolution, scaledenominator and number of tiles" />
-      <Inputs>
-        <Input value="Zoomlevel" />
-      </Inputs>
-      <Outputs>
-        <Output value="Zoomlevel" />
-        <Output value="Resolutie(m/pixel)" />
-        <Output value="ScaleDenominator" />
-        <Output value="Numberoftiles" />
-      </Outputs>
-    </Dynamo.Graph.Nodes.CustomNodes.Function>
-    <Dynamo.Graph.Nodes.CustomNodes.Function guid="5d59f8fe-c0ea-4791-aee9-fa199289bfb8" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.WMTSZoomLevelTileRow" x="1791.28378708236" y="375.516965767598" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="True" />
-      <PortInfo index="2" default="True" />
-      <PortInfo index="3" default="False" />
-      <PortInfo index="4" default="False" />
-      <PortInfo index="5" default="True" />
-      <ID value="6f439a89-7f6d-4598-b1b1-685744fea964" />
-      <Name value="GIS2BIM.WMTSZoomLevelTileRow" />
-      <Description value="gives the tilerow and tilecolumn for the WMTS webrequest" />
-      <Inputs>
-        <Input value="Resolution" />
-        <Input value="XCorner" />
-        <Input value="YCorner" />
-        <Input value="Rdx" />
-        <Input value="Rdy" />
-        <Input value="PixelWidth" />
-      </Inputs>
-      <Outputs>
-        <Output value="TileRow" />
-        <Output value="TileColumn" />
-        <Output value="DeltaX" />
-        <Output value="DeltaY" />
-      </Outputs>
-    </Dynamo.Graph.Nodes.CustomNodes.Function>
-    <Dynamo.Graph.Nodes.CustomNodes.Function guid="b4672924-f170-4f35-af04-63c4ff79b1ca" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.WMTSGeoservicesLibraryNetherlands" x="2650.08289042886" y="422.188659139913" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
-      <PortInfo index="3" default="False" />
-      <ID value="328bcd48-cdc2-418b-8a07-6a43ac4c0207" />
-      <Name value="GIS2BIM.WMTSGeoservicesLibraryNetherlands" />
-      <Description value="library with webrequests of WMTS-services in the Netherlands" />
-      <Inputs>
-        <Input value="TileRows" />
-        <Input value="TileColumns" />
-        <Input value="Zoomlevel" />
-        <Input value="Layer" />
-      </Inputs>
-      <Outputs>
-        <Output value="URL" />
-      </Outputs>
-    </Dynamo.Graph.Nodes.CustomNodes.Function>
-    <Dynamo.Graph.Nodes.CustomNodes.Function guid="45e9170b-bc7f-4829-9191-cb94dca82891" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.WMTSTileListFromBbox" x="2158.92679493211" y="687.267516132258" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
-      <PortInfo index="3" default="False" />
-      <PortInfo index="4" default="False" />
-      <ID value="73213780-7c72-4ed4-b3bc-615fbf4892b0" />
-      <Name value="GIS2BIM.WMTSTileListFromBbox" />
-      <Description value="gives list of tilerows and tilecolums" />
-      <Inputs>
-        <Input value="TileRow" />
-        <Input value="TileColumn" />
-        <Input value="Resolution" />
-        <Input value="PixelWidth" />
-        <Input value="BboxWidthInMeters" />
-      </Inputs>
-      <Outputs>
-        <Output value="NumberOfTiles" />
-        <Output value="TileRows" />
-        <Output value="TileColumns" />
-        <Output value="UniqueTileColumns" />
-        <Output value="UniqueTileRows" />
-        <Output value="TotalTileWidthMetrs" />
-      </Outputs>
-    </Dynamo.Graph.Nodes.CustomNodes.Function>
-    <Dynamo.Graph.Nodes.CustomNodes.Function guid="87befb7b-d95c-4685-9fa3-a8bb23f626ec" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.ImportImageInView" x="3649.42870109503" y="494.068244451228" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
-      <PortInfo index="3" default="True" />
-      <PortInfo index="4" default="True" />
-      <ID value="81a15fb2-530d-475b-b934-75fc9f82653e" />
-      <Name value="GIS2BIM.ImportImageInView" />
-      <Description value="Import rasterimage in view" />
-      <Inputs>
-        <Input value="ImageWidthMeters" />
-        <Input value="View" />
-        <Input value="ImagePath" />
-        <Input value="DeltaX" />
-        <Input value="DeltaY" />
-      </Inputs>
-      <Outputs>
-        <Output value="Element" />
-      </Outputs>
-    </Dynamo.Graph.Nodes.CustomNodes.Function>
-    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="78654092-04f7-42ed-aaaf-37424eefac4c" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="PixelWidth" x="1825.63197541627" y="772.190773514617" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="256;" ShouldFocus="false" />
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="f9ba953c-5ea9-4863-b187-76646181d132" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="720.325579602106" y="542.54853408584" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="Rdx" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="bac9ff68-9872-40dc-bde9-95f0f1e6677b" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="718.860500351977" y="607.362467002578" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="Rdy" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="a978b0a0-3cac-405c-a31a-b98d5cc15312" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="718.56062274625" y="822.886196281495" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="Zoomlevel" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="5750e54c-38b9-46cb-9ed8-637efea5cf45" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="725.304905481743" y="710.849748817589" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="Boundingboxwidth" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="e91120bc-cdb9-47dd-920e-489acf457aca" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="715.549938037051" y="930.105480484542" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="TemppathFileName" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="b87cdd56-4222-4148-ad8b-112ded3209e1" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="716.964498379331" y="1024.960761642" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="View" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="5cf88c79-b47c-4146-824e-fb4f7f151556" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="715.657913193434" y="1129.48757651375" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="Layer" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CustomNodes.Output guid="1272248c-5086-4c22-a798-7742b2ccad4f" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="4461.94359893857" y="749.154084828634" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
-      <PortInfo index="0" default="False" />
-      <Symbol value="Image" />
-    </Dynamo.Graph.Nodes.CustomNodes.Output>
-    <Dynamo.Graph.Nodes.CustomNodes.Function guid="c85cdac1-6a8e-4f71-839f-50f75c725004" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.SystemDrawingBitmapToJPG" x="3329.86757473209" y="754.578689413682" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <ID value="3206c909-fabc-47f8-822c-68173ef2c15b" />
-      <Name value="GIS2BIM.SystemDrawingBitmapToJPG" />
-      <Description value="Save an System.Drawing.Bitmap object as a jpg-file" />
-      <Inputs>
-        <Input value="SystemDrawingBitmap" />
-        <Input value="FileName" />
-      </Inputs>
-      <Outputs>
-        <Output value="FileName" />
-      </Outputs>
-    </Dynamo.Graph.Nodes.CustomNodes.Function>
-    <Dynamo.Graph.Nodes.CustomNodes.Function guid="3fd384ad-0801-45c9-9391-33dafe922d12" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GIS2BIM.TMS_WMTS_WebrequestAndCombineImages" x="2904.91037794058" y="958.172450992803" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
-      <PortInfo index="3" default="True" />
-      <PortInfo index="4" default="True" />
-      <ID value="6f1c4b64-0ef7-451a-a5be-526e34d565c7" />
-      <Name value="GIS2BIM.TMS_WMTS_WebrequestAndCombineImages" />
-      <Description value="Webrequest for list of WMTS or TMS/Google webrequests for tiles. Combines them to 1 image." />
-      <Inputs>
-        <Input value="URLlist" />
-        <Input value="UniqueTileNumbersColumnX" />
-        <Input value="UniqueTileNumbersRowY" />
-        <Input value="Pixels" />
-        <Input value="WMTSorTMS" />
-      </Inputs>
-      <Outputs>
-        <Output value="Image" />
-        <Output value="TileImages" />
-      </Outputs>
-    </Dynamo.Graph.Nodes.CustomNodes.Function>
-    <CoreNodeModels.Input.BoolSelector guid="7c5c90b6-b092-42aa-bcfb-bf4ebaba0087" type="CoreNodeModels.Input.BoolSelector" nickname="Boolean" x="2624.7047061648" y="1104.42121578319" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <System.Boolean>True</System.Boolean>
-    </CoreNodeModels.Input.BoolSelector>
-  </Elements>
-  <Connectors>
-    <Dynamo.Graph.Connectors.ConnectorModel start="16b707b4-0ab6-4666-a444-4e5089465ef5" start_index="0" end="b4672924-f170-4f35-af04-63c4ff79b1ca" end_index="2" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="16b707b4-0ab6-4666-a444-4e5089465ef5" start_index="1" end="45e9170b-bc7f-4829-9191-cb94dca82891" end_index="2" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="16b707b4-0ab6-4666-a444-4e5089465ef5" start_index="1" end="5d59f8fe-c0ea-4791-aee9-fa199289bfb8" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="5d59f8fe-c0ea-4791-aee9-fa199289bfb8" start_index="0" end="45e9170b-bc7f-4829-9191-cb94dca82891" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="5d59f8fe-c0ea-4791-aee9-fa199289bfb8" start_index="1" end="45e9170b-bc7f-4829-9191-cb94dca82891" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="5d59f8fe-c0ea-4791-aee9-fa199289bfb8" start_index="2" end="87befb7b-d95c-4685-9fa3-a8bb23f626ec" end_index="3" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="5d59f8fe-c0ea-4791-aee9-fa199289bfb8" start_index="3" end="87befb7b-d95c-4685-9fa3-a8bb23f626ec" end_index="4" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="b4672924-f170-4f35-af04-63c4ff79b1ca" start_index="0" end="3fd384ad-0801-45c9-9391-33dafe922d12" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="45e9170b-bc7f-4829-9191-cb94dca82891" start_index="1" end="b4672924-f170-4f35-af04-63c4ff79b1ca" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="45e9170b-bc7f-4829-9191-cb94dca82891" start_index="2" end="b4672924-f170-4f35-af04-63c4ff79b1ca" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="45e9170b-bc7f-4829-9191-cb94dca82891" start_index="3" end="3fd384ad-0801-45c9-9391-33dafe922d12" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="45e9170b-bc7f-4829-9191-cb94dca82891" start_index="4" end="3fd384ad-0801-45c9-9391-33dafe922d12" end_index="2" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="45e9170b-bc7f-4829-9191-cb94dca82891" start_index="5" end="87befb7b-d95c-4685-9fa3-a8bb23f626ec" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="78654092-04f7-42ed-aaaf-37424eefac4c" start_index="0" end="45e9170b-bc7f-4829-9191-cb94dca82891" end_index="3" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="78654092-04f7-42ed-aaaf-37424eefac4c" start_index="0" end="3fd384ad-0801-45c9-9391-33dafe922d12" end_index="3" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="f9ba953c-5ea9-4863-b187-76646181d132" start_index="0" end="5d59f8fe-c0ea-4791-aee9-fa199289bfb8" end_index="3" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="bac9ff68-9872-40dc-bde9-95f0f1e6677b" start_index="0" end="5d59f8fe-c0ea-4791-aee9-fa199289bfb8" end_index="4" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="a978b0a0-3cac-405c-a31a-b98d5cc15312" start_index="0" end="16b707b4-0ab6-4666-a444-4e5089465ef5" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="5750e54c-38b9-46cb-9ed8-637efea5cf45" start_index="0" end="45e9170b-bc7f-4829-9191-cb94dca82891" end_index="4" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="e91120bc-cdb9-47dd-920e-489acf457aca" start_index="0" end="c85cdac1-6a8e-4f71-839f-50f75c725004" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="b87cdd56-4222-4148-ad8b-112ded3209e1" start_index="0" end="87befb7b-d95c-4685-9fa3-a8bb23f626ec" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="5cf88c79-b47c-4146-824e-fb4f7f151556" start_index="0" end="b4672924-f170-4f35-af04-63c4ff79b1ca" end_index="3" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="c85cdac1-6a8e-4f71-839f-50f75c725004" start_index="0" end="87befb7b-d95c-4685-9fa3-a8bb23f626ec" end_index="2" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="3fd384ad-0801-45c9-9391-33dafe922d12" start_index="0" end="c85cdac1-6a8e-4f71-839f-50f75c725004" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="3fd384ad-0801-45c9-9391-33dafe922d12" start_index="0" end="1272248c-5086-4c22-a798-7742b2ccad4f" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="7c5c90b6-b092-42aa-bcfb-bf4ebaba0087" start_index="0" end="3fd384ad-0801-45c9-9391-33dafe922d12" end_index="4" portType="0" />
-  </Connectors>
-  <Notes />
-  <Annotations />
-  <Presets />
-  <Cameras>
-    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
-  </Cameras>
-</Workspace>
+{
+  "Uuid": "85724749-e6a0-40a1-a7a0-912e99ca24f8",
+  "IsCustomNode": true,
+  "Category": "GIS2BIM.DutchGEO",
+  "Description": "total node with WMTS webrequest and import of image in view",
+  "Name": "GIS2BIM_WMTSRequestAndImport",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [
+    {
+      "Id": "7c5c90b6b09242aabcfbbf4ebaba0087",
+      "Name": "Boolean",
+      "Type": "boolean",
+      "Value": "true",
+      "Description": "Selection between a true and false."
+    }
+  ],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "b5a6feb8-913f-4937-8370-0198c198c1ca",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "16b707b40ab64666a4444e5089465ef5",
+      "Inputs": [
+        {
+          "Id": "c9ddd1e0df1c4de7ad4996acb414a746",
+          "Name": "Zoomlevel",
+          "Description": "int\nDefault value : 14",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f86511382fc54be787601f9f83d2440f",
+          "Name": "Zoomlevel",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "71cfa841434d4053b22d2ca3cf63f364",
+          "Name": "Resolutie(m/pixel)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2c667783bbc447888663ae096d743b46",
+          "Name": "ScaleDenominator",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7f2735da24544514a653966e096cfbdb",
+          "Name": "Numberoftiles",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "gives resolution, scaledenominator and number of tiles"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "6f439a89-7f6d-4598-b1b1-685744fea964",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "5d59f8fec0ea4791aee9fa199289bfb8",
+      "Inputs": [
+        {
+          "Id": "e2330fab4e494c9cb49939ea2768c7dc",
+          "Name": "Resolution",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "06aa2efdcae44c72958128acc49a5981",
+          "Name": "XCorner",
+          "Description": "double\nDefault value : -285401.92",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fee612cf9dcd40c3b631402d4875d17b",
+          "Name": "YCorner",
+          "Description": "double\nDefault value : 903402",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "49b52c0d04944e9eb0de5f89611c698c",
+          "Name": "Rdx",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3b45e45d380f40049a0226e5be34444d",
+          "Name": "Rdy",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "939c163fe74b4c46be4a35f6fc9f2043",
+          "Name": "PixelWidth",
+          "Description": "int\nDefault value : 256",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b31b2b6622b54f9eb3cf90c94ea15515",
+          "Name": "TileRow",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8ba1358acd7348c5b3f08a29718299ba",
+          "Name": "TileColumn",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e884a77f46ed433ea4dd281fcd7139ab",
+          "Name": "DeltaXmm",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "acb7d165c8e84591bd8207bce76117da",
+          "Name": "DeltaYmm",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "gives the tilerow and tilecolumn for the WMTS webrequest"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "328bcd48-cdc2-418b-8a07-6a43ac4c0207",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "b4672924f1704f35af0463c4ff79b1ca",
+      "Inputs": [
+        {
+          "Id": "5f403f26c92e4950a7a0d3db9fce151e",
+          "Name": "TileRows",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d7c13b6ce6f145dca901a9f9fd81c7c0",
+          "Name": "TileColumns",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b6813782cda54135a86f26adb674a996",
+          "Name": "Zoomlevel",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a97380adb7a747fe8ef383e84e0bf421",
+          "Name": "Layer",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b1f5cfdaf2bb46e994eed40e16357c0d",
+          "Name": "URL",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "library with webrequests of WMTS-services in the Netherlands"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "73213780-7c72-4ed4-b3bc-615fbf4892b0",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "45e9170bbc7f48299191cb94dca82891",
+      "Inputs": [
+        {
+          "Id": "9b5885df45b641d4bf9da5e698075fc0",
+          "Name": "TileRow",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d3ed10b6fbe44e8889ff3c28b80e2be2",
+          "Name": "TileColumn",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7039a83e48094b58a4ba58f9b144a059",
+          "Name": "Resolution",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "31cd5eed207e47f495463056d73a2601",
+          "Name": "PixelWidth",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b0adb31a8cc84b8abfa10e392fe2bcbb",
+          "Name": "BboxWidthInMeters",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "12399144ba44444eb46fa94c8806ed00",
+          "Name": "NumberOfTiles",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ce23b2f30afc4ae19db76745bd2c4f74",
+          "Name": "TileRows",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cd813c0ba51f4465b920832b088db407",
+          "Name": "TileColumns",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "09dc5b68e7fa45fdaa53115b8775a8e1",
+          "Name": "UniqueTileColumns",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3527d17ce9604ac5b0cb629f61e5ff26",
+          "Name": "UniqueTileRows",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f931ec30f1f148fe9dea0e7601e02c8f",
+          "Name": "TileWidthMetrs",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cb75bbe3c1874c25aa45bc26552956b1",
+          "Name": "TotalTileWidthMetrs",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "gives list of tilerows and tilecolums"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "256;",
+      "Id": "7865409204f742edaaaf37424eefac4c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c9b5feff61604997849daaaad1e09f57",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Rdx",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "f9ba953c5ea94863b18776646181d132",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "cf58c91673f042cfb70e876c4de4045a",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Rdy",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "bac9ff68987240dcbde995f0f1e6677b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "161b0206803243c09abab107b75446d1",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Zoomlevel",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "a978b0a03cac405ca31ab98d5cc15312",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "d301f22ab47141df94e02fc68674445a",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Boundingboxwidth",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "5750e54c38b946cb9ed8637efea5cf45",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "15a9e85d687640958120f34d667d8f8f",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "TemppathFileName",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "e91120bccdb947dd920e489acf457aca",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "5b55ed7bb4f64a63bc20ab6d62eff0f3",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "View",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "b87cdd5642224148ad8b112ded3209e1",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "1f61dc480f6148299ddff340d56a2d77",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Layer",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "5cf88c79b47c4146824efb4f7f151556",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "0240d673b707433fa80e6fea05f019df",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Image",
+      "Id": "1272248c50864c22a7987742b2ccad4f",
+      "Inputs": [
+        {
+          "Id": "f1e73200ff8543d6bf756d1fe441eba3",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "6f1c4b64-0ef7-451a-a5be-526e34d565c7",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "3fd384ad080145c9939133dafe922d12",
+      "Inputs": [
+        {
+          "Id": "47cbf2b5b6f14a06a2e8a413e60dc501",
+          "Name": "URLlist",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "96aebbfa746645f0994d7ad9b015b6e8",
+          "Name": "UniqueTileNumbersColumnX",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "78a7f65596244a108e30af0f4e9be20c",
+          "Name": "UniqueTileNumbersRowY",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6ff93b3b019d4e6cacd303f07a27c6fe",
+          "Name": "Pixels",
+          "Description": "double\nDefault value : 256",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c5de9482c92e4eeb9f63cf90843748c3",
+          "Name": "WMTSorTMS",
+          "Description": "TMS=false, WMTS=true\n\nbool\nDefault value : false",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c950155c08be4b968b3b54874cd83f95",
+          "Name": "Image",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a64d6c1ee11b49c4ab5cd30e5d5a452b",
+          "Name": "TileImages",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Webrequest for list of WMTS or TMS/Google webrequests for tiles. Combines them to 1 image."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "NodeType": "BooleanInputNode",
+      "InputValue": true,
+      "Id": "7c5c90b6b09242aabcfbbf4ebaba0087",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "ccc93e54b9eb43788a5056c1aeaf0652",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Selection between a true and false."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "69824e7d-ba97-4d5f-ae91-522bf95f083b",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "207222d7520d4c81bbef8ca1e0adf36b",
+      "Inputs": [
+        {
+          "Id": "63a2092f382a4c08b4fc300a279ab9e5",
+          "Name": "ImageWidthMeters",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "764cfead3c544a69bbe2de5ac30063f6",
+          "Name": "View",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2a5186d0523b47f2a75ab0c28d3f0ce2",
+          "Name": "ImagePath",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "221c585376e34624b42d558bbc297c17",
+          "Name": "DeltaX",
+          "Description": "mm\n\ndouble\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c7a8729a05a74c30a9e9f6d391096d93",
+          "Name": "DeltaY",
+          "Description": "mm\n\ndouble\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7b9588eea769459b9bbdf381e4ee8bd6",
+          "Name": "",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Import rasterimage in view"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.IO.Image.WriteToFile@string,var",
+      "Id": "ffae7b9daf3b480ca44a69f74419d145",
+      "Inputs": [
+        {
+          "Id": "58973b3f904148eb8131cfeb1f162bf8",
+          "Name": "path",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "695759ad217b464c90386488b3228c49",
+          "Name": "image",
+          "Description": "The image to write\n\nvar",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d15f793db4e4448b85f09ae7819b6edd",
+          "Name": "ok",
+          "Description": "It is successful or not.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Write the image to a path, given the specified file name.\n\nImage.WriteToFile (path: string, image: var): void"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "f86511382fc54be787601f9f83d2440f",
+      "End": "b6813782cda54135a86f26adb674a996",
+      "Id": "e867a81c54384710b0861206029bcb02"
+    },
+    {
+      "Start": "71cfa841434d4053b22d2ca3cf63f364",
+      "End": "7039a83e48094b58a4ba58f9b144a059",
+      "Id": "54c2f46a0b044fe0b0a9dbfeef14cc50"
+    },
+    {
+      "Start": "71cfa841434d4053b22d2ca3cf63f364",
+      "End": "e2330fab4e494c9cb49939ea2768c7dc",
+      "Id": "80110acf91ec4fe8ac8af33cbd93333d"
+    },
+    {
+      "Start": "b31b2b6622b54f9eb3cf90c94ea15515",
+      "End": "9b5885df45b641d4bf9da5e698075fc0",
+      "Id": "cdba5874061f4251ae8aa93ac0cce419"
+    },
+    {
+      "Start": "8ba1358acd7348c5b3f08a29718299ba",
+      "End": "d3ed10b6fbe44e8889ff3c28b80e2be2",
+      "Id": "b580277a847d44249fc2acb750b1a6b6"
+    },
+    {
+      "Start": "e884a77f46ed433ea4dd281fcd7139ab",
+      "End": "221c585376e34624b42d558bbc297c17",
+      "Id": "383b8be27d244ac6b2d7dbf84b32e9b8"
+    },
+    {
+      "Start": "acb7d165c8e84591bd8207bce76117da",
+      "End": "c7a8729a05a74c30a9e9f6d391096d93",
+      "Id": "db5dab40d8ca4b138526a0e2fafe4074"
+    },
+    {
+      "Start": "b1f5cfdaf2bb46e994eed40e16357c0d",
+      "End": "47cbf2b5b6f14a06a2e8a413e60dc501",
+      "Id": "4e7e8cb83f1f4557801a0ac6b7291e3e"
+    },
+    {
+      "Start": "ce23b2f30afc4ae19db76745bd2c4f74",
+      "End": "5f403f26c92e4950a7a0d3db9fce151e",
+      "Id": "6039f3338b17415486bbaab029b698c6"
+    },
+    {
+      "Start": "cd813c0ba51f4465b920832b088db407",
+      "End": "d7c13b6ce6f145dca901a9f9fd81c7c0",
+      "Id": "d01f22299bb54c4b99efa7fd3d6c263d"
+    },
+    {
+      "Start": "09dc5b68e7fa45fdaa53115b8775a8e1",
+      "End": "96aebbfa746645f0994d7ad9b015b6e8",
+      "Id": "75b94d325bf245a5800823c0d6f91247"
+    },
+    {
+      "Start": "3527d17ce9604ac5b0cb629f61e5ff26",
+      "End": "78a7f65596244a108e30af0f4e9be20c",
+      "Id": "970d6c06ee9542f4853eea0a0b9f9887"
+    },
+    {
+      "Start": "f931ec30f1f148fe9dea0e7601e02c8f",
+      "End": "63a2092f382a4c08b4fc300a279ab9e5",
+      "Id": "9bbd652ef61d43a7a9ee9e6e16997e45"
+    },
+    {
+      "Start": "c9b5feff61604997849daaaad1e09f57",
+      "End": "31cd5eed207e47f495463056d73a2601",
+      "Id": "f463dfe4cf1c4f1fbd8fb9ebef1d9b58"
+    },
+    {
+      "Start": "c9b5feff61604997849daaaad1e09f57",
+      "End": "6ff93b3b019d4e6cacd303f07a27c6fe",
+      "Id": "609fe329e46f4bdcbefcfceabcd53dd6"
+    },
+    {
+      "Start": "cf58c91673f042cfb70e876c4de4045a",
+      "End": "49b52c0d04944e9eb0de5f89611c698c",
+      "Id": "ee4aa69e502b4bee8d05a98b348cb3a6"
+    },
+    {
+      "Start": "161b0206803243c09abab107b75446d1",
+      "End": "3b45e45d380f40049a0226e5be34444d",
+      "Id": "5387cff094fa4a22b9d6072298be2cdb"
+    },
+    {
+      "Start": "d301f22ab47141df94e02fc68674445a",
+      "End": "c9ddd1e0df1c4de7ad4996acb414a746",
+      "Id": "670db39d3f3f495bba3652cce09d3abd"
+    },
+    {
+      "Start": "15a9e85d687640958120f34d667d8f8f",
+      "End": "b0adb31a8cc84b8abfa10e392fe2bcbb",
+      "Id": "d64721a11f524367a88a86412b87f168"
+    },
+    {
+      "Start": "5b55ed7bb4f64a63bc20ab6d62eff0f3",
+      "End": "58973b3f904148eb8131cfeb1f162bf8",
+      "Id": "bea9050d53c548a9801002c3deac6548"
+    },
+    {
+      "Start": "5b55ed7bb4f64a63bc20ab6d62eff0f3",
+      "End": "2a5186d0523b47f2a75ab0c28d3f0ce2",
+      "Id": "a5b0e74e209a4b5a86ad28f803f77a32"
+    },
+    {
+      "Start": "1f61dc480f6148299ddff340d56a2d77",
+      "End": "764cfead3c544a69bbe2de5ac30063f6",
+      "Id": "d8df80c9a5744ea9a05194c93fccbf27"
+    },
+    {
+      "Start": "0240d673b707433fa80e6fea05f019df",
+      "End": "a97380adb7a747fe8ef383e84e0bf421",
+      "Id": "58957e017efb4ea18f1524ba2381c329"
+    },
+    {
+      "Start": "c950155c08be4b968b3b54874cd83f95",
+      "End": "f1e73200ff8543d6bf756d1fe441eba3",
+      "Id": "1a81c29725aa475d9219bce892d9714a"
+    },
+    {
+      "Start": "c950155c08be4b968b3b54874cd83f95",
+      "End": "695759ad217b464c90386488b3228c49",
+      "Id": "6b9510d16ae7474197bf9df5a8761e7f"
+    },
+    {
+      "Start": "ccc93e54b9eb43788a5056c1aeaf0652",
+      "End": "c5de9482c92e4eeb9f63cf90843748c3",
+      "Id": "a7ef3193caf44c6492402cbe03cf5174"
+    }
+  ],
+  "Dependencies": [
+    "b5a6feb8-913f-4937-8370-0198c198c1ca",
+    "6f439a89-7f6d-4598-b1b1-685744fea964",
+    "328bcd48-cdc2-418b-8a07-6a43ac4c0207",
+    "73213780-7c72-4ed4-b3bc-615fbf4892b0",
+    "6f1c4b64-0ef7-451a-a5be-526e34d565c7",
+    "69824e7d-ba97-4d5f-ae91-522bf95f083b"
+  ],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.2.1.5175",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -660836.26442234928,
+      "EyeY": 570673.77104805841,
+      "EyeZ": 768567.62798500143,
+      "LookX": 660831.26442234928,
+      "LookY": -570662.77104805841,
+      "LookZ": -768575.62798500143,
+      "UpX": 0.1906139918075499,
+      "UpY": 0.95630475596303577,
+      "UpZ": -0.22169239916981917
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM.WMTSScaleSetNetherlands",
+        "Id": "16b707b40ab64666a4444e5089465ef5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1339.74890683516,
+        "Y": 366.85303774425
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM.WMTSZoomLevelTileRow",
+        "Id": "5d59f8fec0ea4791aee9fa199289bfb8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1791.28378708236,
+        "Y": 375.516965767598
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM.WMTSGeoservicesLibraryNetherlands",
+        "Id": "b4672924f1704f35af0463c4ff79b1ca",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2650.08289042886,
+        "Y": 422.188659139913
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM.WMTSTileListFromBbox",
+        "Id": "45e9170bbc7f48299191cb94dca82891",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2158.92679493211,
+        "Y": 687.267516132258
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "PixelWidth",
+        "Id": "7865409204f742edaaaf37424eefac4c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1825.63197541627,
+        "Y": 772.190773514617
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "f9ba953c5ea94863b18776646181d132",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 720.325579602106,
+        "Y": 542.54853408584
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "bac9ff68987240dcbde995f0f1e6677b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 718.860500351977,
+        "Y": 607.362467002578
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "a978b0a03cac405ca31ab98d5cc15312",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 718.56062274625,
+        "Y": 822.886196281495
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "5750e54c38b946cb9ed8637efea5cf45",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 725.304905481743,
+        "Y": 710.849748817589
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "e91120bccdb947dd920e489acf457aca",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 715.549938037051,
+        "Y": 930.105480484542
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "b87cdd5642224148ad8b112ded3209e1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 716.964498379331,
+        "Y": 1024.960761642
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "5cf88c79b47c4146824efb4f7f151556",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 715.657913193434,
+        "Y": 1129.48757651375
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "1272248c50864c22a7987742b2ccad4f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 4461.94359893857,
+        "Y": 749.154084828634
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM.TMS_WMTS_WebrequestAndCombineImages",
+        "Id": "3fd384ad080145c9939133dafe922d12",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2904.91037794058,
+        "Y": 958.172450992803
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Boolean",
+        "Id": "7c5c90b6b09242aabcfbbf4ebaba0087",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2624.7047061648,
+        "Y": 1104.42121578319
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_ImportImageInView",
+        "Id": "207222d7520d4c81bbef8ca1e0adf36b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3587.0525595154854,
+        "Y": 336.97662470980481
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Image.WriteToFile",
+        "Id": "ffae7b9daf3b480ca44a69f74419d145",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3350.3852931135475,
+        "Y": 623.90950521480886
+      }
+    ],
+    "Annotations": [],
+    "X": -1912.8699691046252,
+    "Y": -161.44456583984021,
+    "Zoom": 0.789902587690939
+  }
+}
