@@ -602,10 +602,10 @@
       "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
       "NodeType": "FunctionNode",
       "FunctionSignature": "Autodesk.DesignScript.Geometry.Surface.PerimeterCurves",
-      "Id": "1bb4b91fc000419f838e4dd244d4892f",
+      "Id": "ebcfb5940ac242f090b435854268ad60",
       "Inputs": [
         {
-          "Id": "a251a78074474488b4b9100dfcc24c1c",
+          "Id": "2d9b57e2daf34305abf8cf9f349d710e",
           "Name": "surface",
           "Description": "Autodesk.DesignScript.Geometry.Surface",
           "UsingDefaultValue": false,
@@ -616,7 +616,7 @@
       ],
       "Outputs": [
         {
-          "Id": "4fba4ac4d0b94d0bb382a9ddd4b235a4",
+          "Id": "60867259faac419c8424d366faea1834",
           "Name": "Curve[]",
           "Description": "Curve[]",
           "UsingDefaultValue": false,
@@ -627,9 +627,116 @@
       ],
       "Replication": "Auto",
       "Description": "Return all the boundary Curves of the Surface.\n\nSurface.PerimeterCurves ( ): Curve[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.PolySurface.ByJoinedSurfaces@Autodesk.DesignScript.Geometry.Surface[]",
+      "Id": "95020def20d241d6aa69c6053848fcb6",
+      "Inputs": [
+        {
+          "Id": "3ecf221e21904075a4246a48c1897835",
+          "Name": "surfaces",
+          "Description": "Surfaces to join into polysurface\n\nSurface[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1611aa75b25346b2bddbad027371b9d3",
+          "Name": "PolySurface",
+          "Description": "PolySurface",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Make Polysurface by joining surfaces.\n\nPolySurface.ByJoinedSurfaces (surfaces: Surface[]): PolySurface"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.Surface.PerimeterCurves",
+      "Id": "1bb4b91fc000419f838e4dd244d4892f",
+      "Inputs": [
+        {
+          "Id": "585eb8c024814f04848ad3265a231382",
+          "Name": "surface",
+          "Description": "Autodesk.DesignScript.Geometry.Surface",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "31471a94dd3d4d9e9f46e8da79a75b45",
+          "Name": "Curve[]",
+          "Description": "Curve[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Return all the boundary Curves of the Surface.\n\nSurface.PerimeterCurves ( ): Curve[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "PolySurface",
+      "Id": "f39a950c54834e9caa0b8380d681e71b",
+      "Inputs": [
+        {
+          "Id": "4c4df6da17734429989ded078107e3cf",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "PolySurfaceBoundary",
+      "Id": "b19085b11e654e14ade2d669e2b312cd",
+      "Inputs": [
+        {
+          "Id": "9e20298c040c45f7aafaf529cbe6c129",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
     }
   ],
   "Connectors": [
+    {
+      "Start": "049f11ad7d2946efbf794ac9bbde5b5a",
+      "End": "585eb8c024814f04848ad3265a231382",
+      "Id": "bfb36a929d334b9dbc8ed367ce50585f"
+    },
     {
       "Start": "049f11ad7d2946efbf794ac9bbde5b5a",
       "End": "6d771d0389ae47829a1d061ba539e28f",
@@ -637,8 +744,8 @@
     },
     {
       "Start": "049f11ad7d2946efbf794ac9bbde5b5a",
-      "End": "a251a78074474488b4b9100dfcc24c1c",
-      "Id": "bfb36a929d334b9dbc8ed367ce50585f"
+      "End": "3ecf221e21904075a4246a48c1897835",
+      "Id": "677b4243ba4c43aa96476cde68773544"
     },
     {
       "Start": "8f1b06a21cc44dc88527c62f2e32fe4d",
@@ -696,7 +803,22 @@
       "Id": "2c896269dfc04111b1cd7ee7f1c5c69a"
     },
     {
-      "Start": "4fba4ac4d0b94d0bb382a9ddd4b235a4",
+      "Start": "60867259faac419c8424d366faea1834",
+      "End": "9e20298c040c45f7aafaf529cbe6c129",
+      "Id": "bd9ef9516d2544618d7e344f331d52d8"
+    },
+    {
+      "Start": "1611aa75b25346b2bddbad027371b9d3",
+      "End": "2d9b57e2daf34305abf8cf9f349d710e",
+      "Id": "944be37d4a7e469787c5abda4246c78d"
+    },
+    {
+      "Start": "1611aa75b25346b2bddbad027371b9d3",
+      "End": "4c4df6da17734429989ded078107e3cf",
+      "Id": "ce31f84e72044a7dabbb0c3c18c2a7a9"
+    },
+    {
+      "Start": "31471a94dd3d4d9e9f46e8da79a75b45",
       "End": "0ada78ee5a49417785042ef9394e179d",
       "Id": "ad9430fb4066428da363392a930a6c3c"
     }
@@ -714,15 +836,15 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -215049.09942151658,
-      "EyeY": 247387.760246064,
-      "EyeZ": 106323.06429966328,
-      "LookX": 215044.09942151658,
-      "LookY": -247376.760246064,
-      "LookZ": -106331.06429966328,
-      "UpX": 0.4947586352148361,
-      "UpY": 0.83388582206716866,
-      "UpZ": -0.24463918050000988
+      "EyeX": -1206354.1617395764,
+      "EyeY": 562470.05339363171,
+      "EyeZ": -322513.78019203723,
+      "LookX": 1198859.5054895764,
+      "LookY": -564880.11589363171,
+      "LookZ": 215479.24894203723,
+      "UpX": 0.2130260169506073,
+      "UpY": 0.97629600763320923,
+      "UpZ": 0.038288626819849014
     },
     "NodeViews": [
       {
@@ -802,8 +924,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 3296.9277191217,
-        "Y": 790.437523564085
+        "X": 3276.29679895323,
+        "Y": 734.202627016433
       },
       {
         "ShowGeometry": true,
@@ -832,8 +954,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 3283.67650837372,
-        "Y": 674.038900135126
+        "X": 3274.3040256157778,
+        "Y": 627.176486345416
       },
       {
         "ShowGeometry": true,
@@ -848,17 +970,57 @@
       {
         "ShowGeometry": true,
         "Name": "Surface.PerimeterCurves",
+        "Id": "ebcfb5940ac242f090b435854268ad60",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3204.044218387603,
+        "Y": 172.82814955287958
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "PolySurface.ByJoinedSurfaces",
+        "Id": "95020def20d241d6aa69c6053848fcb6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2832.3580956214355,
+        "Y": 169.92335857194357
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Surface.PerimeterCurves",
         "Id": "1bb4b91fc000419f838e4dd244d4892f",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 3137.4199784651264,
-        "Y": 312.91806630978783
+        "X": 2985.1171336485731,
+        "Y": 337.52083354938571
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "f39a950c54834e9caa0b8380d681e71b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3276.29679895323,
+        "Y": 810.02337426465806
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "b19085b11e654e14ade2d669e2b312cd",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3276.29679895323,
+        "Y": 917.03807727459832
       }
     ],
     "Annotations": [],
-    "X": -3300.4930307619593,
-    "Y": -393.67286753483944,
-    "Zoom": 1.4862055458528416
+    "X": -858.29185968687671,
+    "Y": 121.47330864756759,
+    "Zoom": 0.47847203119431825
   }
 }

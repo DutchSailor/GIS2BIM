@@ -143,7 +143,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n#The inputs to this node will be stored as a list in the IN variables.\ndataEnteringNode = IN\n\n#Assign your output to the OUT variable.\n\nrdx= IN[0]\nrdy = IN[1]\nGeotiffValues = IN[2]\nWaterbottom = IN[3]\n\nx = []\ny = []\nz = []\n\nfor i in GeotiffValues:\n\t\tx.append(int((i[\"longitude\"]-rdx)*1000))\n\t\ty.append(int((i[\"latitude\"]-rdy)*1000))\n\t\tif int(i[\"elevation\"]) > 1000:\n\t\t\tz.append(Waterbottom*1000)\n\t\telse:\n\t\t\tz.append(int(i[\"elevation\"]*1000))\n\nPoints = []\n\nfor i,j,h in zip(x,y,z):\n\tPoints.append(Point.ByCoordinates(i,j,h))\n\t\nOUT = Points",
+      "Code": "import clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n#The inputs to this node will be stored as a list in the IN variables.\ndataEnteringNode = IN\n\n#Assign your output to the OUT variable.\n\nrdx= IN[0]\nrdy = IN[1]\nGeotiffValues = IN[2]\nWaterbottom = IN[3]\n\nx1 = []\ny1 = []\nz1 = []\nx2 = []\ny2 = []\nz2 = []\n\nfor i in GeotiffValues:\n\t\tif int(i[\"elevation\"]) > 1000:\n\t\t\tz1.append(Waterbottom*1000)\n\t\t\tx1.append(int((i[\"longitude\"]-rdx)*1000))\n\t\t\ty1.append(int((i[\"latitude\"]-rdy)*1000))\n\t\telse:\n\t\t\tx2.append(int((i[\"longitude\"]-rdx)*1000))\n\t\t\ty2.append(int((i[\"latitude\"]-rdy)*1000))\n\t\t\tz2.append(int(i[\"elevation\"]*1000))\n\nPointsNoElevationData = []\nPointsSurface = []\n\nfor i,j,h in zip(x1,y1,z1):\n\tPointsNoElevationData.append(Point.ByCoordinates(i,j,h))\n\nfor i,j,h in zip(x2,y2,z2):\n\tPointsSurface.append(Point.ByCoordinates(i,j,h))\n\nAllPoints = PointsNoElevationData + PointsSurface\nOUT = AllPoints,PointsNoElevationData,PointsSurface",
       "VariableInputPorts": true,
       "Id": "b9f27c2fc52f4bbc8384f23a1b76dc37",
       "Inputs": [
@@ -722,6 +722,96 @@
       ],
       "Replication": "Auto",
       "Description": "Helpers.GEOTiffReader (filePath: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "a[0];\na[1];\na[2];",
+      "Id": "b350835ae7ba45d19c1287cb0a57591b",
+      "Inputs": [
+        {
+          "Id": "eb3f6bd69fed4cf58ad8169123212300",
+          "Name": "a",
+          "Description": "a",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "03b2ca8d5511457b9ce149d8d7c410cf",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7ce5efcf89da487a8caaa604ca47b156",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e483c7d5a0194d67813b515f644d8ee2",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "PointsSurface",
+      "Id": "a5c2d0f3b9b44b4e93ddaec633f42a48",
+      "Inputs": [
+        {
+          "Id": "d982e29fa88c4ba98157f115c47703d6",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "PointsNoElevationData",
+      "Id": "53a1df9a4a6f4189a339ab2c4dc42687",
+      "Inputs": [
+        {
+          "Id": "9610791bbf224f71a6f2b52d69430930",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
     }
   ],
   "Connectors": [
@@ -772,8 +862,8 @@
     },
     {
       "Start": "c436ea0b5cb9478f9e678eaece20493b",
-      "End": "d4c0318f977f4aef8954cd8919f398df",
-      "Id": "cc31c9dfa43b44ea8e4298667f908fb8"
+      "End": "eb3f6bd69fed4cf58ad8169123212300",
+      "Id": "0dd2018e864b4dd488ba5aeacaf3cc76"
     },
     {
       "Start": "432181d4ac6e4ef8a58a02f6528ee47f",
@@ -859,6 +949,21 @@
       "Start": "303d977ffd654524aa3dc7f951da3333",
       "End": "716194c8083648939f56ee7666807dec",
       "Id": "9fccc97ea2d94674b35dbf2865e46e24"
+    },
+    {
+      "Start": "03b2ca8d5511457b9ce149d8d7c410cf",
+      "End": "d4c0318f977f4aef8954cd8919f398df",
+      "Id": "8932867b7f7d4360b97b8e6d67fbbde8"
+    },
+    {
+      "Start": "7ce5efcf89da487a8caaa604ca47b156",
+      "End": "9610791bbf224f71a6f2b52d69430930",
+      "Id": "a69990259b704b14bf5142c4fa0e9016"
+    },
+    {
+      "Start": "e483c7d5a0194d67813b515f644d8ee2",
+      "End": "d982e29fa88c4ba98157f115c47703d6",
+      "Id": "936359af832f4d8facfc2ac325bb7f56"
     }
   ],
   "Dependencies": [
@@ -876,15 +981,15 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -215049.09942151658,
-      "EyeY": 247387.760246064,
-      "EyeZ": 106323.06429966328,
-      "LookX": 215044.09942151658,
-      "LookY": -247376.760246064,
-      "LookZ": -106331.06429966328,
-      "UpX": 0.4947586352148361,
-      "UpY": 0.83388582206716866,
-      "UpZ": -0.24463918050000988
+      "EyeX": -244445.37205874946,
+      "EyeY": 150019.05245267382,
+      "EyeZ": -147492.01335731705,
+      "LookX": 236950.71580874946,
+      "LookY": -152429.11495267382,
+      "LookZ": 40457.482107317046,
+      "UpX": 0.33714111982970957,
+      "UpY": 0.93969262239239348,
+      "UpZ": 0.057564208527676804
     },
     "NodeViews": [
       {
@@ -944,8 +1049,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 3555.7552987584641,
-        "Y": 550.36476412802631
+        "X": 3456.7323397560531,
+        "Y": 581.81911581114491
       },
       {
         "ShowGeometry": true,
@@ -1004,8 +1109,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 3847.78901548079,
-        "Y": 761.996176766773
+        "X": 3985.8113822352334,
+        "Y": 455.82815545266305
       },
       {
         "ShowGeometry": true,
@@ -1014,8 +1119,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 3848.71774909266,
-        "Y": 838.895972027645
+        "X": 3983.8549637312435,
+        "Y": 540.66211903215083
       },
       {
         "ShowGeometry": true,
@@ -1036,11 +1141,41 @@
         "Excluded": false,
         "X": 3110.32542874617,
         "Y": 374.66699803315913
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "b350835ae7ba45d19c1287cb0a57591b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3659.2741473554383,
+        "Y": 583.32328879934391
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "a5c2d0f3b9b44b4e93ddaec633f42a48",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3985.273634238054,
+        "Y": 608.54515278223607
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "53a1df9a4a6f4189a339ab2c4dc42687",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3984.9348115181574,
+        "Y": 678.93728240427981
       }
     ],
     "Annotations": [],
-    "X": -2584.54520049532,
-    "Y": -200.83109251393006,
-    "Zoom": 0.92837398100151325
+    "X": -2352.0623198187004,
+    "Y": -218.87313035206159,
+    "Zoom": 0.85838679086464276
   }
 }

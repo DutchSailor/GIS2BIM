@@ -1,110 +1,648 @@
-<Workspace Version="1.3.4.6666" X="-169.415464140751" Y="-90.5728093038524" zoom="0.827702570441191" ScaleFactor="1" Name="GIS2BIM_SetRevitSiteLocation" Description="Sets the properties of the current Site Location of the active Revit Project" ID="e43be926-b495-4056-98e7-aa71bff79bec" Category="GIS2BIM.Revit">
-  <NamespaceResolutionMap />
-  <Elements>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="dc57ee8d-ce56-4f4e-a234-51cd6454c543" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="333.4" y="339.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="toggle: bool=true" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <PythonNodeModels.PythonNode guid="02ffcd0f-6455-43d5-95ed-bc95ca423c08" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1140.63061852391" y="339.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="4">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
-      <PortInfo index="3" default="False" />
-      <Script>#©2017 Ekko Nap, ekko@groosman.com
-#licensed under MIT
-
-import clr
-clr.AddReference("RevitServices")
-import RevitServices
-from RevitServices.Persistence import DocumentManager
-from RevitServices.Transactions import TransactionManager
-import math
-
-doc = DocumentManager.Instance.CurrentDBDocument
-
-projectLocation = doc.ActiveProjectLocation
-siteLocation = projectLocation.SiteLocation
-
-#SiteLocation = projectLocation.GetSiteLocation(); // 2018
-#from https://github.com/jeremytammik/the_building_coder_samples/blob/master/BuildingCoder/BuildingCoder/CmdUnrotateNorth.cs
-#untested
-
-bool = IN[0]
-latitude = IN[1]
-longitude = IN[2]
-name = IN[3]
-
-if bool==1:
-	TransactionManager.Instance.EnsureInTransaction(doc)
-
-	newLatitude=siteLocation.Latitude=latitude*math.pi/180
-	newLongitude=siteLocation.Longitude=longitude*math.pi/180
-	newName=siteLocation.PlaceName=name
-	
-	TransactionManager.Instance.TransactionTaskDone()
-
-OUT = newLatitude*180/math.pi, newLongitude*180/math.pi, newName
-</Script>
-    </PythonNodeModels.PythonNode>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="7b116496-47fd-489c-90de-ceee410d9dec" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="333.4" y="489.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="//latitude, between -90 and 90&#xD;&#xA;lat: string" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="e5861992-8be5-4f1b-8c3f-220760556494" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1332.4" y="338.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="lat=out[0];&#xA;lon=out[1];&#xA;name=out[2];" ShouldFocus="false">
-      <PortInfo index="0" default="False" />
-    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="973e1187-ba81-4291-8050-9711819f43b1" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="333.4" y="639.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="//longitude, between -180 and 180&#xD;&#xA;lon: string" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="f7786bd4-32dc-442b-900a-37070668451d" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="332.4" y="729.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <Symbol value="//address or place name&#xD;&#xA;name: string = &quot;User Defined&quot;" />
-    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="40f0dbef-6261-438f-b05f-0fe35957daac" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Location.ByLatitudeAndLongitude" x="1536.68148334292" y="236" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DynamoUnits.dll" function="DynamoUnits.Location.ByLatitudeAndLongitude@double,double,string">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
-    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-    <Dynamo.Graph.Nodes.CustomNodes.Output guid="e9d8eb84-d499-47e0-9eaf-eff1161609f8" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1804.68148334292" y="237.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
-      <PortInfo index="0" default="False" />
-      <Symbol value="Location" />
-    </Dynamo.Graph.Nodes.CustomNodes.Output>
-    <Dynamo.Graph.Nodes.CustomNodes.Output guid="2c647002-2997-4379-9434-94260c820bb2" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1799.68148334292" y="392.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
-      <PortInfo index="0" default="False" />
-      <Symbol value="lat" />
-    </Dynamo.Graph.Nodes.CustomNodes.Output>
-    <Dynamo.Graph.Nodes.CustomNodes.Output guid="14d6d5dc-5086-40e1-86e6-b79b0c43d9be" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1800.68148334292" y="470.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
-      <PortInfo index="0" default="False" />
-      <Symbol value="lon" />
-    </Dynamo.Graph.Nodes.CustomNodes.Output>
-    <Dynamo.Graph.Nodes.CustomNodes.Output guid="2a0acb1a-09da-49cb-bf99-bdf9905ae4c7" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1801.68148334292" y="538.731175092583" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
-      <PortInfo index="0" default="False" />
-      <Symbol value="name" />
-    </Dynamo.Graph.Nodes.CustomNodes.Output>
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="0c52b735-daa2-4ef5-897b-adfcff833ee5" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="String.ToNumber" x="687.007525360841" y="624.853973589461" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.ToNumber@string">
-      <PortInfo index="0" default="False" />
-    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="a21f3e8d-dfb5-4d49-812c-5b91d3ddcb25" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="String.ToNumber" x="675.798534711597" y="471.691623984458" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.ToNumber@string">
-      <PortInfo index="0" default="False" />
-    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-  </Elements>
-  <Connectors>
-    <Dynamo.Graph.Connectors.ConnectorModel start="dc57ee8d-ce56-4f4e-a234-51cd6454c543" start_index="0" end="02ffcd0f-6455-43d5-95ed-bc95ca423c08" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="02ffcd0f-6455-43d5-95ed-bc95ca423c08" start_index="0" end="e5861992-8be5-4f1b-8c3f-220760556494" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="7b116496-47fd-489c-90de-ceee410d9dec" start_index="0" end="a21f3e8d-dfb5-4d49-812c-5b91d3ddcb25" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="0" end="40f0dbef-6261-438f-b05f-0fe35957daac" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="0" end="2c647002-2997-4379-9434-94260c820bb2" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="1" end="40f0dbef-6261-438f-b05f-0fe35957daac" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="1" end="14d6d5dc-5086-40e1-86e6-b79b0c43d9be" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="2" end="2a0acb1a-09da-49cb-bf99-bdf9905ae4c7" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="e5861992-8be5-4f1b-8c3f-220760556494" start_index="2" end="40f0dbef-6261-438f-b05f-0fe35957daac" end_index="2" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="973e1187-ba81-4291-8050-9711819f43b1" start_index="0" end="0c52b735-daa2-4ef5-897b-adfcff833ee5" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="f7786bd4-32dc-442b-900a-37070668451d" start_index="0" end="02ffcd0f-6455-43d5-95ed-bc95ca423c08" end_index="3" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="40f0dbef-6261-438f-b05f-0fe35957daac" start_index="0" end="e9d8eb84-d499-47e0-9eaf-eff1161609f8" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="0c52b735-daa2-4ef5-897b-adfcff833ee5" start_index="0" end="02ffcd0f-6455-43d5-95ed-bc95ca423c08" end_index="2" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="a21f3e8d-dfb5-4d49-812c-5b91d3ddcb25" start_index="0" end="02ffcd0f-6455-43d5-95ed-bc95ca423c08" end_index="1" portType="0" />
-  </Connectors>
-  <Notes />
-  <Annotations />
-  <Presets />
-  <Cameras>
-    <Camera Name="Background Preview" eyeX="25272.021484375" eyeY="277168.125" eyeZ="279762.78125" lookX="-13735.302734375" lookY="-229918.640625" lookZ="-279774.75" upX="-0.0222614649683237" upY="0.891006529331207" upZ="-0.453444361686707" />
-  </Cameras>
-</Workspace>
+{
+  "Uuid": "e43be926-b495-4056-98e7-aa71bff79bec",
+  "IsCustomNode": true,
+  "Category": "GIS2BIM.Revit",
+  "Description": "Sets the properties of the current Site Location of the active Revit Project",
+  "Name": "GIS2BIM_SetRevitSiteLocation",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "toggle",
+        "TypeName": "bool",
+        "TypeRank": 0,
+        "DefaultValue": "true",
+        "Description": ""
+      },
+      "Id": "dc57ee8dce564f4ea23451cd6454c543",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "99ec293d847843eba436b28720d71f82",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#©2017 Ekko Nap, ekko@groosman.com\r\n#licensed under MIT\r\n\r\nimport clr\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\nimport math\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\nsiteLocation = doc.SiteLocation\r\n\r\n#SiteLocation = projectLocation.GetSiteLocation(); // 2018\r\n#from https://github.com/jeremytammik/the_building_coder_samples/blob/master/BuildingCoder/BuildingCoder/CmdUnrotateNorth.cs\r\n#untested\r\n\r\nbool = IN[0]\r\nlatitude = IN[1]\r\nlongitude = IN[2]\r\nname = IN[3]\r\n\r\nif bool==1:\r\n\tTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n\tnewLatitude=siteLocation.Latitude=latitude*math.pi/180\r\n\tnewLongitude=siteLocation.Longitude=longitude*math.pi/180\r\n\tnewName=siteLocation.PlaceName=name\r\n\t\r\n\tTransactionManager.Instance.TransactionTaskDone()\r\n\r\nOUT = newLatitude*180/math.pi, newLongitude*180/math.pi, newName",
+      "VariableInputPorts": true,
+      "Id": "02ffcd0f645543d595edbc95ca423c08",
+      "Inputs": [
+        {
+          "Id": "110f5f8fdb1041f38727224018598be7",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "70d11a1e54624c7c8f2a212b655c4ea9",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a73ba1bd132648269bea634d587fffaa",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "69ef89ed90a54eef9b641b827d5c49d4",
+          "Name": "IN[3]",
+          "Description": "Input #3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8477cc4d914d41379441b4787f3f974c",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "lat",
+        "TypeName": "string",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": "latitude, between -90 and 90"
+      },
+      "Id": "7b11649647fd489c90deceee410d9dec",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "5add34261b764086992441fd2ebe9ec8",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "lat=out[0];\nlon=out[1];\nname=out[2];",
+      "Id": "e58619928be54f1b8c3f220760556494",
+      "Inputs": [
+        {
+          "Id": "ba30f4233ec34fbaa90b5a959d7166af",
+          "Name": "out",
+          "Description": "out",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "451f8a4788e8426ea4e2a22e5a5123a0",
+          "Name": "",
+          "Description": "lat",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ac324e6b82f946fe812e2657a1e3acfd",
+          "Name": "",
+          "Description": "lon",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1ff829253479483aaeca2fa09464aac2",
+          "Name": "",
+          "Description": "name",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "lon",
+        "TypeName": "string",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": "longitude, between -180 and 180"
+      },
+      "Id": "973e1187ba81429180509711819f43b1",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "b7c1d31cbad242eebfdbca2f8f56796d",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "name",
+        "TypeName": "string",
+        "TypeRank": 0,
+        "DefaultValue": "\"User Defined\"",
+        "Description": "address or place name"
+      },
+      "Id": "f7786bd432dc442b900a37070668451d",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7a199f6bb72c465e8b638aa60c2712bc",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DynamoUnits.Location.ByLatitudeAndLongitude@double,double,string",
+      "Id": "40f0dbef6261438fb05f0fe35957daac",
+      "Inputs": [
+        {
+          "Id": "925ab2ba77fd4eb09b2127bfdf5526c8",
+          "Name": "latitude",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4d7790a7433549b48cbac0381562fc81",
+          "Name": "longitude",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c70fa9cfd89c4d13b3736dbdc5a466eb",
+          "Name": "name",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ce0fdc4f23fd4a1cb2d97c0a39b59b8c",
+          "Name": "Location",
+          "Description": "Location",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Location.ByLatitudeAndLongitude (latitude: double, longitude: double, name: string): Location"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Location",
+      "Id": "e9d8eb84d49947e09eafeff1161609f8",
+      "Inputs": [
+        {
+          "Id": "b0b68ce2a21e474eb562d5038feed239",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "lat",
+      "Id": "2c64700229974379943494260c820bb2",
+      "Inputs": [
+        {
+          "Id": "c287d9798704452ca43bd59c84b890c5",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "lon",
+      "Id": "14d6d5dc508640e186e6b79b0c43d9be",
+      "Inputs": [
+        {
+          "Id": "1e7503f3636546e7a22c5440e96f5da7",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "name",
+      "Id": "2a0acb1a09da49cbbf99bdf9905ae4c7",
+      "Inputs": [
+        {
+          "Id": "a8e53896b6254da8996bff9d0971a224",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.String.ToNumber@string",
+      "Id": "0c52b735daa24ef5897badfcff833ee5",
+      "Inputs": [
+        {
+          "Id": "e062529390814bf4bd8d5932d125cd1e",
+          "Name": "str",
+          "Description": "String to be converted.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "fda525da115f4db0bf669012d94d8594",
+          "Name": "number",
+          "Description": "Integer or double-type number.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Converts a string to an integer or a double.\n\nString.ToNumber (str: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.String.ToNumber@string",
+      "Id": "a21f3e8ddfb54d49812c5b91d3ddcb25",
+      "Inputs": [
+        {
+          "Id": "caf814329bbb466db750abce433ed086",
+          "Name": "str",
+          "Description": "String to be converted.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "00e7014bb56845afa6af390eca052625",
+          "Name": "number",
+          "Description": "Integer or double-type number.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Converts a string to an integer or a double.\n\nString.ToNumber (str: string): var[]..[]"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "99ec293d847843eba436b28720d71f82",
+      "End": "110f5f8fdb1041f38727224018598be7",
+      "Id": "929509f332f2471eaa6929bcb3f6f3f8"
+    },
+    {
+      "Start": "8477cc4d914d41379441b4787f3f974c",
+      "End": "ba30f4233ec34fbaa90b5a959d7166af",
+      "Id": "bc8e31ce9b3e469b99193dfdc146416b"
+    },
+    {
+      "Start": "5add34261b764086992441fd2ebe9ec8",
+      "End": "caf814329bbb466db750abce433ed086",
+      "Id": "04c22c2448fc4ffebaf9f9dbff1b4ed3"
+    },
+    {
+      "Start": "451f8a4788e8426ea4e2a22e5a5123a0",
+      "End": "925ab2ba77fd4eb09b2127bfdf5526c8",
+      "Id": "03a4e7c7055d4dc78af75500498a0c13"
+    },
+    {
+      "Start": "451f8a4788e8426ea4e2a22e5a5123a0",
+      "End": "c287d9798704452ca43bd59c84b890c5",
+      "Id": "1599c5556fa04ea396f92d858b117ab9"
+    },
+    {
+      "Start": "ac324e6b82f946fe812e2657a1e3acfd",
+      "End": "4d7790a7433549b48cbac0381562fc81",
+      "Id": "26ed71767f3c418092cceff2949c68cb"
+    },
+    {
+      "Start": "ac324e6b82f946fe812e2657a1e3acfd",
+      "End": "1e7503f3636546e7a22c5440e96f5da7",
+      "Id": "c508f19a063e49acbbb006215df7b0ba"
+    },
+    {
+      "Start": "1ff829253479483aaeca2fa09464aac2",
+      "End": "a8e53896b6254da8996bff9d0971a224",
+      "Id": "31202f5ae62648cabcc8529939c6abed"
+    },
+    {
+      "Start": "1ff829253479483aaeca2fa09464aac2",
+      "End": "c70fa9cfd89c4d13b3736dbdc5a466eb",
+      "Id": "11bd6c060da24821b2520a50b483af0a"
+    },
+    {
+      "Start": "b7c1d31cbad242eebfdbca2f8f56796d",
+      "End": "e062529390814bf4bd8d5932d125cd1e",
+      "Id": "ae222ae6c9154af5bb8e1318030fa157"
+    },
+    {
+      "Start": "7a199f6bb72c465e8b638aa60c2712bc",
+      "End": "69ef89ed90a54eef9b641b827d5c49d4",
+      "Id": "729e7b6fc65643e0948afb8d0e1d499e"
+    },
+    {
+      "Start": "ce0fdc4f23fd4a1cb2d97c0a39b59b8c",
+      "End": "b0b68ce2a21e474eb562d5038feed239",
+      "Id": "135de502c94844928a24416ef6476d20"
+    },
+    {
+      "Start": "fda525da115f4db0bf669012d94d8594",
+      "End": "a73ba1bd132648269bea634d587fffaa",
+      "Id": "cafe44bc195a48158a3d94c4d6fe4a8b"
+    },
+    {
+      "Start": "00e7014bb56845afa6af390eca052625",
+      "End": "70d11a1e54624c7c8f2a212b655c4ea9",
+      "Id": "7a0b855e12f74b269c87a2114a6b0ef2"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.2.1.5175",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 47949.640596047131,
+      "EyeY": 2556612.04785967,
+      "EyeZ": 1878994.6516478944,
+      "LookX": 133301.87208600584,
+      "LookY": -2755209.1358102974,
+      "LookZ": -1697788.0644085242,
+      "UpX": 0.056210709376109814,
+      "UpY": 0.69591281901136315,
+      "UpZ": -0.71592299029985951
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "dc57ee8dce564f4ea23451cd6454c543",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 333.4,
+        "Y": 339.731175092583
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "02ffcd0f645543d595edbc95ca423c08",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1130.6860506376274,
+        "Y": 366.25002278933681
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "7b11649647fd489c90deceee410d9dec",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 333.4,
+        "Y": 476.44137705059228
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "e58619928be54f1b8c3f220760556494",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1326.8752400631763,
+        "Y": 354.20050291568936
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "973e1187ba81429180509711819f43b1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 330.98367308327431,
+        "Y": 626.44137705059234
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "f7786bd432dc442b900a37070668451d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 344.48163458362785,
+        "Y": 721.27403088404344
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Location.ByLatitudeAndLongitude",
+        "Id": "40f0dbef6261438fb05f0fe35957daac",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1543.3111952671086,
+        "Y": 242.62971192418848
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "e9d8eb84d49947e09eafeff1161609f8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1811.5113942293067,
+        "Y": 238.58491395338132
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "2c64700229974379943494260c820bb2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1799.68148334292,
+        "Y": 392.731175092583
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "14d6d5dc508640e186e6b79b0c43d9be",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1800.68148334292,
+        "Y": 470.731175092583
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "2a0acb1a09da49cbbf99bdf9905ae4c7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1801.68148334292,
+        "Y": 538.731175092583
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.ToNumber",
+        "Id": "0c52b735daa24ef5897badfcff833ee5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 687.007525360841,
+        "Y": 624.853973589461
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.ToNumber",
+        "Id": "a21f3e8ddfb54d49812c5b91d3ddcb25",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 675.798534711597,
+        "Y": 471.691623984458
+      }
+    ],
+    "Annotations": [],
+    "X": -471.14194277945376,
+    "Y": -35.589062573332455,
+    "Zoom": 0.88385192930220746
+  }
+}

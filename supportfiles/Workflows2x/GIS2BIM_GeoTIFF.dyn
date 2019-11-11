@@ -17,12 +17,12 @@
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
       "NodeType": "CodeBlockNode",
-      "Code": "\"Hoek van Holland\";\n\"Zeekant\";\n\"103\";",
+      "Code": "\"Kamperland\";\n\"Sophiaboulevard\";\n\"23\";",
       "Id": "9dc66250a0464811b39827355692efec",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "2209458e079b435abc749d721635129e",
+          "Id": "c1c235572bc74b81b011c37b15814186",
           "Name": "",
           "Description": "Value of expression at line 1",
           "UsingDefaultValue": false,
@@ -31,7 +31,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "7b5f786d71cc4cf8b2c495d3bb2cbc99",
+          "Id": "8c996e90f18448b6b616ed77ccf98a8c",
           "Name": "",
           "Description": "Value of expression at line 2",
           "UsingDefaultValue": false,
@@ -40,7 +40,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "8b5da7b7dec844e3b53ab48afe1ef5e1",
+          "Id": "70627dd570c84cb1b4bc652f031801f8",
           "Name": "",
           "Description": "Value of expression at line 3",
           "UsingDefaultValue": false,
@@ -55,12 +55,12 @@
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
       "NodeType": "CodeBlockNode",
-      "Code": "//width boundingbox\n300;",
+      "Code": "//width boundingbox\n1000;",
       "Id": "5ef9599ade394fd99c529147a0846f38",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "46f8fbacec9b4498a2cdebfea0510326",
+          "Id": "c77fa3188a0142a1b4e17a132bc8fc24",
           "Name": "",
           "Description": "Value of expression at line 2",
           "UsingDefaultValue": false,
@@ -460,28 +460,170 @@
       ],
       "Replication": "Auto",
       "Description": "Load AHN3 via Geotiff WCS. Transform to local coordinates"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "da4af9e2-1688-4b45-8fa1-1ccb8a821143",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "df60986ee5834f3ab2aa3a8b682147a9",
+      "Inputs": [
+        {
+          "Id": "b06cc97401414ae7b80c4192e92bbaf9",
+          "Name": "x",
+          "Description": "E/W\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4b87618afb8e4be0b3e1d6c6433513f7",
+          "Name": "y",
+          "Description": "N/S\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "02f31b32b20149459ee4540a5f375457",
+          "Name": "z",
+          "Description": "Elev\n\ndouble\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "bd5adda1e8de4406873041554897bb2a",
+          "Name": "scale",
+          "Description": "GIS units are usually in meters\n\ndouble\nDefault value : 1000",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fa3faea43eca4e378d01ac92dc42e0dc",
+          "Name": "angle",
+          "Description": "Angle to True North\n\ndouble\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "3a3d8f8693f54717bfeec42ddbe95aaf",
+          "Name": "Element",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7da8c0a527e34ec2a46dda3474e7acf4",
+          "Name": "EastWest",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "de4a7dd091b642db91b7b05af812fa5c",
+          "Name": "NorthSouth",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "49f52774f7534849ab8e07bdef34a887",
+          "Name": "Elevation",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2e4b357606d5458183d422f424ebd716",
+          "Name": "Angle to True North",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Set shared coordinate/project basepoint"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.Flatten@var[]..[],int",
+      "Id": "5c17074fdfaf415a971f400f8e5a9c1e",
+      "Inputs": [
+        {
+          "Id": "639feee603d74621a587dcc391d44cf8",
+          "Name": "list",
+          "Description": "List to flatten.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "aea8b2946b374ed9b82fcc483e3c49e6",
+          "Name": "amt",
+          "Description": "Layers of nesting to remove.\n\nint\nDefault value : -1",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1e77f960e79b43159f95b20ee79228bf",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Flattens a nested list of lists by a certain amount.\n\nList.Flatten (list: var[]..[], amt: int = -1): var[]..[]"
     }
   ],
   "Connectors": [
     {
-      "Start": "2209458e079b435abc749d721635129e",
+      "Start": "c1c235572bc74b81b011c37b15814186",
       "End": "ccd68d0de072456bb5eac3fa0a704e26",
-      "Id": "214cccf5890d4851b58633d376d2bb25"
+      "Id": "0490bd45d5b148ebb0e69486ba7a47e4"
     },
     {
-      "Start": "7b5f786d71cc4cf8b2c495d3bb2cbc99",
+      "Start": "8c996e90f18448b6b616ed77ccf98a8c",
       "End": "5b6fbbe76eea4a669b15aaf3b4cbf829",
-      "Id": "c5c952eb23fc463494b02486d5a96141"
+      "Id": "e9a2e36fa45c4d3c8f2ff7e3b0e12cc8"
     },
     {
-      "Start": "8b5da7b7dec844e3b53ab48afe1ef5e1",
+      "Start": "70627dd570c84cb1b4bc652f031801f8",
       "End": "cf27c20cc29a4dce95ee010e9bb962ef",
-      "Id": "1a97b3a4d1f64e0b9323b70c35442be8"
+      "Id": "27417d8ab85846789bd0ac9538b22a08"
     },
     {
-      "Start": "46f8fbacec9b4498a2cdebfea0510326",
+      "Start": "c77fa3188a0142a1b4e17a132bc8fc24",
       "End": "2a9933aff8bc4a71a84e76896451f5ce",
-      "Id": "e0e9afac0eb34935907da53fd0f5edd9"
+      "Id": "c9f245a8c3c846b4824e1831bf64898b"
     },
     {
       "Start": "8a880dbc10244568b0d3cf1b6477b4b6",
@@ -509,25 +651,48 @@
       "Id": "c0d926ef78ca4fddb48f4561a650442b"
     },
     {
+      "Start": "d0031f628bb4450380653b87a41e84f0",
+      "End": "b06cc97401414ae7b80c4192e92bbaf9",
+      "Id": "dcd0da42c7454ba4a09b9efba91c0879"
+    },
+    {
       "Start": "6ae01b00b1504e6598e202ed635b22d1",
       "End": "ee26c2f660a640a4976a231c0691dd89",
       "Id": "dcb3d897b4ec4129890f6d60a72c3ebb"
     },
     {
+      "Start": "6ae01b00b1504e6598e202ed635b22d1",
+      "End": "4b87618afb8e4be0b3e1d6c6433513f7",
+      "Id": "ddc2106e4ee14a348a89dd81ea7c8325"
+    },
+    {
       "Start": "c8c5207a89094c2981ebbd289f1293a3",
+      "End": "639feee603d74621a587dcc391d44cf8",
+      "Id": "c8be50f8959c4eb187f4ae45b2cbf3a4"
+    },
+    {
+      "Start": "1e77f960e79b43159f95b20ee79228bf",
       "End": "48c4aa14f8044ec0b787974e99a3717e",
-      "Id": "7c18214ec4fa4c83b79005a3d331d368"
+      "Id": "778a7e40487247e998422fb4dac78e48"
     }
   ],
   "Dependencies": [
     "ca221294-195d-4ff9-8a69-ca487b9bd328",
-    "cd7acd09-16f1-44d8-965f-aa4927502e0a"
+    "cd7acd09-16f1-44d8-965f-aa4927502e0a",
+    "da4af9e2-1688-4b45-8fa1-1ccb8a821143"
   ],
-  "Bindings": [],
+  "Bindings": [
+    {
+      "NodeId": "1f763b8c-c722-4c7a-bae0-277b013b3732",
+      "Binding": {
+        "ByPoints_InClassDecl-1_InFunctionScope-1_Instance0_1f763b8c-c722-4c7a-bae0-277b013b3732": "PFNPQVAtRU5WOkVudmVsb3BlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOnhzZD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOlNPQVAtRU5DPSJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy9zb2FwL2VuY29kaW5nLyIgeG1sbnM6U09BUC1FTlY9Imh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3NvYXAvZW52ZWxvcGUvIiB4bWxuczpjbHI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vc29hcC9lbmNvZGluZy9jbHIvMS4wIiBTT0FQLUVOVjplbmNvZGluZ1N0eWxlPSJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy9zb2FwL2VuY29kaW5nLyI+DQo8U09BUC1FTlY6Qm9keT4NCjxhMTpDYWxsU2l0ZV94MDAyQl9UcmFjZVNlcmlhbGlzZXJIZWxwZXIgaWQ9InJlZi0xIiB4bWxuczphMT0iaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS9jbHIvbnNhc3NlbS9Qcm90b0NvcmUvUHJvdG9Db3JlJTJDJTIwVmVyc2lvbiUzRDIuMi4xLjUxNzUlMkMlMjBDdWx0dXJlJTNEbmV1dHJhbCUyQyUyMFB1YmxpY0tleVRva2VuJTNEbnVsbCI+DQo8TnVtYmVyT2ZFbGVtZW50cz4xPC9OdW1iZXJPZkVsZW1lbnRzPg0KPEJhc2UtMF9IYXNEYXRhPnRydWU8L0Jhc2UtMF9IYXNEYXRhPg0KPEJhc2UtMF9EYXRhIGlkPSJyZWYtMyI+UEZOUFFWQXRSVTVXT2tWdWRtVnNiM0JsSUhodGJHNXpPbmh6YVQwaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNUzlZVFV4VFkyaGxiV0V0YVc1emRHRnVZMlVpSUhodGJHNXpPbmh6WkQwaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNUzlZVFV4VFkyaGxiV0VpSUhodGJHNXpPbE5QUVZBdFJVNURQU0pvZEhSd09pOHZjMk5vWlcxaGN5NTRiV3h6YjJGd0xtOXlaeTl6YjJGd0wyVnVZMjlrYVc1bkx5SWdlRzFzYm5NNlUwOUJVQzFGVGxZOUltaDBkSEE2THk5elkyaGxiV0Z6TG5odGJITnZZWEF1YjNKbkwzTnZZWEF2Wlc1MlpXeHZjR1V2SWlCNGJXeHVjenBqYkhJOUltaDBkSEE2THk5elkyaGxiV0Z6TG0xcFkzSnZjMjltZEM1amIyMHZjMjloY0M5bGJtTnZaR2x1Wnk5amJISXZNUzR3SWlCVFQwRlFMVVZPVmpwbGJtTnZaR2x1WjFOMGVXeGxQU0pvZEhSd09pOHZjMk5vWlcxaGN5NTRiV3h6YjJGd0xtOXlaeTl6YjJGd0wyVnVZMjlrYVc1bkx5SStEUW84VTA5QlVDMUZUbFk2UW05a2VUNE5DanhoTVRwVFpYSnBZV3hwZW1GaWJHVkpaQ0JwWkQwaWNtVm1MVEVpSUhodGJHNXpPbUV4UFNKb2RIUndPaTh2YzJOb1pXMWhjeTV0YVdOeWIzTnZablF1WTI5dEwyTnNjaTl1YzJGemMyVnRMMUpsZG1sMFUyVnlkbWxqWlhNdVVHVnljMmx6ZEdWdVkyVXZVbVYyYVhSVFpYSjJhV05sY3lVeVF5VXlNRlpsY25OcGIyNGxNMFF5TGpJdU1TNDFNamt4SlRKREpUSXdRM1ZzZEhWeVpTVXpSRzVsZFhSeVlXd2xNa01sTWpCUWRXSnNhV05MWlhsVWIydGxiaVV6Ukc1MWJHd2lQZzBLUEhOMGNtbHVaMGxFSUdsa1BTSnlaV1l0TXlJK01UVmhPVE0zWldNdE5tWmhZaTAwWVdJNUxUaGtNekF0T0RCaE4yVmtOekJrWkdRMExUQXdNREF3WVRoa1BDOXpkSEpwYm1kSlJENE5DanhwYm5SSlJENHlOekF4UEM5cGJuUkpSRDROQ2p3dllURTZVMlZ5YVdGc2FYcGhZbXhsU1dRK0RRbzhMMU5QUVZBdFJVNVdPa0p2WkhrK0RRbzhMMU5QUVZBdFJVNVdPa1Z1ZG1Wc2IzQmxQZzBLPC9CYXNlLTBfRGF0YT4NCjxCYXNlLTBfSGFzTmVzdGVkRGF0YT5mYWxzZTwvQmFzZS0wX0hhc05lc3RlZERhdGE+DQo8L2ExOkNhbGxTaXRlX3gwMDJCX1RyYWNlU2VyaWFsaXNlckhlbHBlcj4NCjwvU09BUC1FTlY6Qm9keT4NCjwvU09BUC1FTlY6RW52ZWxvcGU+DQo="
+      }
+    }
+  ],
   "View": {
     "Dynamo": {
       "ScaleFactor": 1.0,
-      "HasRunWithoutCrash": false,
+      "HasRunWithoutCrash": true,
       "IsVisibleInDynamoLibrary": true,
       "Version": "2.2.1.5175",
       "RunType": "Manual",
@@ -535,12 +700,12 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -315212.03125,
-      "EyeY": 142580.59375,
-      "EyeZ": -162342.6875,
-      "LookX": 307717.375,
-      "LookY": -144990.65625,
-      "LookZ": 55308.15625,
+      "EyeX": -1206354.1617395764,
+      "EyeY": 562470.05339363171,
+      "EyeZ": -322513.78019203723,
+      "LookX": 1198859.5054895764,
+      "LookY": -564880.11589363171,
+      "LookZ": 215479.24894203723,
       "UpX": 0.2130260169506073,
       "UpY": 0.97629600763320923,
       "UpZ": 0.038288626819849014
@@ -553,8 +718,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -68.3451363537411,
-        "Y": 331.885881089944
+        "X": -80.728228915338889,
+        "Y": 22.308567050003262
       },
       {
         "ShowGeometry": true,
@@ -572,9 +737,9 @@
         "Id": "1f763b8cc7224c7abae0277b013b3732",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Excluded": true,
-        "X": 1317.66508557073,
-        "Y": 331.46322816743
+        "Excluded": false,
+        "X": 1331.9926268438983,
+        "Y": 244.06522640110438
       },
       {
         "ShowGeometry": true,
@@ -583,8 +748,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 246.988686933461,
-        "Y": 834.824835544061
+        "X": 250.16079002027078,
+        "Y": 813.67748163199633
       },
       {
         "ShowGeometry": true,
@@ -612,9 +777,9 @@
         "Id": "47977335e6344e7ea3ac7bb6cb3b204b",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 1321.3503392331,
-        "Y": 457.58505093338
+        "Excluded": true,
+        "X": 1611.3848163669293,
+        "Y": 345.98832304673641
       },
       {
         "ShowGeometry": true,
@@ -623,8 +788,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 199.51039174398147,
-        "Y": 324.22707771735304
+        "X": 187.12729918238369,
+        "Y": 14.649763677412295
       },
       {
         "ShowGeometry": true,
@@ -633,8 +798,28 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 891.57401755953731,
-        "Y": 639.83373920148142
+        "X": 853.10834641135864,
+        "Y": 334.85591795520628
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_SetSharedCoordinate",
+        "Id": "df60986ee5834f3ab2aa3a8b682147a9",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 857.55175873373992,
+        "Y": 28.858212558274204
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.Flatten",
+        "Id": "5c17074fdfaf415a971f400f8e5a9c1e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1306.509756937354,
+        "Y": 416.86921444969147
       }
     ],
     "Annotations": [
@@ -645,19 +830,19 @@
           "9dc66250a0464811b39827355692efec",
           "76781620fdaf46f2ba6e2255cac1b9f1"
         ],
-        "Left": -78.3451363537411,
-        "Top": 278.22707771735304,
+        "Left": -90.728228915338889,
+        "Top": -31.350236322587705,
         "Width": 642.85552809772253,
         "Height": 425.0,
         "FontSize": 30.0,
-        "InitialTop": 324.22707771735304,
+        "InitialTop": 14.649763677412295,
         "InitialHeight": 152.65880337259097,
         "TextblockHeight": 36.0,
         "Background": "#FFC1D676"
       }
     ],
-    "X": 18.783638908131707,
-    "Y": 307.63688461374392,
-    "Zoom": 0.2767000676963372
+    "X": -331.00636387027669,
+    "Y": -53.848894892268262,
+    "Zoom": 0.54332041156362909
   }
 }
