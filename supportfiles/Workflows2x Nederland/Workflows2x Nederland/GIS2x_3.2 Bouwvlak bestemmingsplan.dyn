@@ -1,0 +1,1389 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "GIS2x_3.2 Bouwvlak bestemmingsplan",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Revit.View": {
+        "Key": "Revit.Elements.Views.View",
+        "Value": "RevitNodes.dll"
+      },
+      "String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [
+    {
+      "Id": "a95014af0e174a4991eee48703dbc278",
+      "Name": "Afmeting boundingbox in meters(breedte, hoogte)",
+      "Type": "number",
+      "Value": "2000",
+      "MaximumValue": 2000.0,
+      "MinimumValue": 100.0,
+      "StepValue": 1.0,
+      "NumberType": "Integer",
+      "Description": "A slider that produces integer values."
+    }
+  ],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "CoreNodeModels.WebRequest, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "bfb714f97f65448eb301a159a4862dde",
+      "Inputs": [
+        {
+          "Id": "0b41ba829bf7436d866799b3e817cd56",
+          "Name": "url",
+          "Description": "The url for the web request.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1e37619054614f13b61062f6e0159530",
+          "Name": "result",
+          "Description": "The result of the web request.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Make a web request given a url."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Application.Document.ActiveView",
+      "Id": "d329ec9a44b744609352cbddbb101a32",
+      "Inputs": [
+        {
+          "Id": "3aa2383bdc0c4b95b362211ce359db65",
+          "Name": "document",
+          "Description": "Revit.Application.Document",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f637f2ce8d454f879a2971baca8a8d55",
+          "Name": "View",
+          "Description": "View",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the active view for the document\n\nDocument.ActiveView: View"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "1b8585e3-81f4-499f-8e18-81d010124896",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "27f1dcd4852b4265b2aa90b0647e8475",
+      "Inputs": [
+        {
+          "Id": "8f68414eaa4a403195d0aea68c3dffb1",
+          "Name": "CoordinateX",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8f2f21cecc96465eb30dcee9dd4280f5",
+          "Name": "CoordinateY",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b9bbaca136de440cad6f6d72be41ee4b",
+          "Name": "BoxWidth",
+          "Description": "width of the boundingbox\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2601de3a3ac34051b62b4d0b0b492b2d",
+          "Name": "BoxHeight",
+          "Description": "height of the boundingbox\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "04bf9a9ddb394c7aa3049c3bfdbe4b85",
+          "Name": "Boxstring",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7a7190ee4d754aa3b4618086a98603fc",
+          "Name": "Boxstring2",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "db160fff3b414f3cafb6e24ce20a36f7",
+          "Name": "Xmin",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ffff87b323d04ebeb936db34d6bb03d4",
+          "Name": "Xmax",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2178c063f1da48be84ce510eb9cf9cee",
+          "Name": "Ymin",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "75ad278368aa441189b525eacb09e388",
+          "Name": "Ymax",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "create boundingboxstring for webrequests based on coördinates and dimensions"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "8bf21b26-1292-40d1-8d8a-bcb4cc163f44",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "153238be40924d8993a7ab4a52aeda7b",
+      "Inputs": [
+        {
+          "Id": "f5043c82ad5a4dd893195174468dcd43",
+          "Name": "BoundingBoxEPSG28992",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d11b847d70f74079848450586497da25",
+          "Name": "1 kadastrale grenzen(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7318b87ae66d4d54a85d98df4233fb8b",
+          "Name": "2 ruimtelijke plannen(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e3af931e77d24d93bcc9f67ea87ac6dd",
+          "Name": "3 bag verblijfsobject(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "83bd3c1a668e439cb67735bc43dc8c87",
+          "Name": "4 bag pand(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f7cca24d78024c5694f7afc2b84cfc09",
+          "Name": "5 luchtfoto 2016(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "65809a044a3d40bd819d8434c918821c",
+          "Name": "6 CBS-WOZ 2011 100m(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1bfc63ef32bb4e59b52797757aa2f961",
+          "Name": "6 legenda",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "570aa348e4df4434a030905da1e096b1",
+          "Name": "7 kadastrale annotatie(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a798ef8749e347dca385adfae457cf7d",
+          "Name": "8 kadastrale perceel(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7e857ec9074648c18e5978dea2b86be0",
+          "Name": "9 rijksmonumenten(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "02d37027e9604b9589d57589ad067bab",
+          "Name": "10 bestemmingsplan bouwvlak(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "86d365bec89347859208fc423593b21a",
+          "Name": "11 AHN2 webrequest bladindex(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2f547e3b50434dd595f96fb35de07a6c",
+          "Name": "12 ruimtelijkeplannen(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "caac40d7b1454bb0a032cc09ce71e403",
+          "Name": "Zeeland Schouwen Duiveland Kadastrale Percelen 1832(OGC:WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8a89774035c6499485dd404ed6cc098f",
+          "Name": "Zeeland Bebouwing Kadaster 1832(OGC:WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "96562cacf8864d4c942bc7b59503241e",
+          "Name": "Luchtfoto 2017(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4b9068db88b64ba7a3171f747afef04a",
+          "Name": "AHN3 webrequest bladindex(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "481c9fbf129c4192a82fd42591048222",
+          "Name": "3D BAG TU Delft(OGC:WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "19ae74b988724f778c0e90bbec6a37c4",
+          "Name": "luchtfoto 2018(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e6c78a075014483d88764f643d73f0ba",
+          "Name": "Geluidscontouren alle bronnen(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "08cfb2804ec9463ea3c30c9ce0f40f93",
+          "Name": "TOP10NL(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "029c88c8dbdd445bb2418ab1429d085e",
+          "Name": "TOP10NL_wegdeelvlak(OGC WMS SVG)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7804121cbfa24ea69bf577a82e157d53",
+          "Name": "TOP10NL_waterdeelvlak(OGC WMS SVG)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1f6b395a99384e82808f5b0bc61ecd7e",
+          "Name": "AHN3(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Library with multiple webadresses which can be used for WFS and WMS webrequests"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "b79393ef-f778-4f91-81d0-3438d389991d",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "68c8129b0d69447c9b385f2369e3a63d",
+      "Inputs": [
+        {
+          "Id": "fa3082bdb32743d28062433207bd27b3",
+          "Name": "View",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "07a34da8123c4d2fb3665916e7fda7c2",
+          "Name": "PolyCurves",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8ff615e8809e43cd8e3e363c0613a45f",
+          "Name": "Linestyle",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7647f76bdfda4e9195a5e72f946f87f3",
+          "Name": "Detaillines",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Create detaillines from polygons in a view"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Application.Document.Current",
+      "Id": "282b528d3e7e4a04a7c7f9a69b6be109",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "f5975a8747724734850c7d16ee559504",
+          "Name": "Document",
+          "Description": "Document",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the current document\n\nDocument.Current: Document"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.IntegerSlider, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Integer",
+      "InputValue": 2000,
+      "MaximumValue": 2000,
+      "MinimumValue": 100,
+      "StepValue": 1,
+      "Id": "a95014af0e174a4991eee48703dbc278",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a4050618ad68473397640ca162a9ec1c",
+          "Name": "",
+          "Description": "Int32",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A slider that produces integer values."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.String.ToNumber@string",
+      "Id": "df14ab34b96149ca9882486e97a76674",
+      "Inputs": [
+        {
+          "Id": "8993a7c318b14aed80fb26cfdadd6a30",
+          "Name": "str",
+          "Description": "String to be converted.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1c169e14e5de4939bcf0be8400e1019a",
+          "Name": "number",
+          "Description": "Integer or double-type number.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Converts a string to an integer or a double.\n\nString.ToNumber (str: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "fef879de-e940-463f-b7e8-4295ddce2895",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "e685c0f0361b40079b214d445bb9e936",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a59bb73b55734978a089580b1fc37a9a",
+          "Name": "Name",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "59efe9f298de42528ce6a5cc89eec85c",
+          "Name": "Lon",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "10afd388a1b94904a758d580eaefb2d8",
+          "Name": "Lat",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3bfd456144984836ae01a4a9a6714f0c",
+          "Name": "Location",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Gets the properties of the current Site Location of the active Revit Project"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.String.ToNumber@string",
+      "Id": "c4581dc0d6084563a30b885dcff3762c",
+      "Inputs": [
+        {
+          "Id": "ea5f12d191e746899e56c67ba7a52633",
+          "Name": "str",
+          "Description": "String to be converted.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b3384191ad88437287fa6957e2e79f8a",
+          "Name": "number",
+          "Description": "Integer or double-type number.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Converts a string to an integer or a double.\n\nString.ToNumber (str: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "1813c488-6cc1-4cc0-aaf5-ea0606534144",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "3dcee5167cda4c17a3bd80ad3ee614f3",
+      "Inputs": [
+        {
+          "Id": "8e0a5ecd975f4673b908234f69820c74",
+          "Name": "SourceCRS",
+          "Description": "EPSG_code of the source Coordinate Reference System\n\nstring\nDefault value : \"4326\"",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8fa327d8ccaf48238a4ece0a840e1824",
+          "Name": "TargetCRS",
+          "Description": "EPSG_code of the target Coordinate Reference System\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7506edf3903e437691249497ff543c31",
+          "Name": "xCoordinate",
+          "Description": "X-coordinate of the source Coordinate Reference System\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1f46ec77faf74bee98ac1ad4cb4552ea",
+          "Name": "yCoordinate",
+          "Description": "Y-coordinate of the source Coordinate Reference System\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "135c083d113b47eba46ee64799154ae3",
+          "Name": "Xtransformed",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6b7913c66cc64e22aacfca6bd28dafaf",
+          "Name": "Ytransformed",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a991725b6e244abc94e97b1f00a9c667",
+          "Name": "URL",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Uses the API of http://epsg.io to transform Coordinate Reference Systems"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"28992\";",
+      "Id": "17563f1b808840e4bdbc52b06b5c8284",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "1534167fc69a4ec69f0ffb2032bb01b2",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"linestyle_buildingarea\";",
+      "Id": "8bf9ec35d1b64bb5969d80dc249da015",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "5337ee927e6c4bcbba3ede02eb6695e7",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
+      "FunctionSignature": "DSCore.String.Split@string,string[]",
+      "FunctionType": "VariableArgument",
+      "NodeType": "FunctionNode",
+      "Id": "08b5203b2ded49668ca4b1d99c4efe75",
+      "Inputs": [
+        {
+          "Id": "fc4544a81fd14c6d9dab403898a3edb4",
+          "Name": "str",
+          "Description": "String to split up.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "44623fa948a24648ba0a8806622105e6",
+          "Name": "separator0",
+          "Description": "Strings that, if present, determine the end and start of a split.\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4c80ebd467d845ebb0f215dd42bacfef",
+          "Name": "separator1",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "270f0376169a4f3585a90d7f76c0a794",
+          "Name": "strings",
+          "Description": "List of strings made from the input string.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Divides a single string into a list of strings, with divisions determined by the given separator strings.\n\nString.Split (str: string, separators: string[]): string[]"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": "<gml:posList>",
+      "Id": "b8dd4859e3aa4516a0d080a725a05b2e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "415075139e1d40d09334758e9d8427b7",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": "</gml:posList>",
+      "Id": "106df88ec2aa4cf19cb1f765e02c28a7",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "be483d55a8624dd6a22477c2b75db32a",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.TakeEveryNthItem@var[]..[],int,int",
+      "Id": "7a260b9207d944238ed02fa87d6263d5",
+      "Inputs": [
+        {
+          "Id": "712274b0a5184ddc9e5e39f5da2013d6",
+          "Name": "list",
+          "Description": "List to take items from.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6dba8330c90d48d5bd5f5b7cf27f9ee6",
+          "Name": "n",
+          "Description": "Indices that are multiples of this number (after the offset) will be fetched.\n\nint",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5dea2003c3804de5a81b6b7ad7609c13",
+          "Name": "offset",
+          "Description": "Amount of items to be ignored from the start of the list.\n\nint\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "98d2fcacd351482e920e33c356f84f62",
+          "Name": "items",
+          "Description": "Items from the list.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Fetches items from the given list at indices that are multiples of the given value, after the given offset.\n\nList.TakeEveryNthItem (list: var[]..[], n: int, offset: int = 0): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "2;\n0;",
+      "Id": "7fa6ea0f54be4f20b425ad2a3ca60ed2",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "931194caebef49a494c6b0e602dc2e8f",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "30c866f82c274811bdc98789a2bd7b2d",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "ceecd451-fe99-487e-a852-ebaf983bc9f2",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "a008a6062cc44431a3fefe884dfb96c2",
+      "Inputs": [
+        {
+          "Id": "daa86a9c36234eafa1eb6659163b1dc6",
+          "Name": "ListOfcoordinates",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9a096424b1a34d55ad8735ed1fdd648f",
+          "Name": "dX",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f4e15fc7509b4ee38f4debb77980e44e",
+          "Name": "dY",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "39fa90bfb9cd48a18d7037ab46646715",
+          "Name": "UnitsConversion",
+          "Description": "double\nDefault value : 1000",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8453631bb8b94e14807f70c41dabced6",
+          "Name": "Points",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6fb076bd14df4719af3da26d6c2a06e7",
+          "Name": "PolyCurves",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "List of GML Coordinates to Polycurves and Points"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "5c3554c0-92d7-4f5a-98c3-78c9fa579511",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "c539e99c9f8145b8abd85358332078c9",
+      "Inputs": [
+        {
+          "Id": "becd19be42c14879a33a99880c8b9e9f",
+          "Name": "SearchSetting",
+          "Description": "string\nDefault value : \"project_plaats\"",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "784c17da87b34da98b4944c882a2bc8e",
+          "Name": "Setting",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1b3d75b728a84eb78df353ab31ecc9ce",
+          "Name": "AllSetting",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "GIS2BIM Company Settings"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "1e37619054614f13b61062f6e0159530",
+      "End": "fc4544a81fd14c6d9dab403898a3edb4",
+      "Id": "587bed320d31426d8bce720f6bfd0966"
+    },
+    {
+      "Start": "f637f2ce8d454f879a2971baca8a8d55",
+      "End": "fa3082bdb32743d28062433207bd27b3",
+      "Id": "2ba832d53bf64e1f9e58760ddae5270c"
+    },
+    {
+      "Start": "04bf9a9ddb394c7aa3049c3bfdbe4b85",
+      "End": "f5043c82ad5a4dd893195174468dcd43",
+      "Id": "a7b7c3ae56b343cd9266e525885888a7"
+    },
+    {
+      "Start": "7318b87ae66d4d54a85d98df4233fb8b",
+      "End": "0b41ba829bf7436d866799b3e817cd56",
+      "Id": "212245f484e04ec198f22923e2825588"
+    },
+    {
+      "Start": "f5975a8747724734850c7d16ee559504",
+      "End": "3aa2383bdc0c4b95b362211ce359db65",
+      "Id": "5e5b6b086efc4d3196b1d23e0c318648"
+    },
+    {
+      "Start": "a4050618ad68473397640ca162a9ec1c",
+      "End": "b9bbaca136de440cad6f6d72be41ee4b",
+      "Id": "6a5edb9ae72b46d39c1dc8ec83673abb"
+    },
+    {
+      "Start": "a4050618ad68473397640ca162a9ec1c",
+      "End": "2601de3a3ac34051b62b4d0b0b492b2d",
+      "Id": "4625f75d77054358bcc07065df4b144c"
+    },
+    {
+      "Start": "1c169e14e5de4939bcf0be8400e1019a",
+      "End": "1f46ec77faf74bee98ac1ad4cb4552ea",
+      "Id": "4321459b8fc74c81b2985765b5705d29"
+    },
+    {
+      "Start": "59efe9f298de42528ce6a5cc89eec85c",
+      "End": "ea5f12d191e746899e56c67ba7a52633",
+      "Id": "b894e257101040ff9bb10c26b2b820fe"
+    },
+    {
+      "Start": "10afd388a1b94904a758d580eaefb2d8",
+      "End": "8993a7c318b14aed80fb26cfdadd6a30",
+      "Id": "2a036805fb5743c1956f5a234edd0c75"
+    },
+    {
+      "Start": "b3384191ad88437287fa6957e2e79f8a",
+      "End": "7506edf3903e437691249497ff543c31",
+      "Id": "34e01348440b4c539418efcc7a3e26fa"
+    },
+    {
+      "Start": "135c083d113b47eba46ee64799154ae3",
+      "End": "8f68414eaa4a403195d0aea68c3dffb1",
+      "Id": "75fb217ccc1c4f3fa5ff2d6c3ea25a51"
+    },
+    {
+      "Start": "135c083d113b47eba46ee64799154ae3",
+      "End": "9a096424b1a34d55ad8735ed1fdd648f",
+      "Id": "0255efc3bb784c7c8de6bcaec345b5b2"
+    },
+    {
+      "Start": "6b7913c66cc64e22aacfca6bd28dafaf",
+      "End": "8f2f21cecc96465eb30dcee9dd4280f5",
+      "Id": "ae89f92d29f84712839212c25a3107e6"
+    },
+    {
+      "Start": "6b7913c66cc64e22aacfca6bd28dafaf",
+      "End": "f4e15fc7509b4ee38f4debb77980e44e",
+      "Id": "0430cd7bfe7942edbb92125a225107f7"
+    },
+    {
+      "Start": "1534167fc69a4ec69f0ffb2032bb01b2",
+      "End": "8fa327d8ccaf48238a4ece0a840e1824",
+      "Id": "a7eceb9c68e947d188aa018d1613e054"
+    },
+    {
+      "Start": "5337ee927e6c4bcbba3ede02eb6695e7",
+      "End": "becd19be42c14879a33a99880c8b9e9f",
+      "Id": "4d878d35333d4f58a5f4d965eedbb20f"
+    },
+    {
+      "Start": "270f0376169a4f3585a90d7f76c0a794",
+      "End": "712274b0a5184ddc9e5e39f5da2013d6",
+      "Id": "c7dabcfd49d14f0688bb405cecb565b0"
+    },
+    {
+      "Start": "415075139e1d40d09334758e9d8427b7",
+      "End": "44623fa948a24648ba0a8806622105e6",
+      "Id": "9c876c04630e444c9769b1309de518f6"
+    },
+    {
+      "Start": "be483d55a8624dd6a22477c2b75db32a",
+      "End": "4c80ebd467d845ebb0f215dd42bacfef",
+      "Id": "d403cc45490d4564b60d761cb975bf5a"
+    },
+    {
+      "Start": "98d2fcacd351482e920e33c356f84f62",
+      "End": "daa86a9c36234eafa1eb6659163b1dc6",
+      "Id": "1dfb21e6189e46438a0004ad475900b3"
+    },
+    {
+      "Start": "931194caebef49a494c6b0e602dc2e8f",
+      "End": "6dba8330c90d48d5bd5f5b7cf27f9ee6",
+      "Id": "58ced4edefba4c2c91c7f5c8a343a274"
+    },
+    {
+      "Start": "30c866f82c274811bdc98789a2bd7b2d",
+      "End": "5dea2003c3804de5a81b6b7ad7609c13",
+      "Id": "38f3b71b9a994c2987b8cdcaff36a9f9"
+    },
+    {
+      "Start": "6fb076bd14df4719af3da26d6c2a06e7",
+      "End": "07a34da8123c4d2fb3665916e7fda7c2",
+      "Id": "680b9f5f4558438c874394c605e45634"
+    },
+    {
+      "Start": "784c17da87b34da98b4944c882a2bc8e",
+      "End": "8ff615e8809e43cd8e3e363c0613a45f",
+      "Id": "c0244fa4d2fe4a4899cacd2891deb653"
+    }
+  ],
+  "Dependencies": [
+    "1b8585e3-81f4-499f-8e18-81d010124896",
+    "8bf21b26-1292-40d1-8d8a-bcb4cc163f44",
+    "b79393ef-f778-4f91-81d0-3438d389991d",
+    "fef879de-e940-463f-b7e8-4295ddce2895",
+    "1813c488-6cc1-4cc0-aaf5-ea0606534144",
+    "ceecd451-fe99-487e-a852-ebaf983bc9f2",
+    "5c3554c0-92d7-4f5a-98c3-78c9fa579511"
+  ],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.2.1.5175",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 47949.640596047131,
+      "EyeY": 2556612.04785967,
+      "EyeZ": 1878994.6516478944,
+      "LookX": 133301.87208600584,
+      "LookY": -2755209.1358102974,
+      "LookZ": -1697788.0644085242,
+      "UpX": 0.056210709376109814,
+      "UpY": 0.69591281901136315,
+      "UpZ": -0.71592299029985951
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Web Request",
+        "Id": "bfb714f97f65448eb301a159a4862dde",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1819.5992488275,
+        "Y": 827.653259939474
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Document.ActiveView",
+        "Id": "d329ec9a44b744609352cbddbb101a32",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1702.1021993668214,
+        "Y": 1246.3841074166844
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_CreateBoundingBox",
+        "Id": "27f1dcd4852b4265b2aa90b0647e8475",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 277.4138664540784,
+        "Y": 424.67688404315521
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_NetherlandsGeoservicesLibrary",
+        "Id": "153238be40924d8993a7ab4a52aeda7b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 685.50271765474622,
+        "Y": 416.15853853068984
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_CreateDetailLinesFromPolygons",
+        "Id": "68c8129b0d69447c9b385f2369e3a63d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3216.0979724198451,
+        "Y": 546.54122541172887
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Document.Current",
+        "Id": "282b528d3e7e4a04a7c7f9a69b6be109",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -2003.2625496792614,
+        "Y": 1243.5460913028869
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Afmeting boundingbox in meters(breedte, hoogte)",
+        "Id": "a95014af0e174a4991eee48703dbc278",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -2003.2625496792614,
+        "Y": 845.01839972108473
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.ToNumber",
+        "Id": "df14ab34b96149ca9882486e97a76674",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1897.0852837796704,
+        "Y": 287.10277745700569
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_GetRevitSiteLocation",
+        "Id": "e685c0f0361b40079b214d445bb9e936",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -2184.5108879657905,
+        "Y": 192.37967001854668
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.ToNumber",
+        "Id": "c4581dc0d6084563a30b885dcff3762c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1897.0852837796704,
+        "Y": 201.07045180624766
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_TransformCRS_epsg",
+        "Id": "3dcee5167cda4c17a3bd80ad3ee614f3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1533.6065503503705,
+        "Y": 67.18645375898268
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "17563f1b808840e4bdbc52b06b5c8284",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1897.0852837796704,
+        "Y": 89.6172886356527
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "8bf9ec35d1b64bb5969d80dc249da015",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -2007.7591864610501,
+        "Y": 574.10227799831569
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.Split",
+        "Id": "08b5203b2ded49668ca4b1d99c4efe75",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2037.2475485281325,
+        "Y": 981.80464063003433
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String",
+        "Id": "b8dd4859e3aa4516a0d080a725a05b2e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1803.4906474905547,
+        "Y": 1004.3725070623022
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String",
+        "Id": "106df88ec2aa4cf19cb1f765e02c28a7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1801.9675657726057,
+        "Y": 1067.1528180729927
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.TakeEveryNthItem",
+        "Id": "7a260b9207d944238ed02fa87d6263d5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2484.0725500994122,
+        "Y": 1020.4844527993532
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "7fa6ea0f54be4f20b425ad2a3ca60ed2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2323.4693448788707,
+        "Y": 1061.5084312276958
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_GMLCoordinateListToGeometry",
+        "Id": "a008a6062cc44431a3fefe884dfb96c2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2797.7651488131592,
+        "Y": 810.86939751579018
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_CompanySettings",
+        "Id": "c539e99c9f8145b8abd85358332078c9",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1546.6111838965792,
+        "Y": 571.73547838636853
+      }
+    ],
+    "Annotations": [],
+    "X": 1373.5168589423092,
+    "Y": -107.52740538514058,
+    "Zoom": 0.50603823210143306
+  }
+}
