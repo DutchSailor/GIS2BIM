@@ -1,0 +1,332 @@
+{
+  "Uuid": "5c3554c0-92d7-4f5a-98c3-78c9fa579511",
+  "IsCustomNode": true,
+  "Category": "GIS2BIM.Settings",
+  "Description": "GIS2BIM Company Settings",
+  "Name": "GIS2BIM_CompanySettings",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "//values\n[\"project_plaats\",\n\"project_huisnummer\",\n\"project_straatnaam\",\n\"kadastraal_nummer\",\n\"kadastrale_sectie\",\n\"C:/TEMP/logo.png\",\n\"Locatiegegevens ophalen gelukt\",\n\"Locatiegegevens ophalen mislukt! Controleer adres en internetverbinding\",\n\"_0.25 mm CENTER\",\n\"pen rood\",\n\"FP_DP_90_pand\",\n\"FP_DP_90_pand\",\n\"FP_DP_90_water\",\n\"FP_DP_90_weg\",\n\"FP_DP_90_weg2\",\n\"FP_DP_90_groen1\",\n\"FP_DP_90_groen2\",\n\"C:/ProgramData/Autodesk/RVT 2019/Family Templates/English/Conceptual Mass/Metric Mass.rft\",\n\"materialname_groen_1\",\n\"materialname_groen_2\",\n\"s1_asfalt\",\n\"materialname_weg_2\",\n\"a_mass_bestaande bebouwing_IP\",\n\"a_maaiveld\",\n\"a_water\",\n\"NLRS_90_boom\",\n\"2.5 mm\",\n\"3.5 mm\",\n\"2.5 mm\",\n\"pen 2\"];",
+      "Id": "21c9b7c087db475b8d2d757c79fc96b3",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "32a5c6ad425b47ad8d6fd905a86a6df3",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DesignScript.Builtin.Dictionary.ByKeysValues@string[],var[]..[]",
+      "Id": "3fd3dba519294e64a00d010381e3770a",
+      "Inputs": [
+        {
+          "Id": "7825075ce9aa46ec854c350f340816c6",
+          "Name": "keys",
+          "Description": "The string keys of the Dictionary\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f44b52aa9eb949698efdb2bf51ca9bdf",
+          "Name": "values",
+          "Description": "The values of the Dictionary\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "32c9cfb61dfb40b0bd7ea08c3251071f",
+          "Name": "dictionary",
+          "Description": "The result Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Produces a Dictionary with the supplied keys and values. The number of entries is the shorter of keys or values.\n\nDictionary.ByKeysValues (keys: string[], values: var[]..[]): Dictionary"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DesignScript.Builtin.Dictionary.ValueAtKey@string",
+      "Id": "27d40913a9444ab1b11c7719ff3da421",
+      "Inputs": [
+        {
+          "Id": "37a71e94e2f84a358efbfe3e2da49ef3",
+          "Name": "dictionary",
+          "Description": "DesignScript.Builtin.Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0aed7c03a5514f56a21f33b3d73e6f80",
+          "Name": "key",
+          "Description": "The key in the Dictionary to obtain.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "bc847f87591e4df79f440309d2fb4f42",
+          "Name": "value",
+          "Description": "The value at the specified key or null if it is not set.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Obtain the value at a specified key\n\nDictionary.ValueAtKey (key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "SearchSetting",
+        "TypeName": "string",
+        "TypeRank": 0,
+        "DefaultValue": "\"project_plaats\"",
+        "Description": ""
+      },
+      "Id": "e51a0050628a4b729dbd090f4c61b17a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "53ba89d1a4c244b5ac1a4aedf33ecc82",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Setting",
+      "Id": "675c0d2f34bd4ac5b2475543b3d67c19",
+      "Inputs": [
+        {
+          "Id": "d0f549fe86e64d009f7179caaacabe40",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "//keys\n[\"project_place\",\n\"project_housenumber\",\n\"project_streetname\",\n\"cadastral_number\",\n\"cadastral_parcel\",\n\"logo\",\n\"notification_pass\",\n\"notification_error\",\n\"linestyle_cadastral_parcel\",\n\"linestyle_buildingcontour\",\n\"filledregion_building\",\n\"filledregion_bgt_pand\",\n\"filledregion_bgt_water\",\n\"filledregion_bgt_weg_1\",\n\"filledregion_bgt_weg_2\",\n\"filledregion_bgt_groen_1\",\n\"filledregion_bgt_groen_2\",\n\"familytemplatepath_mass\",\n\"materialname_green_1\",\n\"materialname_green_2\",\n\"materialname_road_1\",\n\"materialname_road_2\",\n\"materialname_building\",\n\"materialname_toposurface\",\n\"materialname_water\",\n\"familytype_tree\",\n\"textstyle_BAG_kadaster_1\",\n\"textstyle_BAG_kadaster_2\",\n\"textstyle_BAG_kadaster_3\",\n\"linestyle_buildingarea\"];",
+      "Id": "a4845a86f0324fcb8790b3a017257a6c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "188d05efb6f2437fa01501fc43c5d1c1",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "AllSetting",
+      "Id": "5bc2f9d33da741478081b39c9de19dee",
+      "Inputs": [
+        {
+          "Id": "6ecc8725fbd347f383a6022f9d133f20",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "32a5c6ad425b47ad8d6fd905a86a6df3",
+      "End": "f44b52aa9eb949698efdb2bf51ca9bdf",
+      "Id": "e2d56654581b4f84815933d28de0854b"
+    },
+    {
+      "Start": "32c9cfb61dfb40b0bd7ea08c3251071f",
+      "End": "37a71e94e2f84a358efbfe3e2da49ef3",
+      "Id": "8181e08da2124f9a8f1612b1464ec560"
+    },
+    {
+      "Start": "32c9cfb61dfb40b0bd7ea08c3251071f",
+      "End": "6ecc8725fbd347f383a6022f9d133f20",
+      "Id": "dc8c04024a7745bcbba262dc0761e57a"
+    },
+    {
+      "Start": "bc847f87591e4df79f440309d2fb4f42",
+      "End": "d0f549fe86e64d009f7179caaacabe40",
+      "Id": "6586465fa8924886a94f63051abc84f3"
+    },
+    {
+      "Start": "53ba89d1a4c244b5ac1a4aedf33ecc82",
+      "End": "0aed7c03a5514f56a21f33b3d73e6f80",
+      "Id": "522e868d3b71440cad63f70e37096e41"
+    },
+    {
+      "Start": "188d05efb6f2437fa01501fc43c5d1c1",
+      "End": "7825075ce9aa46ec854c350f340816c6",
+      "Id": "639ee5257cb04fdc8e5ede8a2e57d651"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.2.1.5175",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 420623.20174420788,
+      "EyeY": 259898.03582827406,
+      "EyeZ": -174857.20587635715,
+      "LookX": -132058.96816746972,
+      "LookY": -206525.46109002459,
+      "LookZ": 94931.15536653556,
+      "UpX": -0.51538550853729248,
+      "UpY": 0.77273356914520264,
+      "UpZ": 0.3704870343208313
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "21c9b7c087db475b8d2d757c79fc96b3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 699.64486703208183,
+        "Y": 702.280832436105
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionary.ByKeysValues",
+        "Id": "3fd3dba519294e64a00d010381e3770a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1446.1268715739338,
+        "Y": 593.65451983463981
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionary.ValueAtKey",
+        "Id": "27d40913a9444ab1b11c7719ff3da421",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1739.1701192841808,
+        "Y": 400.45441530149515
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "e51a0050628a4b729dbd090f4c61b17a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 898.440025107047,
+        "Y": 424.35070315042827
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "675c0d2f34bd4ac5b2475543b3d67c19",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2029.5562362735268,
+        "Y": 404.29996491199239
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "a4845a86f0324fcb8790b3a017257a6c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 365.62374727689092,
+        "Y": 702.82313985066287
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "5bc2f9d33da741478081b39c9de19dee",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2055.5277933668544,
+        "Y": 601.5568300436521
+      }
+    ],
+    "Annotations": [],
+    "X": -1312.5596138347987,
+    "Y": -243.52506858109575,
+    "Zoom": 1.0606077223602075
+  }
+}
