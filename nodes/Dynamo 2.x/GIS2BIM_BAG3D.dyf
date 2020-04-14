@@ -113,293 +113,6 @@
   "Outputs": [],
   "Nodes": [
     {
-      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
-      "NodeType": "CodeBlockNode",
-      "Code": "polygons=a[2];\nzbottom=a[4];\nztop=a[7];\npolygons2 = String.Split(polygons, [\" \"]);\npolygons3 = DSCore.List.DropEveryNthItem(polygons2@-2<1>, 3, 0);\nrdxlist = DSCore.String.ToNumber(DSCore.List.DropEveryNthItem(polygons3@-2<1>, 2, 0));\nrdylist = DSCore.String.ToNumber(DSCore.List.DropEveryNthItem(polygons3@-2<1>, 2, 1));\nxlocal= DSCore.Math.Round(1000*(rdxlist-rdx));\nylocal= DSCore.Math.Round(1000*(rdylist-rdy));\nzlocalbottom=1000*(DSCore.String.ToNumber(zbottom));\nzlocaltop=1000*(DSCore.String.ToNumber(ztop));\nthickness=zlocaltop-zlocalbottom;\npoint1 = Point.ByCoordinates(xlocal, ylocal, zlocalbottom);\npolyCurve1 = PolyCurve.ByPoints(point1, false);\nsurface1 = Surface.ByPatch(polyCurve1);\nsolid1 = surface1.Thicken(thickness, false);\nsolid2 = DSCore.Object.IsNull(solid1);\nsolid3 = List.FilterByBoolMask(solid1, solid2);\nsolid4 = Solid.ByUnion(solid3);",
-      "Id": "a146ef712a8245099e20c6f8ec137c33",
-      "Inputs": [
-        {
-          "Id": "2b50d38174e64f32a9f3afe22a913400",
-          "Name": "a",
-          "Description": "a",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "60ffa8856dcf41f5a4152d2ea3bf4c0d",
-          "Name": "rdx",
-          "Description": "rdx",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "3575954494bd4de09c7e218c98d6b84a",
-          "Name": "rdy",
-          "Description": "rdy",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Outputs": [
-        {
-          "Id": "639689b8b6fe47cc8160b4d9a1aaefd5",
-          "Name": "",
-          "Description": "polygons",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "609766390133401585a57207b2f0ad4d",
-          "Name": "",
-          "Description": "zbottom",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "19be9922c270446ea743cd436ffdcf71",
-          "Name": "",
-          "Description": "ztop",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "026a31676f754900a23fda0eb35ee762",
-          "Name": "",
-          "Description": "polygons2",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "0a9170c0b59c4da38ca1bede31918601",
-          "Name": "",
-          "Description": "polygons3",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "4aff69f1be0c43199a9453905443cb5d",
-          "Name": "",
-          "Description": "rdxlist",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "5bc14fbe459240d79894168fa86e1c3e",
-          "Name": "",
-          "Description": "rdylist",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "ea3ceea4abfc4de18837e93c547f5e6a",
-          "Name": "",
-          "Description": "xlocal",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "4879bdb46b424f8ba189ca7c7c1f7af1",
-          "Name": "",
-          "Description": "ylocal",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "3dbae670807948c88f9ac473a93fa22b",
-          "Name": "",
-          "Description": "zlocalbottom",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "0a49bdb3ec5345628aa946f68bb43555",
-          "Name": "",
-          "Description": "zlocaltop",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "b2acdcc103254e5da9e63259310cb35a",
-          "Name": "",
-          "Description": "thickness",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "16ea1a7b894b4e118b5ce7aca81c6f01",
-          "Name": "",
-          "Description": "point1",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "236daf264fd84fbd947528316235767f",
-          "Name": "",
-          "Description": "polyCurve1",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "6b660e22bc5e470a8c79c7ed380dbd8c",
-          "Name": "",
-          "Description": "surface1",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "f26bba5a0e9f4b02ab38ccc515fad522",
-          "Name": "",
-          "Description": "solid1",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "d0b1ec13f3214da7b8c5db2fa24ad196",
-          "Name": "",
-          "Description": "solid2",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "568a441ec97b483ca8205c54a88f62ec",
-          "Name": "",
-          "Description": "solid3",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "3c1534a2c1ee40e2b3ed7b5e169c9b02",
-          "Name": "",
-          "Description": "solid4",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "Allows for DesignScript code to be authored directly"
-    },
-    {
-      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
-      "NodeType": "FunctionNode",
-      "FunctionSignature": "DSCore.String.Replace@string,string,string",
-      "Id": "b37ad5f964bc45d6ba95a65b1fae5087",
-      "Inputs": [
-        {
-          "Id": "8e2620aa48b04939bff6b9196c33f9a1",
-          "Name": "str",
-          "Description": "String to replace substrings in.\n\nstring",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "2e3c9d4d845c496eaacdabca239a6b2e",
-          "Name": "searchFor",
-          "Description": "Text to be replaced.\n\nstring",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "300052d6404e402583a2de89e3285962",
-          "Name": "replaceWith",
-          "Description": "Text to replace with.\n\nstring",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Outputs": [
-        {
-          "Id": "e2fa98d81f9340a59ea1e511504a33bd",
-          "Name": "str",
-          "Description": "String with replacements made.",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Auto",
-      "Description": "Replaces all occurrences of text in a string with other text.\n\nString.Replace (str: string, searchFor: string, replaceWith: string): string"
-    },
-    {
-      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
-      "NodeType": "CodeBlockNode",
-      "Code": "\"_none\";\n\"0\";",
-      "Id": "c0933626463c4741a51db9e257d20e66",
-      "Inputs": [],
-      "Outputs": [
-        {
-          "Id": "2fa7a2930d4f46d9b31b7a6cb2a4cfa5",
-          "Name": "",
-          "Description": "Value of expression at line 1",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "1c114984a8934ed083825d7d74e6cbd2",
-          "Name": "",
-          "Description": "Value of expression at line 2",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "Allows for DesignScript code to be authored directly"
-    },
-    {
       "ConcreteType": "CoreNodeModels.CreateList, CoreNodeModels",
       "VariableInputPorts": true,
       "NodeType": "ExtensionNode",
@@ -711,53 +424,11 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
       "NodeType": "OutputNode",
       "ElementResolver": null,
-      "Symbol": "BAG 3D Metadata Values",
-      "Id": "42f89a8ecdb74e0597bde5aaa1df2f5e",
-      "Inputs": [
-        {
-          "Id": "da48b8693b70406caaa36cc28f0a4935",
-          "Name": "",
-          "Description": "",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Outputs": [],
-      "Replication": "Disabled",
-      "Description": "A function output, use with custom nodes"
-    },
-    {
-      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
-      "NodeType": "OutputNode",
-      "ElementResolver": null,
       "Symbol": "BAG 3D Metadata Xquery",
       "Id": "5c054132a297421ab40e5ab6b788f2ca",
       "Inputs": [
         {
           "Id": "887044859b9344ba93854cfd77ff7697",
-          "Name": "",
-          "Description": "",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Outputs": [],
-      "Replication": "Disabled",
-      "Description": "A function output, use with custom nodes"
-    },
-    {
-      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
-      "NodeType": "OutputNode",
-      "ElementResolver": null,
-      "Symbol": "BAG 3DSolids Per Building",
-      "Id": "58c2c6eb3e044bbea0ecf71d8a956b32",
-      "Inputs": [
-        {
-          "Id": "c44fe6b940bd40179ccb4133e558cf1e",
           "Name": "",
           "Description": "",
           "UsingDefaultValue": false,
@@ -844,25 +515,43 @@
       "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
     },
     {
-      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
-      "FunctionSignature": "0143c8a8-6a92-4966-84c6-492c11431f5a",
-      "FunctionType": "Graph",
-      "NodeType": "FunctionNode",
-      "Id": "771f4e3863214ad6b611c2ff8d1a7b6a",
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import sys\r\n\r\nimport clr\r\nclr.AddReference('RevitAPI')\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nimport xml.etree.ElementTree as ET\r\n\r\nimport itertools\t# smart list functons like izip_longest (transpose)\r\nimport operator\t\t# for smart sort (itemgetter)\r\n\r\n# =====================================================\r\n\r\nxml \t\t= IN[0]\r\nxpathlist \t= IN[1]\r\n\r\nroot = ET.fromstring(xml)\r\n\r\nxpathsfound = []\r\n\r\nfor i in xpathlist:\r\n\txpathsfound.append(root.findall(i))\r\n\t\r\nlstJSON = []\r\nfor i in range(len(xpathsfound)):\r\n\txtext = []\r\n\tfor j in range(len(xpathsfound[0])):\r\n\t\ttry: xtext.append(xpathsfound[i][j].text)\r\n\t\texcept: xtext.append('0')#\"_none\")\r\n\tlstJSON.append(xtext)\r\n\r\n# =====================================================\r\n\r\nlstGround = []\r\nfor item in lstJSON[3]:\t# get the lowest value for the building solids\r\n\tlstGround.append(float(item))\t# remember the lowest value\r\nintBottom = min(lstGround)*1000\r\nlstGround.Clear()\r\n\r\n# =====================================================\r\n\r\nrdX \t= IN[2]\r\nrdY\t\t= IN[3]\r\n\r\nlstSurface = []\r\n\r\ndef defSurface(item):\r\n\tlstPoints = item.split(' ')\r\n\tlstXYZ = []\r\n\tlstPointsX = lstPoints[0::3]\r\n\tlstPointsY = lstPoints[1::3]\r\n\tlstPointsZ = lstPoints[2::3]\r\n\tfor x,y in zip(lstPointsX, lstPointsY):\r\n\t\tptX = round(1000*(float(x)-rdX))\r\n\t\tptY = round(1000*(float(y)-rdY))\r\n\t\tlstXYZ.append(Point.ByCoordinates(ptX,ptY,intBottom))\r\n\treturn Surface.ByPatch(PolyCurve.ByPoints(lstXYZ, False))\r\n\r\nfor item in lstJSON[2]:\r\n\tlstSurface.append(defSurface(item))\r\n\r\n# =====================================================\r\n\r\n#lstSurface = IN[0]\r\n#lstJSON \t= IN[1]\r\n\r\nlstJSON[2]\t= lstSurface\t# replace sublist with contour point for surface list\r\n\r\nintJSONId \t\t\t= 0\r\nintJSONbouwjaar \t= 1\r\nintJSONcontour \t\t= 2\r\nintJSONground0_0 \t= 3\r\nintJSONground0_5 \t= 4\r\nintJSONroof0_0 \t\t= 5\r\nintJSONroof0_5 \t\t= 6\r\nintJSONroof0_99 \t= 7\r\nintJSONArea\t\t \t= 8\t# to be added\r\n\r\n\r\nlstHeightIndices = [\r\nintJSONground0_0,\r\nintJSONground0_5,\r\nintJSONroof0_0,\r\nintJSONroof0_5,\r\nintJSONroof0_99\r\n]\t# list with indices to be checked\r\n\r\n\r\n#lstJSONground \t\t= lstHeightIndices[:1]\r\n#lstJSONroof\t\t= lstHeightIndices[1:]\r\n\r\nlstJSON = map(list, itertools.izip_longest(*lstJSON)) # // transpose\r\n\r\nfor item in lstJSON:\t# append area needed for the check on heights\r\n\titem.append(item[2].Area/(1000*1000))\r\n\r\n# sort the list based on multiple criteria\r\nlstJSON = sorted(lstJSON, key=operator.itemgetter(intJSONArea,intJSONbouwjaar))\r\n\r\n# [sublist maximum area, minimum height, maximum height, (set of to be checked indices),(set of uniform values), the height index]\r\nlstOptions \t\t= [\r\n[20,2,6,(lstHeightIndices[3:5]),(lstHeightIndices[1:]),3],\r\n[50,3,16,(lstHeightIndices[3:5]),(lstHeightIndices[1:]),4],\r\n[75,3,16,(lstHeightIndices[3:5]),(lstHeightIndices[1:]),4],\r\n[100,3,20,(lstHeightIndices[3:5]),(lstHeightIndices[1:]),4],\r\n[150,3,30,(lstHeightIndices[3:5]),(lstHeightIndices[1:]),4],\r\n[1000000,3,999,(lstHeightIndices[3:5]),(lstHeightIndices[:1]),4],\r\n]\r\n\r\n\r\n# > prepare the divided list to be filled\r\nlstGrouped = []\r\nfor item in lstOptions:\r\n\tlstGrouped.append([])\r\n\tc = 0\t# reset counter\r\n\tfor index in lstHeightIndices:\t# append sublist based on the JSON\r\n\t\tlstGrouped[-1].append([])\r\n\t\tc = c + 1\t# counter\r\n\r\n\r\n# > divide complete list of buildings by area group\r\nfor subBuilding in lstJSON:\r\n\tcBld = 0\t# reset counter\r\n\tfor iOpt in lstOptions:\t#\tarea divider list\r\n\t\tif subBuilding[intJSONArea] < iOpt[0]: # check for the right group\r\n\t\t\tcBldOpt = 0\t# reset second counter\r\n\t\t\tfor index in lstHeightIndices:\t# every relevant index\r\n\t\t\t\tif index in lstOptions[cBld][3]:\t# is there a check for the height\r\n\t\t\t\t\tfltTMP = float(subBuilding[index]) - float(subBuilding[intJSONground0_0])\r\n\t\t\t\t\t# the height of the object\r\n\t\t\t\t\tif fltTMP > lstOptions[cBld][1] and fltTMP < lstOptions[cBld][2]:\t# check height\r\n\t\t\t\t\t\tlstGrouped[cBld][cBldOpt].append(float(subBuilding[index]))\r\n\t\t\t\t\telif fltTMP > lstOptions[cBld][1]:\t# then it has to be the maximum height\r\n\t\t\t\t\t\tfltTMP = lstOptions[cBld][2] - float(subBuilding[intJSONground0_0])\r\n\t\t\t\t\t\tlstGrouped[cBld][cBldOpt].append(float(subBuilding[index]))\r\n\t\t\t\t\telif fltTMP < lstOptions[cBld][2]:\t# then it has to be the minimum height\r\n\t\t\t\t\t\tfltTMP = lstOptions[cBld][1] - float(subBuilding[intJSONground0_0])\r\n\t\t\t\t\t\tlstGrouped[cBld][cBldOpt].append(float(subBuilding[index]))\r\n\t\t\t\t\t#else no value\r\n\t\t\t\telse:\r\n\t\t\t\t\tlstGrouped[cBld][cBldOpt].append(float(subBuilding[index]))\r\n\t\t\t\tcBldOpt = cBldOpt + 1\t# counter\r\n\t\t\tbreak\r\n\t\tcBld  = cBld + 1\t# counter\r\n\r\n\r\n# > create a new list with proven values for heights etc\r\nlstProvenHeights = []\r\ncAreaGroup = 0\t# reset counter\r\nfor iGroup in lstGrouped:\t\r\n\tlstProvenHeights.append([lstOptions[cAreaGroup][0]])\r\n\tcOpt = 0\t# reset counter\r\n\tfor iHeights in iGroup:\r\n\t\tif lstHeightIndices[cOpt] in lstOptions[cAreaGroup][4]:\t# is there a check for the average height\r\n\t\t\t# append the average value\r\n\t\t\t#lstProvenHeights[-1].append(itertools.repeat(round(sum(iHeights)/len(iHeights),1), len(iGroup[0])))\r\n\t\t\tlstTMPph = []\r\n\t\t\tfor i in range(len(iGroup[0])):\r\n\t\t\t\tlstTMPph.append(round(sum(iHeights)/len(iHeights),1))\r\n\t\t\tlstProvenHeights[-1].append(lstTMPph)\r\n\t\telse:\r\n\t\t\tlstProvenHeights[-1].append(iHeights)\r\n\t\tcOpt = cOpt + 1\t# counter\r\n\tcAreaGroup = cAreaGroup + 1\t# counter\r\n#lstGrouped.Clear()\r\n\r\n\r\n# > create solids\r\nlstSolids = []\r\ncBuilding = 0 # reset counter (surfaces)\r\ncGroup = 0\t# reset counter (groups)\r\nfor iOpt in lstOptions:\r\n#\tif cGroup != 0: \r\n#\t\tcGroup = cGroup + 1\r\n#\t\tcontinue\r\n\tfor iHeight in lstProvenHeights[cGroup][iOpt[5]+1]:\t# get the right index for the height\r\n\t\tobSurface = lstJSON[cBuilding][2]\t#lstSurface[cSurface]\t# get the surface\r\n\t\tcBuilding = cBuilding + 1\t# counter\r\n\t\tobSolid = obSurface.Thicken(1000*(iHeight) - intBottom, False)\t# give it height\r\n\t\tlstSolids.append(obSolid)\r\n\tcGroup = cGroup + 1\r\nobSolidUnion = lstSolids[0].UnionAll(lstSolids)\r\n\r\ntry:\r\n\tOUT = obSolidUnion, lstProvenHeights\r\nexcept:\r\n\tOUT = lstProvenHeights#, lstOptions, lstGrouped",
+      "VariableInputPorts": true,
+      "Id": "d468a7978395484dbdc513f323237bf5",
       "Inputs": [
         {
-          "Id": "f3bf3b89f02f4106ad8a319173612710",
-          "Name": "XMLString",
-          "Description": "string",
+          "Id": "6bdf6744b90648acb5135bd31876115c",
+          "Name": "IN[0]",
+          "Description": "Input #0",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
         },
         {
-          "Id": "9d18ca6925894d88852df5d81237f533",
-          "Name": "XPathStrings",
-          "Description": "var[]..[]",
+          "Id": "2424b706deac410a8bab111dfcfe064d",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6ff7d606cecd4b1eb42668f9c4c510f0",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "42c8245d60bc4f19b25a473ccb524c5d",
+          "Name": "IN[3]",
+          "Description": "Input #3",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -871,9 +560,39 @@
       ],
       "Outputs": [
         {
-          "Id": "98f0b431e1ec40df98beb1d234c24194",
-          "Name": "Result",
-          "Description": "return value",
+          "Id": "70bb610a4d3c4cc7a463a1b9941e4a19",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.FirstItem@var[]..[]",
+      "Id": "9caa41268d3a4c88875e346ef75889ff",
+      "Inputs": [
+        {
+          "Id": "0ced065273d946539854d8dd1f5c97ba",
+          "Name": "list",
+          "Description": "List to get the first item from.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6b90cb7b148c4b60bf47b8428e9647f5",
+          "Name": "item",
+          "Description": "First item in the list.",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -881,35 +600,10 @@
         }
       ],
       "Replication": "Auto",
-      "Description": "Run an XPathquery on an xml-string"
+      "Description": "Returns the first item in a list.\n\nList.FirstItem (list: var[]..[]): var[]..[]"
     }
   ],
   "Connectors": [
-    {
-      "Start": "f26bba5a0e9f4b02ab38ccc515fad522",
-      "End": "c44fe6b940bd40179ccb4133e558cf1e",
-      "Id": "5a080a8710794353b0f33c242d756a13"
-    },
-    {
-      "Start": "3c1534a2c1ee40e2b3ed7b5e169c9b02",
-      "End": "70c81dceaf1142eebb64459e1a961b26",
-      "Id": "2c64f48671484cb591444c3b736cbf62"
-    },
-    {
-      "Start": "e2fa98d81f9340a59ea1e511504a33bd",
-      "End": "2b50d38174e64f32a9f3afe22a913400",
-      "Id": "43e612fff7874dd4936acbcdf3018fe7"
-    },
-    {
-      "Start": "2fa7a2930d4f46d9b31b7a6cb2a4cfa5",
-      "End": "2e3c9d4d845c496eaacdabca239a6b2e",
-      "Id": "baaa6af089414542b3ec5007a944f0ed"
-    },
-    {
-      "Start": "1c114984a8934ed083825d7d74e6cbd2",
-      "End": "300052d6404e402583a2de89e3285962",
-      "Id": "ffd2bd51a04c47eb90c8550faa779805"
-    },
     {
       "Start": "377b849752b8468b90ad25d269244fbf",
       "End": "887044859b9344ba93854cfd77ff7697",
@@ -917,8 +611,8 @@
     },
     {
       "Start": "377b849752b8468b90ad25d269244fbf",
-      "End": "9d18ca6925894d88852df5d81237f533",
-      "Id": "2b3b3941a528465e849c3862aba41635"
+      "End": "2424b706deac410a8bab111dfcfe064d",
+      "Id": "4549526a48df4c72bc28f8499294a74c"
     },
     {
       "Start": "1dca4ca09042490c9daeec97782b7443",
@@ -962,8 +656,8 @@
     },
     {
       "Start": "c6b6d14d48114826b4f9f8d0f1938183",
-      "End": "f3bf3b89f02f4106ad8a319173612710",
-      "Id": "db72cdc840794301926ce94d759de580"
+      "End": "6bdf6744b90648acb5135bd31876115c",
+      "Id": "1e992408c27c4cff8eb5310fb35cee01"
     },
     {
       "Start": "0f82ff8cb0b84ac6922849dc37cd4275",
@@ -972,28 +666,26 @@
     },
     {
       "Start": "ca480151885646168126e8ce59bb5c6a",
-      "End": "60ffa8856dcf41f5a4152d2ea3bf4c0d",
-      "Id": "d757425a6e8b4bf4a5c47ec169641b12"
+      "End": "6ff7d606cecd4b1eb42668f9c4c510f0",
+      "Id": "20ddb95a564c4bed82d14c27f20628a5"
     },
     {
       "Start": "82dc130fde774a209666c872cb887343",
-      "End": "3575954494bd4de09c7e218c98d6b84a",
-      "Id": "c9dd40b751b7404181009e80989993c1"
+      "End": "42c8245d60bc4f19b25a473ccb524c5d",
+      "Id": "eed22d46409648eea5c4f4403b3b5a5c"
     },
     {
-      "Start": "98f0b431e1ec40df98beb1d234c24194",
-      "End": "8e2620aa48b04939bff6b9196c33f9a1",
-      "Id": "d0fe9dd2a61c43f090a907741cfe5c79"
+      "Start": "70bb610a4d3c4cc7a463a1b9941e4a19",
+      "End": "0ced065273d946539854d8dd1f5c97ba",
+      "Id": "ca99f0a5473c4d57a1a17074f3d4fe5c"
     },
     {
-      "Start": "98f0b431e1ec40df98beb1d234c24194",
-      "End": "da48b8693b70406caaa36cc28f0a4935",
-      "Id": "e1ce2067efcd4c7290cb04ae82d20669"
+      "Start": "6b90cb7b148c4b60bf47b8428e9647f5",
+      "End": "70c81dceaf1142eebb64459e1a961b26",
+      "Id": "56d2067d82f54c529daa23d83d1e7a5d"
     }
   ],
-  "Dependencies": [
-    "0143c8a8-6a92-4966-84c6-492c11431f5a"
-  ],
+  "Dependencies": [],
   "Bindings": [],
   "View": {
     "Dynamo": {
@@ -1006,47 +698,17 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": 272608.07020502439,
-      "EyeY": 188795.26021884056,
-      "EyeZ": -187977.60331563029,
-      "LookX": -69022.90262615931,
-      "LookY": -107944.10246006184,
-      "LookZ": 49617.409434425994,
-      "UpX": -0.51538550853729248,
-      "UpY": 0.77273356914520264,
-      "UpZ": 0.3704870343208313
+      "EyeX": -206943.14381634293,
+      "EyeY": 131523.92483783446,
+      "EyeZ": 626127.88699644187,
+      "LookX": 206943.14381634293,
+      "LookY": -131523.92483783446,
+      "LookZ": -626127.88699644187,
+      "UpX": -0.0060244388106024446,
+      "UpY": 0.999815729593212,
+      "UpZ": 0.01822764079590106
     },
     "NodeViews": [
-      {
-        "ShowGeometry": true,
-        "Name": "Code Block",
-        "Id": "a146ef712a8245099e20c6f8ec137c33",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 2168.26626038158,
-        "Y": 849.092420701119
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "String.Replace",
-        "Id": "b37ad5f964bc45d6ba95a65b1fae5087",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 1840.29555679703,
-        "Y": 1013.86812417336
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "Code Block",
-        "Id": "c0933626463c4741a51db9e257d20e66",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 1695.35159934941,
-        "Y": 1073.33781352225
-      },
       {
         "ShowGeometry": true,
         "Name": "List.Create",
@@ -1145,7 +807,7 @@
         "IsSetAsOutput": false,
         "Excluded": false,
         "X": 694.710701337461,
-        "Y": 609.300267576342
+        "Y": 602.16601422986469
       },
       {
         "ShowGeometry": true,
@@ -1160,32 +822,12 @@
       {
         "ShowGeometry": true,
         "Name": "Output",
-        "Id": "42f89a8ecdb74e0597bde5aaa1df2f5e",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 3937.6410566407608,
-        "Y": 668.203912140189
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "Output",
         "Id": "5c054132a297421ab40e5ab6b788f2ca",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 3937.6410566407608,
-        "Y": 753.492604983155
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "Output",
-        "Id": "58c2c6eb3e044bbea0ecf71d8a956b32",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 3937.6410566407608,
-        "Y": 898.05115002625246
+        "X": 1677.4542562944719,
+        "Y": 914.79259881360281
       },
       {
         "ShowGeometry": true,
@@ -1194,8 +836,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 3937.6410566407608,
-        "Y": 1114.20230713571
+        "X": 1666.4690592007557,
+        "Y": 593.93167584245475
       },
       {
         "ShowGeometry": true,
@@ -1218,35 +860,27 @@
         "Y": 799.119770658837
       },
       {
-        "ShowGeometry": true,
-        "Name": "GIS2BIM_XMLXPath",
-        "Id": "771f4e3863214ad6b611c2ff8d1a7b6a",
+        "ShowGeometry": false,
+        "Name": "Python Script",
+        "Id": "d468a7978395484dbdc513f323237bf5",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 1328.2830412854455,
-        "Y": 746.65417078317455
+        "X": 1312.10383716582,
+        "Y": 596.74246021979673
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "List.FirstItem",
+        "Id": "9caa41268d3a4c88875e346ef75889ff",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1468.070857216155,
+        "Y": 593.1244589101193
       }
     ],
     "Annotations": [
-      {
-        "Id": "c7a0de8bccf246e2bd3eb88d8153a358",
-        "Title": "CONVERT GML TO SOLIDS",
-        "Nodes": [
-          "a146ef712a8245099e20c6f8ec137c33",
-          "b37ad5f964bc45d6ba95a65b1fae5087",
-          "c0933626463c4741a51db9e257d20e66"
-        ],
-        "Left": 1685.35159934941,
-        "Top": 803.092420701119,
-        "Width": 1222.9146610321702,
-        "Height": 439.0,
-        "FontSize": 30.0,
-        "InitialTop": 849.092420701119,
-        "InitialHeight": 369.24539282113096,
-        "TextblockHeight": 36.0,
-        "Background": "#FFA4E1FF"
-      },
       {
         "Id": "b0e8b718bea94e5aa3008ede151560f5",
         "Title": "WEBREQUEST & QUERY GML",
@@ -1272,8 +906,8 @@
         "Background": "#FFC1D676"
       }
     ],
-    "X": -1915.2753926505761,
-    "Y": -646.972991362484,
-    "Zoom": 0.8962504865093186
+    "X": 106.41172656750393,
+    "Y": -3.8855427098620794,
+    "Zoom": 0.52054173202440246
   }
 }
