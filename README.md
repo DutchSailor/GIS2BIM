@@ -11,6 +11,7 @@ Version 0.10.0 released on 10-09-2019. This is the last version for Dynamo 1.x.(
 
 Version 0.11.12 released on 06-07-2020. This is the version for Dynamo 2.x. This dynamopackage is called 'GIS2BIM for Dynamo 2.x'
 (Revit 2020 and Dynamo 2.x)
+(new cadasterserver V4 implemented)
 
 ## Installation
 Installation is possible via the dynamo built-in package manager.
