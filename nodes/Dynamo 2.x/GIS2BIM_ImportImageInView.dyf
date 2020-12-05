@@ -41,7 +41,7 @@
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "a198553d2f944636901787adb95d72e4",
+          "Id": "e8901a819f124e1c94519befc628bf2f",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -67,7 +67,7 @@
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "203261a16f96465290127f1a45622a95",
+          "Id": "9c920bf8143041688afa01449e1d7d94",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -93,7 +93,7 @@
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "fdea9a4c662f42eab41ff16dee06c698",
+          "Id": "d652c7c8a5af4a99804633991cbd6d03",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -119,7 +119,7 @@
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "fc3f2148d1f64344adf910bd9e2a09c9",
+          "Id": "fd3c53f6fcc24ea584f3286a1021ce51",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -145,7 +145,7 @@
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "ad099d3babe94131b153ba068bbb412d",
+          "Id": "c089a84dd3a54f789c560ee8d422f76b",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -160,12 +160,12 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Main part used from Konrad K Sobon\r\n\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n#The inputs to this node will be stored as a list in the IN variables.\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk \r\nfrom Autodesk.Revit.DB import * \r\nimport System\r\n\r\n# Import Element wrapper extension methods\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\n# Import geometry conversion extension methods\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\ndataEnteringNode = IN\r\n\r\nImageWidthM=IN[0]\r\nview=UnwrapElement(IN[1])\r\nfilePath=IN[2]\r\ndeltax=IN[3]\r\ndeltay=IN[4]\r\nres = IN[5]\r\nRunIt = IN[6]\r\n\r\nwidth = ImageWidthM/0.3048\r\nplacement=System.Enum.GetValues(BoxPlacement)[0]\r\nx = deltax/304.8\r\ny = deltay/304.8\r\nrefPt = XYZ(x,y,0)\r\n\r\n#Set Image Import Options\r\n\r\niio= ImageImportOptions()\r\n\t\r\nmessage = None\r\nif placement != None:\r\n\tiio.Placement = placement\r\nif refPt !=None:\r\n\tiio.RefPoint = refPt\r\nelse: \r\n\tmessage = \"Please specify placement point.\"\r\nif res !=None:\r\n\tiio.Resolution = res\r\nelse:\r\n\tiio.Resolution = 72\r\n\t\r\n\r\nif RunIt:\r\n\t# Start Transaction\r\n\tdoc = DocumentManager.Instance.CurrentDBDocument\r\n\tTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n\tnewElement = clr.StrongBox[Element]()\r\n\telementOut = doc.Import(file = filePath, options = iio, view = view, element = newElement)\r\n\t\r\n\t#End Transaction\r\n\tTransactionManager.Instance.TransactionTaskDone()\r\n\tmessage = \"Succes\"\r\nelse: \r\n\tmessage = \"Set Runit to true\"\r\n\r\n\r\n#newElementID = newElement.Id\r\n\r\nimg = UnwrapElement(newElement)\r\nw = img.LookupParameter(\"Width\")\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\nw.Set(width)\r\nTransactionManager.Instance.TransactionTaskDone()\r\n\r\nnewElement = newElement.Name\r\n\r\nOUT = iio,message, newElement",
+      "Code": "# Main part used from Konrad K Sobon\r\n\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n#The inputs to this node will be stored as a list in the IN variables.\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk \r\nfrom Autodesk.Revit.DB import * \r\nimport System\r\n\r\n# Import Element wrapper extension methods\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\n# Import geometry conversion extension methods\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\nintVersion = int(app.VersionNumber)\r\n\r\ndataEnteringNode = IN\r\n\r\nImageWidthM=IN[0]\r\nview=UnwrapElement(IN[1])\r\nfilePath=IN[2]\r\ndeltax=IN[3]\r\ndeltay=IN[4]\r\nres = IN[5]\r\nRunIt = IN[6]\r\n\r\nwidth = ImageWidthM/0.3048\r\nplacement=System.Enum.GetValues(BoxPlacement)[0]\r\nx = deltax/304.8\r\ny = deltay/304.8\r\nrefPt = XYZ(x,y,0)\r\n\r\n#Set Image Import Options\r\n\r\nif intVersion > 2020:\r\n\tiio = ImagePlacementOptions()\r\n\t\t\r\n\tmessage = None\r\n\tif placement != None:\r\n\t\tiio.PlacementPoint = placement\r\n\tif refPt !=None:\r\n\t\tiio.Location = refPt\r\n\telse: \r\n\t\tmessage = \"Please specify placement point.\"\r\n#\tif res !=None:\r\n#\t\tiio.Resolution = res\r\n#\telse:\r\n#\t\tiio.Resolution = 72\r\nelse:\r\n\tiio= ImageImportOptions()\r\n\t\t\r\n\tmessage = None\r\n\tif placement != None:\r\n\t\tiio.Placement = placement\r\n\tif refPt !=None:\r\n\t\tiio.RefPoint = refPt\r\n\telse: \r\n\t\tmessage = \"Please specify placement point.\"\r\n\tif res !=None:\r\n\t\tiio.Resolution = res\r\n\telse:\r\n\t\tiio.Resolution = 72\r\n\r\nif RunIt:\r\n\t# Start Transaction\r\n\tdoc = DocumentManager.Instance.CurrentDBDocument\r\n\tTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n\tnewElement = clr.StrongBox[Element]()\r\n\tif intVersion > 2020:\r\n\t\telementOut = ImageInstance.Create(doc,view,ImageType.Create(doc, ImageTypeOptions(filePath)).Id,iio)\r\n\telse:\r\n\t\telementOut = doc.Import(file = filePath, options = iio, view = view, element = newElement)\r\n\t\r\n\t#End Transaction\r\n\tTransactionManager.Instance.TransactionTaskDone()\r\n\tmessage = \"Succes\"\r\nelse: \r\n\tmessage = \"Set Runit to true\"\r\n\r\n\r\n#newElementID = newElement.Id\r\n\r\nimg = elementOut#UnwrapElement(newElement)\r\nw = img.LookupParameter(\"Width\")\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\nw.Set(width)\r\nTransactionManager.Instance.TransactionTaskDone()\r\n\r\nnewElement = img.Name#newElement.Name\r\n\r\nOUT = iio,message, newElement",
       "VariableInputPorts": true,
       "Id": "0f8f9430659b492189247d90ba148303",
       "Inputs": [
         {
-          "Id": "7ec6310b0a1d42ae9f9fe42608b519db",
+          "Id": "50885738e39a496bba521e91acdfb3e6",
           "Name": "IN[0]",
           "Description": "Input #0",
           "UsingDefaultValue": false,
@@ -174,7 +174,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "aaf59584f382457787f384cb99fa73f8",
+          "Id": "982afbd2a02b40cf82cc586c3a611572",
           "Name": "IN[1]",
           "Description": "Input #1",
           "UsingDefaultValue": false,
@@ -183,7 +183,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "c07c458f336345e98f12e21ad83e756a",
+          "Id": "1ea8a52fe7d74ddea0b24f18d73e42ec",
           "Name": "IN[2]",
           "Description": "Input #2",
           "UsingDefaultValue": false,
@@ -192,7 +192,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "05d6c7f514ae4bf6a602ea1ed3d3d63c",
+          "Id": "28e6bfd6309c4154b1dffb209215642f",
           "Name": "IN[3]",
           "Description": "Input #3",
           "UsingDefaultValue": false,
@@ -201,7 +201,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "85c4fcf76c2a41f3b592a3157825a441",
+          "Id": "1e1d844e559b470da39b9db1b36d9517",
           "Name": "IN[4]",
           "Description": "Input #4",
           "UsingDefaultValue": false,
@@ -210,7 +210,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "3983f491fbc34d5a818ef18635efa04e",
+          "Id": "1064c89391b844388ea6472bca17938b",
           "Name": "IN[5]",
           "Description": "Input #5",
           "UsingDefaultValue": false,
@@ -219,7 +219,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "842f11a1a6454db3ad34abacad0c5bf4",
+          "Id": "6395fc17a3bc48628ed0d866d886d895",
           "Name": "IN[6]",
           "Description": "Input #6",
           "UsingDefaultValue": false,
@@ -230,7 +230,7 @@
       ],
       "Outputs": [
         {
-          "Id": "a745cdbb89064fae891529dafa00a007",
+          "Id": "cb2df52abb454e11a73ea741866bdd14",
           "Name": "OUT",
           "Description": "Result of the python script",
           "UsingDefaultValue": false,
@@ -250,7 +250,7 @@
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "e813f8a1f5c14ba9aced3bb1619deb6b",
+          "Id": "c76cd87c58bf4bd78d5161d38d20ecb9",
           "Name": "",
           "Description": "Value of expression at line 1",
           "UsingDefaultValue": false,
@@ -270,7 +270,7 @@
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "90910149c318414ab7d565fd5d6969dd",
+          "Id": "a5a650f5481842b1ae9c7955cbef9970",
           "Name": "",
           "Description": "Boolean",
           "UsingDefaultValue": false,
@@ -290,7 +290,7 @@
       "Id": "ba9bf56ed91447d6b1b747c274baedb8",
       "Inputs": [
         {
-          "Id": "681815b6587e4800bfcd1a5760805b79",
+          "Id": "a2f28f3e45c446638b39d38765d04407",
           "Name": "",
           "Description": "",
           "UsingDefaultValue": false,
@@ -302,59 +302,220 @@
       "Outputs": [],
       "Replication": "Disabled",
       "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "237e943c-c1a0-4936-9269-1b5ad1dc8b4c",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "56bc3fb08a954e6a9ba51e97f691a470",
+      "Inputs": [
+        {
+          "Id": "17b90793699849b3a6701cc0b91a9ccb",
+          "Name": "view",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "30980e4d3957449faf0ab83051fd0537",
+          "Name": "name",
+          "Description": "string[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b4b99fab4dec443aa6439eb8fa70cf4e",
+          "Name": "view",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Duplicates a given view"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": "\\",
+      "Id": "6453576f09a14f8c8fb72df663a2fd4d",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "8eefeab66fa04634b413af797a21c178",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.LastItem@var[]..[]",
+      "Id": "04ae024c1bdf451fb5c3d65f53290ee5",
+      "Inputs": [
+        {
+          "Id": "80f6a9f4bb5b40c197a1867574db100c",
+          "Name": "list",
+          "Description": "List to get the last item of.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2ffc5aef72ac405dad4769c81d1e8ace",
+          "Name": "last",
+          "Description": "Last item in the list.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Retrieves the last item in a list.\n\nList.LastItem (list: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
+      "FunctionSignature": "DSCore.String.Split@string,string[]",
+      "FunctionType": "VariableArgument",
+      "NodeType": "FunctionNode",
+      "Id": "b5d88f1d89cc40d8a8b4f800f0c57833",
+      "Inputs": [
+        {
+          "Id": "53a677cd54c94e98b5ed3fc10504ed1b",
+          "Name": "str",
+          "Description": "String to split up.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2d74d2457044464188e125bf36f8116f",
+          "Name": "separator0",
+          "Description": "Strings that, if present, determine the end and start of a split.\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "de1ca92ed777463eafdbda6b0edbea45",
+          "Name": "strings",
+          "Description": "List of strings made from the input string.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Divides a single string into a list of strings, with divisions determined by the given separator strings.\n\nString.Split (str: string, separators: string[]): string[]"
     }
   ],
   "Connectors": [
     {
-      "Start": "a198553d2f944636901787adb95d72e4",
-      "End": "7ec6310b0a1d42ae9f9fe42608b519db",
-      "Id": "c8557614d7e64f139da0d5140be06251"
+      "Start": "e8901a819f124e1c94519befc628bf2f",
+      "End": "50885738e39a496bba521e91acdfb3e6",
+      "Id": "e9a45061141c46ee834fe04b59f97d06"
     },
     {
-      "Start": "203261a16f96465290127f1a45622a95",
-      "End": "aaf59584f382457787f384cb99fa73f8",
-      "Id": "8a53db5742af446f904748d73fed9b89"
+      "Start": "9c920bf8143041688afa01449e1d7d94",
+      "End": "982afbd2a02b40cf82cc586c3a611572",
+      "Id": "ed6174c66013426a8803bb9b4a0e7952"
     },
     {
-      "Start": "fdea9a4c662f42eab41ff16dee06c698",
-      "End": "c07c458f336345e98f12e21ad83e756a",
-      "Id": "6b6c0bfedf2141258e39102bb1859fd6"
+      "Start": "d652c7c8a5af4a99804633991cbd6d03",
+      "End": "1ea8a52fe7d74ddea0b24f18d73e42ec",
+      "Id": "30c1f6c771c149519814848c9bc5c4fd"
     },
     {
-      "Start": "fc3f2148d1f64344adf910bd9e2a09c9",
-      "End": "05d6c7f514ae4bf6a602ea1ed3d3d63c",
-      "Id": "207f1bb6917647e0beb843e66cde7bb0"
+      "Start": "d652c7c8a5af4a99804633991cbd6d03",
+      "End": "53a677cd54c94e98b5ed3fc10504ed1b",
+      "Id": "1402ac68c56a44188240efbbab5bd703"
     },
     {
-      "Start": "ad099d3babe94131b153ba068bbb412d",
-      "End": "85c4fcf76c2a41f3b592a3157825a441",
-      "Id": "7dfa621bb3c94f3bbd951b0a998daf4d"
+      "Start": "fd3c53f6fcc24ea584f3286a1021ce51",
+      "End": "28e6bfd6309c4154b1dffb209215642f",
+      "Id": "c32b1a04dcdb47adaf0533991f8fc62d"
     },
     {
-      "Start": "a745cdbb89064fae891529dafa00a007",
-      "End": "681815b6587e4800bfcd1a5760805b79",
-      "Id": "88a0babb3e3a4a64ae5399c832655bde"
+      "Start": "c089a84dd3a54f789c560ee8d422f76b",
+      "End": "1e1d844e559b470da39b9db1b36d9517",
+      "Id": "1242548703e941a3853e035822e169c9"
     },
     {
-      "Start": "e813f8a1f5c14ba9aced3bb1619deb6b",
-      "End": "3983f491fbc34d5a818ef18635efa04e",
-      "Id": "a97fa0796e614a199ca788fba038ac42"
+      "Start": "cb2df52abb454e11a73ea741866bdd14",
+      "End": "a2f28f3e45c446638b39d38765d04407",
+      "Id": "266cfc34138b49a2829957fc4c8cc85e"
     },
     {
-      "Start": "90910149c318414ab7d565fd5d6969dd",
-      "End": "842f11a1a6454db3ad34abacad0c5bf4",
-      "Id": "1175c69acb7b49c58f97d0dbf62bcce5"
+      "Start": "c76cd87c58bf4bd78d5161d38d20ecb9",
+      "End": "1064c89391b844388ea6472bca17938b",
+      "Id": "f011265c282541c6ad604e3a5b7c8d7f"
+    },
+    {
+      "Start": "a5a650f5481842b1ae9c7955cbef9970",
+      "End": "6395fc17a3bc48628ed0d866d886d895",
+      "Id": "0157951904de4eb49a468c94cbd2b2f0"
+    },
+    {
+      "Start": "8eefeab66fa04634b413af797a21c178",
+      "End": "2d74d2457044464188e125bf36f8116f",
+      "Id": "b3bd86950cd34e54a42bda48e6f92cda"
+    },
+    {
+      "Start": "2ffc5aef72ac405dad4769c81d1e8ace",
+      "End": "30980e4d3957449faf0ab83051fd0537",
+      "Id": "be5dcb13806d4857bc5d81ca6c43153b"
+    },
+    {
+      "Start": "de1ca92ed777463eafdbda6b0edbea45",
+      "End": "80f6a9f4bb5b40c197a1867574db100c",
+      "Id": "52cbfe7c9a4f428089478c8febc73e03"
     }
   ],
-  "Dependencies": [],
-  "NodeLibraryDependencies": [],
+  "Dependencies": [
+    "237e943c-c1a0-4936-9269-1b5ad1dc8b4c"
+  ],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "Clockwork for Dynamo 2.x",
+      "Version": "2.3.0",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "56bc3fb08a954e6a9ba51e97f691a470"
+      ]
+    }
+  ],
   "Bindings": [],
   "View": {
     "Dynamo": {
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.3.0.5885",
+      "Version": "2.5.0.7460",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
@@ -378,8 +539,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -53.6905015230006,
-        "Y": 408.36531761103
+        "X": -58.392647191623105,
+        "Y": 305.60289092390417
       },
       {
         "ShowGeometry": true,
@@ -388,8 +549,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -53.6905015230006,
-        "Y": 493.301114670409
+        "X": -58.392647191623105,
+        "Y": 872.15142073640459
       },
       {
         "ShowGeometry": true,
@@ -398,8 +559,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -55.8153695806214,
-        "Y": 599.91380828258
+        "X": -58.392647191623105,
+        "Y": 389.89175519220788
       },
       {
         "ShowGeometry": true,
@@ -408,8 +569,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -51.0419243359557,
-        "Y": 674.336897978593
+        "X": -58.392647191623105,
+        "Y": 464.31484488822093
       },
       {
         "ShowGeometry": true,
@@ -418,8 +579,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -54.0801347721487,
-        "Y": 751.79246285835
+        "X": -58.392647191623105,
+        "Y": 541.77040976797775
       },
       {
         "ShowGeometry": true,
@@ -428,8 +589,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 358.035238664253,
-        "Y": 535.058128791368
+        "X": 823.84085723493126,
+        "Y": 446.73786720195903
       },
       {
         "ShowGeometry": true,
@@ -438,8 +599,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 70.218063197151,
-        "Y": 909.129831876016
+        "X": -58.392647191623105,
+        "Y": 699.10777878564386
       },
       {
         "ShowGeometry": true,
@@ -448,8 +609,8 @@
         "IsSetAsInput": true,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 0.0400919920165279,
-        "Y": 990.195667727569
+        "X": -58.392647191623105,
+        "Y": 780.17361463719681
       },
       {
         "ShowGeometry": true,
@@ -458,13 +619,53 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 648.252846799851,
-        "Y": 535.299323949348
+        "X": 1124.6134822601175,
+        "Y": 464.67501313319804
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "View.Duplicate",
+        "Id": "56bc3fb08a954e6a9ba51e97f691a470",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 590.85261043805963,
+        "Y": 1008.7082281883864
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String",
+        "Id": "6453576f09a14f8c8fb72df663a2fd4d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -38.2463106119637,
+        "Y": 1150.18798926471
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.LastItem",
+        "Id": "04ae024c1bdf451fb5c3d65f53290ee5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 387.234908778304,
+        "Y": 1088.36370507615
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.Split",
+        "Id": "b5d88f1d89cc40d8a8b4f800f0c57833",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 132.181552061531,
+        "Y": 1093.72240126713
       }
     ],
     "Annotations": [],
-    "X": 221.67281674705643,
-    "Y": -350.29843358429366,
-    "Zoom": 1.4622671597487626
+    "X": 293.68788118628629,
+    "Y": -167.57930444833448,
+    "Zoom": 0.759032289471731
   }
 }
