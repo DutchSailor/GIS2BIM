@@ -2,32 +2,43 @@
 
 import GIS2BIM_Lib
 import urllib.request
+import urllib
 import xml.etree.ElementTree as ET
 import json
 
 a = GIS2BIM_Lib.GIS2BIM_GetLocationDataNetherlands("dordrecht","Lange%20Geldersekade","2")
 width = 500
+height = 500
 Rdx = float(a[0])
 Rdy = float(a[1])
 
 Rdx = 104857.637
 Rdy = 425331.936
-Bbox = GIS2BIM_Lib.GIS2BIM_CreateBoundingBox(Rdx,Rdy,width,width,2)
+Bbox = GIS2BIM_Lib.GIS2BIM_CreateBoundingBox(Rdx,Rdy,width,height,2)
 
+fileLocationWMS = 'C:\\TEMP\\test7.jpg'
 curvesCadastralParcels = GIS2BIM_Lib.GIS2BIM_PointsFromWFS(GIS2BIM_Lib.DutchGEOCadastreServerRequest1,Bbox,GIS2BIM_Lib.xPathCadastre1,-Rdx,-Rdy,1000,3,2)
 curvesBuildings = GIS2BIM_Lib.GIS2BIM_PointsFromWFS(GIS2BIM_Lib.DutchGEOBAG,Bbox,GIS2BIM_Lib.xPathCadastre1,-Rdx,-Rdy,1000,3,2)
 curves3DBAG = GIS2BIM_Lib.GIS2BIM_PointsFromWFS(GIS2BIM_Lib.DutchGEOBAG3D,Bbox,GIS2BIM_Lib.xPath3DBag3,-Rdx,-Rdy,1000,3,3)
-
 
 curvesRuimtelijkePlannen = GIS2BIM_Lib.GIS2BIM_PointsFromWFS(GIS2BIM_Lib.DutchGEORuimtelijkeplannenBouwvlakServerRequest,Bbox,GIS2BIM_Lib.xPathRuimtelijkePlannen,-Rdx,-Rdy,1000,3,2)
 textDataCadastralParcels = GIS2BIM_Lib.GIS2BIM_DataFromWFS(GIS2BIM_Lib.DutchGEOCadastreServerRequest2,Bbox,GIS2BIM_Lib.xPathCadastre2,GIS2BIM_Lib.xPathStringsCadastreTextAngle,-Rdx,-Rdy,1000,3,2)
 textDataOpenbareRuimtenaam = GIS2BIM_Lib.GIS2BIM_DataFromWFS(GIS2BIM_Lib.DutchGEOCadastreServerRequest3,Bbox,GIS2BIM_Lib.xPathCadastre2,GIS2BIM_Lib.xPathStringsCadastreTextAngle,-Rdx,-Rdy,1000,3,2)
 heightData3DBAG = GIS2BIM_Lib.GIS2BIM_DataFromWFS(GIS2BIM_Lib.DutchGEOBAG3D,Bbox,GIS2BIM_Lib.xPath3DBag3,GIS2BIM_Lib.xPathStrings3DBag,-Rdx,-Rdy,1000,3,3)
 
+GIS2BIM_WMSRequest(DutchGEOLuchtfoto2019WMS,Bbox,fileLocationWMS)
+
+App.activeDocument().addObject('Image::ImagePlane','ImagePlane')
+App.activeDocument().ImagePlane.ImageFile = fileLocationWMS
+App.activeDocument().ImagePlane.XSize = width*1000
+App.activeDocument().ImagePlane.YSize = height*1000
+App.activeDocument().ImagePlane.Placement = App.Placement(App.Vector(0.000000,0.000000,0.000000),App.Rotation(0.000000,0.000000,0.000000,1.000000))
 
 #test = GIS2BIM_Lib.GIS2BIM_PointsFromWFS(GIS2BIM_Lib.DutchGEOBAG3D,Bbox,GIS2BIM_Lib.xPath3DBag3,0,0,1,3,3)
 import Draft
 import Part
+
+#def GIS2BIM_FreeCAD_3DBAG(serverName,boundingBoxString,xPathStringCoord,xPathStrings,dx,dy,scale,DecimalNumbers,XYZCountDimensions):
 
 for i,j,k in zip(curves3DBAG,heightData3DBAG[1],heightData3DBAG[2]):
 	pointlist = []
@@ -84,4 +95,3 @@ for i,j,k in zip(curves3DBAG,heightData3DBAG[1],heightData3DBAG[2]):
 
 FreeCAD.ActiveDocument.recompute()
 
-'''

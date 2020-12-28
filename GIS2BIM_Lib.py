@@ -18,6 +18,8 @@ DutchGEOBAG = "http://geodata.nationaalgeoregister.nl/bag/wfs/v1_1?service=wfs&v
 DutchGEOBAG3D = "http://3dbag.bk.tudelft.nl/data/wfs?&request=GetFeature&typeName=BAG3D:pand3d&outputFormat=GML3&bbox="
 #3D Buildings of BAG
 
+DutchGEOLuchtfoto2019WMS = "http://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wms?&request=GetMap&VERSION=1.3.0&STYLES=&layers=2019_ortho25&width=3000&height=3000&format=image/png&crs=EPSG:28992&bbox="
+
 DutchGEORuimtelijkeplannenBouwvlakServerRequest = "http://afnemers.ruimtelijkeplannen.nl/afnemers/services?&service=WFS&version=1.1.0&request=GetFeature&typeName=app:Bouwvlak&bbox="
 
 xPathCadastre1 = ".//{http://www.opengis.net/gml/3.2}posList"
@@ -28,7 +30,10 @@ xPathStrings3DBag = [".//{3dbag}ground-0.50", ".//{3dbag}roof-0.50"]
 xPath3DBag3 = ".//{http://www.opengis.net/gml}posList"
 #Xpath for several Web Feature Servers
 
+GeoserviceLibrariesNetherlands = {"DutchGEOLuchtfoto2019WMS": DutchGEOLuchtfoto2019WMS,"DutchGEOCadastreServerRequest1":DutchGEOCadastreServerRequest1}
+
 import urllib.request
+import urllib
 import xml.etree.ElementTree as ET
 import json
 
@@ -54,8 +59,8 @@ def GIS2BIM_CreateBoundingBox(CoordinateX,CoordinateY,BoxWidth,BoxHeight,Decimal
     XRight = round(CoordinateX+0.5*BoxWidth,DecimalNumbers)
     YBottom = round(CoordinateY-0.5*BoxHeight,DecimalNumbers)
     YTop = round(CoordinateY+0.5*BoxHeight,DecimalNumbers)
-    boundingBoxString1 = str(XLeft) + "," + str(YBottom) + "," + str(XRight) + "," + str(YTop)
-    return boundingBoxString1
+    boundingBoxString = str(XLeft) + "," + str(YBottom) + "," + str(XRight) + "," + str(YTop)
+    return boundingBoxString
 
 def GIS2BIM_GetLocationDataNetherlands(City,Streetname,Housenumber):
 # Use PDOK location server to get X & Y data
@@ -68,9 +73,10 @@ def GIS2BIM_GetLocationDataNetherlands(City,Streetname,Housenumber):
     RD = jsonList1['centroide_rd']
     RD = RD.replace("("," ").replace(")"," ")
     RD = RD.split()
-    RDx = RD[1]
-    RDy = RD[2]
-    return RDx,RDy, requestURL
+    RDx = float(RD[1])
+    RDy = float(RD[2])
+    result = [RDx,RDy,requestURL]
+    return result
 
 def GIS2BIM_PointsFromWFS(serverName,boundingBoxString,xPathString,dx,dy,scale,DecimalNumbers,XYZCountDimensions):
 # group X and Y Coordinates
@@ -95,3 +101,16 @@ def GIS2BIM_DataFromWFS(serverName,boundingBoxString,xPathStringCoord,xPathStrin
         xPathResults.append(xPathResulttemp2)
     xPathResults.insert(0,xyPosList)
     return xPathResults
+
+def GIS2BIM_WMSRequest(serverName,boundingBoxString,fileLocation):
+    # perform a WMS OGC webrequest( Web Map Service). This is loading images.
+    myrequestURL = serverName + boundingBoxString
+    resource = urllib.request.urlopen(myrequestURL)
+    output1 = open(fileLocation, "wb")
+    output1.write(resource.read())
+    output1.close()
+    return fileLocation, resource
+
+
+
+
