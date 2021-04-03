@@ -9,9 +9,9 @@ To get an impression of GIS2BIM have a look at the workflows in the wiki: https:
 ## Version
 Version 0.10.0 released on 10-09-2019. This is the last version for Dynamo 1.x.(Revit 2019 and Dynamo 1.3.3.)
 
-Version 0.11.14 released on 05-12-2020. This is the version for Dynamo 2.x. This dynamopackage is called 'GIS2BIM for Dynamo 2.x'
+Version 0.12 released on 03-04-2021. This is the version for Dynamo 2.x. This dynamopackage is called 'GIS2BIM for Dynamo 2.x'
 (Revit 2021 and Dynamo 2.x)
-(new cadasterserver V4 implemented)
+(new BAG3D V2 implemented)
 
 ## Installation
 Installation is possible via the dynamo built-in package manager.
