@@ -1,3 +1,5 @@
+<script>
+
 	var mymap = L.map('mapid');
 	mymap.setView([51.8146586, 4.6609429], 13);
 	
@@ -9,3 +11,5 @@
 		tileSize: 512,
 		zoomOffset: -1
 	}).addTo(mymap);	
+	
+</script>
