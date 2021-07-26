@@ -12,7 +12,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import sys\r\nimport clr\r\nimport json\r\n\r\nsys.path.append(r'C:\\Users\\mikev\\AppData\\Roaming\\Python\\Python37\\site-packages')\r\nimport requests\r\nfrom requests.structures import CaseInsensitiveDict\r\n\r\nurl = \"https://api.pdok.nl/lv/bgt/download/v1_0/full/custom\"\r\n\r\nheaders = CaseInsensitiveDict()\r\nheaders[\"accept\"] = \"application/json\"\r\nheaders[\"Content-Type\"] = \"application/json\"\r\n\r\ndata = IN[0]\r\n\r\nresp = requests.post(url, headers=headers, data=data)\r\n\r\njsondata = json.loads(resp.text)\r\ndata = jsondata[\"downloadRequestId\"]\r\n\r\nOUT = data\r\n\r\n",
+      "Code": "import sys\r\nimport clr\r\nimport json\r\nimport urllib\r\nimport time\r\n\r\nsys.path.append(r'C:\\Users\\mikev\\AppData\\Roaming\\Python\\Python37\\site-packages')\r\nimport requests\r\nfrom requests.structures import CaseInsensitiveDict\r\n\r\nurl = IN[1]\r\n\r\nheaders = CaseInsensitiveDict()\r\nheaders[\"accept\"] = \"application/json\"\r\nheaders[\"Content-Type\"] = \"application/json\"\r\n\r\ndata = IN[0] #Define format, polygon, layers\r\n\r\nresp = requests.post(url, headers=headers, data=data)\r\n\r\njsondata = json.loads(resp.text)\r\ndata = jsondata[\"downloadRequestId\"]\r\nurlstatus = url + \"/\" + data + \"/status\" \r\n\r\nOUT = urlstatus\r\n",
       "Engine": "CPython3",
       "VariableInputPorts": true,
       "Id": "cbb665cb9be94d66b1e0ad13f170c271",
@@ -21,6 +21,15 @@
           "Id": "c476c84bb8c6414a8ad866b90ee7b503",
           "Name": "IN[0]",
           "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "75183c3c466845b8b26259a8dc4cdf8a",
+          "Name": "IN[1]",
+          "Description": "Input #1",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -212,12 +221,12 @@
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
       "NodeType": "CodeBlockNode",
-      "Code": "\"Dordrecht\";\n\"werf van schouten\";\n\"501\";",
+      "Code": "\"Dordrecht\";\n\"werf van schouten\";\n\"503\";",
       "Id": "4f248ca7996946ba9229d43d9869ea6b",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "c8f4f5505dcb44ef96405dc76ce52fba",
+          "Id": "281a1326a8a64ce9980c6454fcab4632",
           "Name": "",
           "Description": "Value of expression at line 1",
           "UsingDefaultValue": false,
@@ -226,7 +235,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "2f299df21e724ae5919374db5e9aaa90",
+          "Id": "50f2fdbb989141df836500d198351e65",
           "Name": "",
           "Description": "Value of expression at line 2",
           "UsingDefaultValue": false,
@@ -235,7 +244,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "c1657cddf75546b197a14cfc36225dde",
+          "Id": "4f4c509abb0f4ad8bf45dad029a3ed3c",
           "Name": "",
           "Description": "Value of expression at line 3",
           "UsingDefaultValue": false,
@@ -362,12 +371,12 @@
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
       "NodeType": "CodeBlockNode",
-      "Code": "400;",
+      "Code": "1000;",
       "Id": "d01c101029564971bd09c4671d73e3ef",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "87fa8237167341e696ee4fac4d3fd282",
+          "Id": "713b686af5fc43d7bf6d280507f7cbe0",
           "Name": "",
           "Description": "Value of expression at line 1",
           "UsingDefaultValue": false,
@@ -527,54 +536,16 @@
       "Description": "Creates a string."
     },
     {
-      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
-      "NodeType": "StringInputNode",
-      "InputValue": ")\"}",
-      "Id": "d988334d25d34ea4b92a1ed31b6fc83a",
-      "Inputs": [],
-      "Outputs": [
-        {
-          "Id": "a420ca5764684083b0726792ba0a05fa",
-          "Name": "",
-          "Description": "String",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "Creates a string."
-    },
-    {
       "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
       "NodeType": "CodeBlockNode",
-      "Code": "\"https://download.pdok.io/lv/bgt/api/v1/extract/\";\n\"55359369-f738-4618-a933-38c701c5463c\";\n\"/extract.zip\";",
-      "Id": "66f833b338a341d594a33bd2e56c645c",
+      "Code": "\"C:/Users/mikev/AppData/Roaming/Dynamo/Dynamo Revit/2.10/packages/GIS2BIM for Dynamo 2.x/extra\";",
+      "Id": "af6ae74c83b6405ca54eb18a757605ef",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "5115ac028dee412695f4e4d2d0946300",
+          "Id": "371ae88a89764fce897a7c4d8c009a40",
           "Name": "",
           "Description": "Value of expression at line 1",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "bb8768c78b06404bbd52bd759e09e8f6",
-          "Name": "",
-          "Description": "Value of expression at line 2",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "62020ef38529449fae3feef0fd4f1bef",
-          "Name": "",
-          "Description": "Value of expression at line 3",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -585,34 +556,131 @@
       "Description": "Allows for DesignScript code to be authored directly"
     },
     {
-      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
-      "FunctionSignature": "DSCore.String.Concat@string[]",
-      "FunctionType": "VariableArgument",
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"webserverRequests\";\n//Title\n\"BGTPOSTFullCustom\";\n\"serverrequestprefix\";",
+      "Id": "98f3a1a1ea5541e994ea3f37e3ad7b6c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c24934166bcc4eeab069d23a689f1936",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "58cb266200d442998f63742ebd57084a",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5b532757bfd7461e94d99a0b44ad5f09",
+          "Name": "",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "be7b9527-10a1-4283-b99d-e551664ba2cf",
+      "FunctionType": "Graph",
       "NodeType": "FunctionNode",
-      "Id": "4ffb4dcdc1cb4c70975aadee69784840",
+      "Id": "ed31df928b8748ab9b43d48f3962cf6d",
       "Inputs": [
         {
-          "Id": "2649998cd2964a799a0896d04f26d4b3",
-          "Name": "string0",
-          "Description": "List of strings to concatenate.\n\nstring[]",
+          "Id": "4eb021fd009b43f999550898d9bc1a60",
+          "Name": "category",
+          "Description": "string\nDefault value : \"webserverRequests\"",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fff520b585844a688308bb4a62bd9373",
+          "Name": "title",
+          "Description": "string\nDefault value : \"BGTPOSTFullCustom\"",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c4207c1e1078478992731fd48b28bd83",
+          "Name": "parameter",
+          "Description": "string\nDefault value : \"serverrequestprefix\"",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "025ec4c77fde4a9e99ae28fab807ea6f",
+          "Name": "parametervalue",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get webserverdata from github repository of GIS2BIM(up to date list of GIS-servers & requests)"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import sys\r\nimport json\r\nimport urllib\r\n\r\nurl = IN[0]\r\ncategory = IN[1]\r\nservertitle = IN[2]\r\nparameter = IN[3]\r\nreq = urllib.request.urlopen(url)\r\nreq = req.read().decode('utf-8')\r\ndata = json.loads(req)['GIS2BIMserversRequests'][category]\r\n\r\ntest = []\r\nfor i in data:\r\n\ttest.append(i[\"title\"])\r\nresult = data[test.index(servertitle)][parameter]\r\n\r\nOUT = result\r\n\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "10795936ccdf48c49f576597e95e9921",
+      "Inputs": [
+        {
+          "Id": "3f51b81bd8794fcf826f1295eabf8930",
+          "Name": "IN[0]",
+          "Description": "Input #0",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
         },
         {
-          "Id": "165f2bd148874a3382bd1f616da8ed4b",
-          "Name": "string1",
-          "Description": "string[]",
+          "Id": "c9b0e06a965f44dabaae71d3d6e6d363",
+          "Name": "IN[1]",
+          "Description": "Input #1",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
         },
         {
-          "Id": "f67fc6fa47854d139de02443ee9be876",
-          "Name": "string2",
-          "Description": "string[]",
+          "Id": "8caca977eb8847db9a935488efc1d7f1",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ac2399a918f94778b009aced8b2affde",
+          "Name": "IN[3]",
+          "Description": "Input #3",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -621,27 +689,209 @@
       ],
       "Outputs": [
         {
-          "Id": "3a600ac9c4fa43edba7a2524fbf43ca9",
-          "Name": "string",
-          "Description": "String made from list of strings.",
+          "Id": "382a245d8c4945a9bf2717cca81460d8",
+          "Name": "OUT",
+          "Description": "Result of the python script",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
         }
       ],
-      "Replication": "Auto",
-      "Description": "Concatenates multiple strings into a single string.\n\nString.Concat (strings: string[]): string"
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"https://raw.githubusercontent.com/DutchSailor/GIS2BIM/master/GIS2BIM_Data.json\";",
+      "Id": "2bed83284aed4d7caa6c03c2d0ec28c1",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c53b198efda846d08963f9f2b19be498",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "parameter: string = \"serverrequestprefix\";",
+      "Id": "a725828b813b4ef3abe7722e05036884",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7dd51a7b983b420cbdf9d22f01d35e9d",
+          "Name": "",
+          "Description": "parameter",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "category: string = \"webserverRequests\";",
+      "Id": "765b5f6ba0484e82b5885c697969b9e0",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "4087d16eb06346f299750425931caf61",
+          "Name": "",
+          "Description": "category",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "title: string = \"BGTPOSTFullCustom\";",
+      "Id": "8a24f9dd13dd486b9feb98f5e8a279db",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "3f39034891db42fe9c36e2ba708712d2",
+          "Name": "",
+          "Description": "title",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import sys\r\nimport clr\r\nimport json\r\nimport urllib\r\nimport time\r\n\r\nurlstatus = IN[0]\r\nurl= IN[1]\r\n\r\n# Check URL Status\r\ntimeout = time.time() + 30\r\n\r\nreq = urllib.request.urlopen(urlstatus)\r\nreq2 = req.read().decode('utf-8')\r\nprogressStatus = float(json.loads(req2)['progress'])\r\n\r\nprogressStatus = 0\r\nwhile progressStatus < 100:\r\n    if progressStatus == 100 or time.time() > timeout:\r\n        break\r\n    time.sleep(1)\r\n    \r\nhref = json.loads(req2)[\"_links\"][\"download\"][\"href\"]\r\n\r\ndownloadURL = url + \"/\" + href\r\n\r\nOUT = downloadURL",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "e6ceccca44654c0fb6ebb92d0ebcd297",
+      "Inputs": [
+        {
+          "Id": "5b0f768873cc4580884ae24dea656667",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "92babd68e403424180acf699bbbfcf9f",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6970688804ef4bae95c6425be95d67ed",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import sys\r\nsys.path.append(\"C:\\Program Files (x86)\\IronPython 2.7\\Lib\")\r\nfrom System.Net import WebClient\r\n\r\nurl= IN[0]\r\nfiloc= IN[1]\r\n\r\nWebClient().DownloadFile(url, filoc)\r\n\r\nOUT= filoc",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "4d9eaf81a34a4d9482b0f1a7c293f35c",
+      "Inputs": [
+        {
+          "Id": "bc6170fa4692426fa82ba05898c9eff5",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "145638835cb8494e845b844f2c3bd753",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "368767386aec4d40874d185bcff43c3c",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"C:/TEMP/\";",
+      "Id": "22211100ac4143dfa3917b47981815fc",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a0dcaf37295b40b29428a616712db5de",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
       "FunctionSignature": "5de78370-8fa6-4929-a54a-aa73a5cbb7ee",
       "FunctionType": "Graph",
       "NodeType": "FunctionNode",
-      "Id": "4f679670c93749b2bba0c87a07a1c6f8",
+      "Id": "90ce1e20be1240beb8cf5639da7bffe0",
       "Inputs": [
         {
-          "Id": "dcecba6a61e7437aa1dcb8d3291cde8d",
+          "Id": "2c598ab01c034db5acffb859b23c8900",
           "Name": "toggle",
           "Description": "bool\nDefault value : true",
           "UsingDefaultValue": true,
@@ -650,7 +900,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "dbf61b6f08bd446aa567c039b2bc58f9",
+          "Id": "30ea393cd9c1483fa13ae2624e578266",
           "Name": "url",
           "Description": "string",
           "UsingDefaultValue": false,
@@ -661,7 +911,7 @@
       ],
       "Outputs": [
         {
-          "Id": "9be70e7daba84072b176cafe38af990a",
+          "Id": "624944f934fd42a49126b55e730decc6",
           "Name": "run",
           "Description": "return value",
           "UsingDefaultValue": false,
@@ -670,7 +920,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "cc2fab7f9ebc4bffb567a210f3fcb192",
+          "Id": "f045680008f74abebec947692034987e",
           "Name": "url",
           "Description": "return value",
           "UsingDefaultValue": false,
@@ -686,8 +936,8 @@
   "Connectors": [
     {
       "Start": "8054f7dfcfda48369bd81e63a93375d3",
-      "End": "165f2bd148874a3382bd1f616da8ed4b",
-      "Id": "8536b4c73af94337a210784082629ac4"
+      "End": "5b0f768873cc4580884ae24dea656667",
+      "Id": "09bb30643f40401a866e13818a9932e3"
     },
     {
       "Start": "80b4d37c4b974fc0869d8e2919a6e95e",
@@ -705,19 +955,19 @@
       "Id": "d6dc037e944e45dea9fc9eb7a1dfdc19"
     },
     {
-      "Start": "c8f4f5505dcb44ef96405dc76ce52fba",
+      "Start": "281a1326a8a64ce9980c6454fcab4632",
       "End": "0996d9b9507d429783fc665f915d0736",
-      "Id": "c355ad1235a345ac8f46d720c8a0f5f2"
+      "Id": "1b251c5eabb141fd80fcd04a255bacfa"
     },
     {
-      "Start": "2f299df21e724ae5919374db5e9aaa90",
+      "Start": "50f2fdbb989141df836500d198351e65",
       "End": "4d6f3d9cfba6406eb66ed337c847e9a4",
-      "Id": "bcd15fdbbbdd4628b8e520d0ff1fb3bd"
+      "Id": "9cd4d79010f548668e06c595179b853a"
     },
     {
-      "Start": "c1657cddf75546b197a14cfc36225dde",
+      "Start": "4f4c509abb0f4ad8bf45dad029a3ed3c",
       "End": "373d43f391a34ffb9c78eace9630e699",
-      "Id": "52390679150b4ee2ac8dbe13602bf01d"
+      "Id": "94cfe4f466234d768a5468f26e4bbe06"
     },
     {
       "Start": "2c902f106c69485eb69075b293d9ffbc",
@@ -725,19 +975,19 @@
       "Id": "ca865c85727a4ec68f6d86f00847b612"
     },
     {
-      "Start": "87fa8237167341e696ee4fac4d3fd282",
+      "Start": "713b686af5fc43d7bf6d280507f7cbe0",
       "End": "4f1e2c52b68b4f91ba7904bcd8eff942",
-      "Id": "89d9a16c34fb49a889a255233b76b6ef"
+      "Id": "93472a6508ae4be89c73fba5c1cc7ede"
     },
     {
-      "Start": "87fa8237167341e696ee4fac4d3fd282",
+      "Start": "713b686af5fc43d7bf6d280507f7cbe0",
       "End": "b1dac2744f4d4e9b824e98fbad15ab85",
-      "Id": "f80abb80ce524fc58207e2fca65f7e14"
+      "Id": "f7e3f148d5cf458b9e869642fab6225e"
     },
     {
       "Start": "a937c8cfc56744439119e5926ecd3ee4",
       "End": "c476c84bb8c6414a8ad866b90ee7b503",
-      "Id": "4c70fa1cb9534941881fcfa453c22f87"
+      "Id": "d60e73fe7da142bcadb8dc392d191ae5"
     },
     {
       "Start": "7d9d63aa316249e0b80c64a6a623e4f3",
@@ -755,24 +1005,70 @@
       "Id": "e4db7866cccf46d2bbd6fcc32448b21f"
     },
     {
-      "Start": "5115ac028dee412695f4e4d2d0946300",
-      "End": "2649998cd2964a799a0896d04f26d4b3",
-      "Id": "9a3d1dd4844f464eba29036a9cadf801"
+      "Start": "c24934166bcc4eeab069d23a689f1936",
+      "End": "4eb021fd009b43f999550898d9bc1a60",
+      "Id": "0db5963e3bcd4759959a22ffea1352c5"
     },
     {
-      "Start": "62020ef38529449fae3feef0fd4f1bef",
-      "End": "f67fc6fa47854d139de02443ee9be876",
-      "Id": "42cb92f191c94933bdf434e5eabca2ae"
+      "Start": "c24934166bcc4eeab069d23a689f1936",
+      "End": "c9b0e06a965f44dabaae71d3d6e6d363",
+      "Id": "f61cdf38d13a49dbba7b011316f10f50"
     },
     {
-      "Start": "3a600ac9c4fa43edba7a2524fbf43ca9",
-      "End": "dbf61b6f08bd446aa567c039b2bc58f9",
-      "Id": "bcc30eea23634e02bb63f60c342b2031"
+      "Start": "58cb266200d442998f63742ebd57084a",
+      "End": "fff520b585844a688308bb4a62bd9373",
+      "Id": "a169db56453e405e80e4ce0f55d3e39c"
+    },
+    {
+      "Start": "58cb266200d442998f63742ebd57084a",
+      "End": "8caca977eb8847db9a935488efc1d7f1",
+      "Id": "25b4ca7bf807455ab830b2e2d5e3010b"
+    },
+    {
+      "Start": "5b532757bfd7461e94d99a0b44ad5f09",
+      "End": "c4207c1e1078478992731fd48b28bd83",
+      "Id": "6e3c645355654f0d905d579492c04d21"
+    },
+    {
+      "Start": "5b532757bfd7461e94d99a0b44ad5f09",
+      "End": "ac2399a918f94778b009aced8b2affde",
+      "Id": "68d279deb1ac4222b13f23a253d7b7f5"
+    },
+    {
+      "Start": "382a245d8c4945a9bf2717cca81460d8",
+      "End": "75183c3c466845b8b26259a8dc4cdf8a",
+      "Id": "d7b6a67cbb994971ba09f61ce20207ee"
+    },
+    {
+      "Start": "382a245d8c4945a9bf2717cca81460d8",
+      "End": "92babd68e403424180acf699bbbfcf9f",
+      "Id": "c2cb3c0aa2ae422f9ea97368f1627fc2"
+    },
+    {
+      "Start": "c53b198efda846d08963f9f2b19be498",
+      "End": "3f51b81bd8794fcf826f1295eabf8930",
+      "Id": "09f4a27aad024ed7a6c92b25741e604f"
+    },
+    {
+      "Start": "6970688804ef4bae95c6425be95d67ed",
+      "End": "bc6170fa4692426fa82ba05898c9eff5",
+      "Id": "bc01fa7fc01746f2a93dc6f48c1e05ee"
+    },
+    {
+      "Start": "6970688804ef4bae95c6425be95d67ed",
+      "End": "30ea393cd9c1483fa13ae2624e578266",
+      "Id": "a00dfcc6211a4d7988165d2605a46862"
+    },
+    {
+      "Start": "a0dcaf37295b40b29428a616712db5de",
+      "End": "145638835cb8494e845b844f2c3bd753",
+      "Id": "93eb57fc432746a88f70cbafa446477b"
     }
   ],
   "Dependencies": [
     "ca221294-195d-4ff9-8a69-ca487b9bd328",
     "1b8585e3-81f4-499f-8e18-81d010124896",
+    "be7b9527-10a1-4283-b99d-e551664ba2cf",
     "5de78370-8fa6-4929-a54a-aa73a5cbb7ee"
   ],
   "NodeLibraryDependencies": [
@@ -783,7 +1079,8 @@
       "Nodes": [
         "ffd8a311ba834fa68bf148003c7a6862",
         "ecee6e1a49664a4294a35fa051173631",
-        "4f679670c93749b2bba0c87a07a1c6f8"
+        "ed31df928b8748ab9b43d48f3962cf6d",
+        "90ce1e20be1240beb8cf5639da7bffe0"
       ]
     }
   ],
@@ -794,7 +1091,7 @@
       "HasRunWithoutCrash": true,
       "IsVisibleInDynamoLibrary": true,
       "Version": "2.10.1.3976",
-      "RunType": "Automatic",
+      "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
@@ -817,8 +1114,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 1047.6174383952136,
-        "Y": -568.34599783720932
+        "X": 1088.4711080283626,
+        "Y": -562.40828689548778
       },
       {
         "ShowGeometry": true,
@@ -907,8 +1204,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 1374.019591556284,
-        "Y": -552.383718186404
+        "X": -933.22058241632772,
+        "Y": -833.23800111413846
       },
       {
         "ShowGeometry": true,
@@ -922,48 +1219,128 @@
       },
       {
         "ShowGeometry": true,
-        "Name": "String",
-        "Id": "d988334d25d34ea4b92a1ed31b6fc83a",
+        "Name": "Code Block",
+        "Id": "af6ae74c83b6405ca54eb18a757605ef",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 1010.7179186276703,
-        "Y": -243.27449723864709
+        "X": -1384.7795677030022,
+        "Y": -674.66851070442419
       },
       {
         "ShowGeometry": true,
         "Name": "Code Block",
-        "Id": "66f833b338a341d594a33bd2e56c645c",
+        "Id": "98f3a1a1ea5541e994ea3f37e3ad7b6c",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 796.593717112152,
-        "Y": -13.330639568107358
+        "X": 534.28407507468569,
+        "Y": -1260.8719833355308
       },
       {
         "ShowGeometry": true,
-        "Name": "String.Concat",
-        "Id": "4ffb4dcdc1cb4c70975aadee69784840",
+        "Name": "GIS2BIM_GetWebServerData",
+        "Id": "ed31df928b8748ab9b43d48f3962cf6d",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 1379.8354696444314,
-        "Y": -229.59841435434231
+        "X": 769.500604008947,
+        "Y": -981.72262628014369
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "10795936ccdf48c49f576597e95e9921",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 952.0772669573189,
+        "Y": -1401.1506697568607
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "2bed83284aed4d7caa6c03c2d0ec28c1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 54.203367933359061,
+        "Y": -1513.3666713179057
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "a725828b813b4ef3abe7722e05036884",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 109.23097178416384,
+        "Y": -1108.1358935725625
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "765b5f6ba0484e82b5885c697969b9e0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 111.21036494512788,
+        "Y": -1371.4778214115149
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "8a24f9dd13dd486b9feb98f5e8a279db",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 115.74973337194825,
+        "Y": -1240.7755854099651
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "e6ceccca44654c0fb6ebb92d0ebcd297",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1402.749318187412,
+        "Y": -563.00432614320493
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "4d9eaf81a34a4d9482b0f1a7c293f35c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1823.5698877319733,
+        "Y": -473.74158256074918
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "22211100ac4143dfa3917b47981815fc",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1568.0419278445522,
+        "Y": -270.32477596448439
       },
       {
         "ShowGeometry": true,
         "Name": "GIS2BIM_OpenBrowser",
-        "Id": "4f679670c93749b2bba0c87a07a1c6f8",
+        "Id": "90ce1e20be1240beb8cf5639da7bffe0",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 1641.7751874706578,
-        "Y": -135.67748615937847
+        "X": 1660.7288326141897,
+        "Y": -759.69430826878465
       }
     ],
     "Annotations": [],
-    "X": 377.20882642868332,
-    "Y": 722.56651121646553,
-    "Zoom": 0.88426358728515375
+    "X": -181.69053466254127,
+    "Y": 1206.8576666568954,
+    "Zoom": 0.83624993612295229
   }
 }
