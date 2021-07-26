@@ -1,0 +1,969 @@
+{
+  "Uuid": "247a86c1-1b85-4885-b147-8211fa25c11f",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "BGT New 3",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import sys\r\nimport clr\r\nimport json\r\n\r\nsys.path.append(r'C:\\Users\\mikev\\AppData\\Roaming\\Python\\Python37\\site-packages')\r\nimport requests\r\nfrom requests.structures import CaseInsensitiveDict\r\n\r\nurl = \"https://api.pdok.nl/lv/bgt/download/v1_0/full/custom\"\r\n\r\nheaders = CaseInsensitiveDict()\r\nheaders[\"accept\"] = \"application/json\"\r\nheaders[\"Content-Type\"] = \"application/json\"\r\n\r\ndata = IN[0]\r\n\r\nresp = requests.post(url, headers=headers, data=data)\r\n\r\njsondata = json.loads(resp.text)\r\ndata = jsondata[\"downloadRequestId\"]\r\n\r\nOUT = data\r\n\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "cbb665cb9be94d66b1e0ad13f170c271",
+      "Inputs": [
+        {
+          "Id": "c476c84bb8c6414a8ad866b90ee7b503",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8054f7dfcfda48369bd81e63a93375d3",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": "{\"featuretypes\":[",
+      "Id": "2326dfcbb37d41e388425f7d110f9446",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "80b4d37c4b974fc0869d8e2919a6e95e",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "ca221294-195d-4ff9-8a69-ca487b9bd328",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "ffd8a311ba834fa68bf148003c7a6862",
+      "Inputs": [
+        {
+          "Id": "0996d9b9507d429783fc665f915d0736",
+          "Name": "City",
+          "Description": "name of the city in the Netherlands\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4d6f3d9cfba6406eb66ed337c847e9a4",
+          "Name": "Streetname",
+          "Description": "streetname\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "373d43f391a34ffb9c78eace9630e699",
+          "Name": "Housenumber",
+          "Description": "housenumber\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "bd2ab69eb1944c6c82646b8843e8e7b2",
+          "Name": "RDcoordinateXmeters",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d180c2810b6447019b3a2a5876e6ba06",
+          "Name": "RDcoordinateYmeters",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "01ae286ba20942398c8f59ab4c342c06",
+          "Name": "Postalcode",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "87b11b8d030e4190b85829a64c9deca4",
+          "Name": "SectieKadaster",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b56246c04123411b94985f90823622c8",
+          "Name": "PerceelKadaster",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e4f715ef27d341928df5fc4e3687eba4",
+          "Name": "Longitude",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9761e9de26864345ac33dfbc3fc76ccb",
+          "Name": "Latitude",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ab2ff346e1314cd4957cf083d787202b",
+          "Name": "URLWebrequest",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "659cd34ef9fc4f76a34d11a2b34e9195",
+          "Name": "GemeenteCodeKadaster",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "721e540bf546438e91dc93596b149451",
+          "Name": "Provincie",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "511286c15a8941e980c715918d1ef7fc",
+          "Name": "Windgebied",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b2da148e6ae042a2be6bf1a58f2f153e",
+          "Name": "Waterschap",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Gives locationdata based on an adress in the Netherlands"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"Dordrecht\";\n\"werf van schouten\";\n\"501\";",
+      "Id": "4f248ca7996946ba9229d43d9869ea6b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c8f4f5505dcb44ef96405dc76ce52fba",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2f299df21e724ae5919374db5e9aaa90",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c1657cddf75546b197a14cfc36225dde",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "1b8585e3-81f4-499f-8e18-81d010124896",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "ecee6e1a49664a4294a35fa051173631",
+      "Inputs": [
+        {
+          "Id": "5d9bc0bad39742b0a6eeb5a55e1cfd43",
+          "Name": "CoordinateX",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b97b9e28a5b549a8871953ff66318b6e",
+          "Name": "CoordinateY",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4f1e2c52b68b4f91ba7904bcd8eff942",
+          "Name": "BoxWidth",
+          "Description": "width of the boundingbox\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b1dac2744f4d4e9b824e98fbad15ab85",
+          "Name": "BoxHeight",
+          "Description": "height of the boundingbox\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "317332eab69c4e5fb85a20e8802ff9e2",
+          "Name": "Boxstring",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3e90893019144dd69b19b06fabd6712d",
+          "Name": "Boxstring2",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "daaaad91755d4aba8cbffed244ce58d1",
+          "Name": "Xmin",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "15722cfefdc84ce5a194f6f8153499a5",
+          "Name": "Xmax",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "93fc13ec503c4f27b01cf86f036e8eb8",
+          "Name": "Ymin",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "bead3e889ec842938e33d8e6f51a1132",
+          "Name": "Ymax",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2c902f106c69485eb69075b293d9ffbc",
+          "Name": "PolygonString",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "create boundingboxstring for webrequests based on coördinates and dimensions"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "400;",
+      "Id": "d01c101029564971bd09c4671d73e3ef",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "87fa8237167341e696ee4fac4d3fd282",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
+      "FunctionSignature": "DSCore.String.Concat@string[]",
+      "FunctionType": "VariableArgument",
+      "NodeType": "FunctionNode",
+      "Id": "d30dd5c8a0eb482fa126e7af503b1b3f",
+      "Inputs": [
+        {
+          "Id": "40c1d33cc4f7444292857514e1fe2953",
+          "Name": "string0",
+          "Description": "List of strings to concatenate.\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "15369127845f4e62ac5bac5047a4597c",
+          "Name": "string1",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "78750bc04efb4fda876a9ce99997c1a8",
+          "Name": "string2",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2133744c203542cebd16c781e794fe0f",
+          "Name": "string3",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a41440c72832466aae9099a7d5ba1b0f",
+          "Name": "string4",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a937c8cfc56744439119e5926ecd3ee4",
+          "Name": "string",
+          "Description": "String made from list of strings.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Concatenates multiple strings into a single string.\n\nString.Concat (strings: string[]): string"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": ")\"}",
+      "Id": "e1eb9b89c29748b18dcdf6b627aeb51f",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7d9d63aa316249e0b80c64a6a623e4f3",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": "],\"format\":\"gmllight\",\"geofilter\":\"POLYGON(",
+      "Id": "75b67a1790e04ef9bdb0f9ed424ee27c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7893a1652b614012b4db8429d7fbda14",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": "{\"featuretypes\":[\"waterdeel\"],\"format\":\"gmllight\",\"geofilter\":\"POLYGON((213089 593892, 217076 593892, 217076 597981, 213089 597981, 213089 593892))\"}",
+      "Id": "84b50f7701b24093a59c99d027015258",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6da2e1597cd9489c8b44fec351984604",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": "\"waterdeel\"",
+      "Id": "5f4dbf423c964db2bf04b229d5100168",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a8aeb50740e746b1927e2d5cf51d6540",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.StringInput, CoreNodeModels",
+      "NodeType": "StringInputNode",
+      "InputValue": ")\"}",
+      "Id": "d988334d25d34ea4b92a1ed31b6fc83a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a420ca5764684083b0726792ba0a05fa",
+          "Name": "",
+          "Description": "String",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a string."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"https://download.pdok.io/lv/bgt/api/v1/extract/\";\n\"55359369-f738-4618-a933-38c701c5463c\";\n\"/extract.zip\";",
+      "Id": "66f833b338a341d594a33bd2e56c645c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "5115ac028dee412695f4e4d2d0946300",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "bb8768c78b06404bbd52bd759e09e8f6",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "62020ef38529449fae3feef0fd4f1bef",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction, DynamoCore",
+      "FunctionSignature": "DSCore.String.Concat@string[]",
+      "FunctionType": "VariableArgument",
+      "NodeType": "FunctionNode",
+      "Id": "4ffb4dcdc1cb4c70975aadee69784840",
+      "Inputs": [
+        {
+          "Id": "2649998cd2964a799a0896d04f26d4b3",
+          "Name": "string0",
+          "Description": "List of strings to concatenate.\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "165f2bd148874a3382bd1f616da8ed4b",
+          "Name": "string1",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f67fc6fa47854d139de02443ee9be876",
+          "Name": "string2",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "3a600ac9c4fa43edba7a2524fbf43ca9",
+          "Name": "string",
+          "Description": "String made from list of strings.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Concatenates multiple strings into a single string.\n\nString.Concat (strings: string[]): string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "5de78370-8fa6-4929-a54a-aa73a5cbb7ee",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "4f679670c93749b2bba0c87a07a1c6f8",
+      "Inputs": [
+        {
+          "Id": "dcecba6a61e7437aa1dcb8d3291cde8d",
+          "Name": "toggle",
+          "Description": "bool\nDefault value : true",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "dbf61b6f08bd446aa567c039b2bc58f9",
+          "Name": "url",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "9be70e7daba84072b176cafe38af990a",
+          "Name": "run",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cc2fab7f9ebc4bffb567a210f3fcb192",
+          "Name": "url",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Opens a new window in your default browser with the given url."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "8054f7dfcfda48369bd81e63a93375d3",
+      "End": "165f2bd148874a3382bd1f616da8ed4b",
+      "Id": "8536b4c73af94337a210784082629ac4"
+    },
+    {
+      "Start": "80b4d37c4b974fc0869d8e2919a6e95e",
+      "End": "40c1d33cc4f7444292857514e1fe2953",
+      "Id": "db8e9cd27cf14d0e828e6beda98e0305"
+    },
+    {
+      "Start": "bd2ab69eb1944c6c82646b8843e8e7b2",
+      "End": "5d9bc0bad39742b0a6eeb5a55e1cfd43",
+      "Id": "17dd7b07bf4b4cebbdb18812436f0eb1"
+    },
+    {
+      "Start": "d180c2810b6447019b3a2a5876e6ba06",
+      "End": "b97b9e28a5b549a8871953ff66318b6e",
+      "Id": "d6dc037e944e45dea9fc9eb7a1dfdc19"
+    },
+    {
+      "Start": "c8f4f5505dcb44ef96405dc76ce52fba",
+      "End": "0996d9b9507d429783fc665f915d0736",
+      "Id": "c355ad1235a345ac8f46d720c8a0f5f2"
+    },
+    {
+      "Start": "2f299df21e724ae5919374db5e9aaa90",
+      "End": "4d6f3d9cfba6406eb66ed337c847e9a4",
+      "Id": "bcd15fdbbbdd4628b8e520d0ff1fb3bd"
+    },
+    {
+      "Start": "c1657cddf75546b197a14cfc36225dde",
+      "End": "373d43f391a34ffb9c78eace9630e699",
+      "Id": "52390679150b4ee2ac8dbe13602bf01d"
+    },
+    {
+      "Start": "2c902f106c69485eb69075b293d9ffbc",
+      "End": "2133744c203542cebd16c781e794fe0f",
+      "Id": "ca865c85727a4ec68f6d86f00847b612"
+    },
+    {
+      "Start": "87fa8237167341e696ee4fac4d3fd282",
+      "End": "4f1e2c52b68b4f91ba7904bcd8eff942",
+      "Id": "89d9a16c34fb49a889a255233b76b6ef"
+    },
+    {
+      "Start": "87fa8237167341e696ee4fac4d3fd282",
+      "End": "b1dac2744f4d4e9b824e98fbad15ab85",
+      "Id": "f80abb80ce524fc58207e2fca65f7e14"
+    },
+    {
+      "Start": "a937c8cfc56744439119e5926ecd3ee4",
+      "End": "c476c84bb8c6414a8ad866b90ee7b503",
+      "Id": "4c70fa1cb9534941881fcfa453c22f87"
+    },
+    {
+      "Start": "7d9d63aa316249e0b80c64a6a623e4f3",
+      "End": "a41440c72832466aae9099a7d5ba1b0f",
+      "Id": "360c08db2bb3400f9d5adf0dbbe796dd"
+    },
+    {
+      "Start": "7893a1652b614012b4db8429d7fbda14",
+      "End": "78750bc04efb4fda876a9ce99997c1a8",
+      "Id": "43661fd5891e45f5bc637273c24ccdd1"
+    },
+    {
+      "Start": "a8aeb50740e746b1927e2d5cf51d6540",
+      "End": "15369127845f4e62ac5bac5047a4597c",
+      "Id": "e4db7866cccf46d2bbd6fcc32448b21f"
+    },
+    {
+      "Start": "5115ac028dee412695f4e4d2d0946300",
+      "End": "2649998cd2964a799a0896d04f26d4b3",
+      "Id": "9a3d1dd4844f464eba29036a9cadf801"
+    },
+    {
+      "Start": "62020ef38529449fae3feef0fd4f1bef",
+      "End": "f67fc6fa47854d139de02443ee9be876",
+      "Id": "42cb92f191c94933bdf434e5eabca2ae"
+    },
+    {
+      "Start": "3a600ac9c4fa43edba7a2524fbf43ca9",
+      "End": "dbf61b6f08bd446aa567c039b2bc58f9",
+      "Id": "bcc30eea23634e02bb63f60c342b2031"
+    }
+  ],
+  "Dependencies": [
+    "ca221294-195d-4ff9-8a69-ca487b9bd328",
+    "1b8585e3-81f4-499f-8e18-81d010124896",
+    "5de78370-8fa6-4929-a54a-aa73a5cbb7ee"
+  ],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "GIS2BIM for Dynamo 2.x",
+      "Version": "0.11.19",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "ffd8a311ba834fa68bf148003c7a6862",
+        "ecee6e1a49664a4294a35fa051173631",
+        "4f679670c93749b2bba0c87a07a1c6f8"
+      ]
+    }
+  ],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.10.1.3976",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "cbb665cb9be94d66b1e0ad13f170c271",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1047.6174383952136,
+        "Y": -568.34599783720932
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String",
+        "Id": "2326dfcbb37d41e388425f7d110f9446",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 346.831868770537,
+        "Y": -626.77631797813365
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_GetLocationdataNetherlands",
+        "Id": "ffd8a311ba834fa68bf148003c7a6862",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -234.11118370715735,
+        "Y": 40.296640126329351
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "4f248ca7996946ba9229d43d9869ea6b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -560.0,
+        "Y": 56.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_CreateBoundingBox",
+        "Id": "ecee6e1a49664a4294a35fa051173631",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 353.09597195738093,
+        "Y": -54.66582021612993
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "d01c101029564971bd09c4671d73e3ef",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -112.0,
+        "Y": -199.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.Concat",
+        "Id": "d30dd5c8a0eb482fa126e7af503b1b3f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 690.10803701725115,
+        "Y": -499.03502970860256
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String",
+        "Id": "e1eb9b89c29748b18dcdf6b627aeb51f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 346.29677052990013,
+        "Y": -261.30843387538533
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String",
+        "Id": "75b67a1790e04ef9bdb0f9ed424ee27c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 342.21098442104886,
+        "Y": -437.48101108010962
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String",
+        "Id": "84b50f7701b24093a59c99d027015258",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1374.019591556284,
+        "Y": -552.383718186404
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String",
+        "Id": "5f4dbf423c964db2bf04b229d5100168",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 341.28612939246989,
+        "Y": -523.09791063388639
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String",
+        "Id": "d988334d25d34ea4b92a1ed31b6fc83a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1010.7179186276703,
+        "Y": -243.27449723864709
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "66f833b338a341d594a33bd2e56c645c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 796.593717112152,
+        "Y": -13.330639568107358
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "String.Concat",
+        "Id": "4ffb4dcdc1cb4c70975aadee69784840",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1379.8354696444314,
+        "Y": -229.59841435434231
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_OpenBrowser",
+        "Id": "4f679670c93749b2bba0c87a07a1c6f8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1641.7751874706578,
+        "Y": -135.67748615937847
+      }
+    ],
+    "Annotations": [],
+    "X": 377.20882642868332,
+    "Y": 722.56651121646553,
+    "Zoom": 0.88426358728515375
+  }
+}
