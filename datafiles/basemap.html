@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>GIS2BIM map</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	
+</head>
+<body>
+
+<div id="mapid" style="width: 820px; height: 600px;"></div>
+<script>
+	
+	var boundingboxwidth = WBBOX;
+	var boundingboxheight = HBBOX;
+	var mymap = L.map('mapid');
+	mymap.setView([51LAT, 4LONG], 16); 
+
+	var marker1 = new L.marker([51LAT,4LONG],{draggable: false, riseOnHover: true, autoPan: true}).addTo(mymap)
+//		.bindPopup('Center of Boundingbox:(WGS-84)' + mymap.getCenter().lat + ',' + mymap.getCenter().lng)
+//		.openPopup();
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11',
+		tileSize: 512,
+		zoomOffset: -1
+	}).addTo(mymap);
+	
+	//var circle = L.circle([51LAT,4LONG], boundingboxwidth/2).addTo(mymap) 
+	//var bounds = circle.getBounds()
+	//mymap.removeLayer(circle) //hide circle
+	var center = L.latLng([51LAT,4LONG]);
+	boundsW = center.toBounds(boundingboxwidth);
+	boundsH = center.toBounds(boundingboxheight);	
+	bounds = [[boundsH.getSouth(),boundsW.getWest()],[boundsH.getNorth(),boundsW.getEast()]]
+	rect = L.rectangle(bounds).addTo(mymap)
+	rect.addTo(mymap)
+
+	function onMapClick(e) {
+		boundsW = e.latlng.toBounds(boundingboxwidth);
+		boundsH = e.latlng.toBounds(boundingboxheight);	
+		bounds1 = [[boundsH.getSouth(),boundsW.getWest()],[boundsH.getNorth(),boundsW.getEast()]]
+		rect.setBounds(bounds1)
+		marker1.setLatLng(e.latlng)
+		var textToSave = e.latlng.toString()
+		hiddenElement = document.createElement('a')
+		hiddenElement.href = 'data:attachment/text,' + encodeURI(textToSave)
+		hiddenElement.target = '_blank'
+		hiddenElement.download = 'FOLDERNAME'
+		hiddenElement.click()
+		mymap.setView(e.latlng)
+	}
+	
+	function clickZoom(e) {
+    map.setView(e.target.getLatLng(),5);
+	}
+	
+	mymap.on('click', onMapClick);
+
+	var textToSave = "LatLng(51LAT, 4LONG)"
+	hiddenElement = document.createElement('a')
+	hiddenElement.href = 'data:attachment/text,' + encodeURI(textToSave)
+	hiddenElement.target = '_blank'
+	hiddenElement.download = 'FOLDERNAME'
+	hiddenElement.click()	
+</script>
+
+</body>
+</html>
