@@ -16,33 +16,58 @@
 <div id="mapid" style="width: 820px; height: 600px;"></div>
 <script>
 	
+	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+		ESRIaerialLink = '<a href="http://www.esri.com/">Esri</a>';
+	
+	var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		osmAttrib = '&copy; ' + osmLink + ' Contributors',
+		ESRIworldstreetmapUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}.png',
+		ESRIworldstreetmapAttrib = 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+		ESRIworldtopoUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}.png',
+		ESRIworldtopoAttrib = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
+		ESRIaerialUrl = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png',
+		ESRIaerialAttrib = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+
+	var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+		ESRIworldstreetmapMap = L.tileLayer(ESRIworldstreetmapUrl, {attribution: ESRIworldstreetmapAttrib}),
+		ESRIworldtopoMap = L.tileLayer(ESRIworldtopoUrl, {attribution: ESRIworldtopoAttrib}),
+		ESRIaerialMap = L.tileLayer(ESRIaerialUrl, {attribution: ESRIaerialAttrib});
+		
+	var mymap = L.map('mapid', {
+			layers: [ESRIworldstreetmapMap] 
+		})
+		.setView([51LAT, 4LONG], 16);
+
+	var baseLayers = {
+		"OSM Mapnik": osmMap,
+		"ESRI World Street Map": ESRIworldstreetmapMap,
+		"ESRI World Topo Map": ESRIworldtopoMap,
+		"ESRI World Imagery": ESRIaerialMap
+	};
+
 	var boundingboxwidth = WBBOX;
 	var boundingboxheight = HBBOX;
-	var mymap = L.map('mapid');
-	mymap.setView([51LAT, 4LONG], 16); 
 
-	var marker1 = new L.marker([51LAT,4LONG],{draggable: false, riseOnHover: true, autoPan: true}).addTo(mymap)
+	var marker1 = new L.marker([51LAT, 4LONG],{draggable: false, riseOnHover: true, autoPan: true}).addTo(mymap)
 //		.bindPopup('Center of Boundingbox:(WGS-84)' + mymap.getCenter().lat + ',' + mymap.getCenter().lng)
-//		.openPopup();
-	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox/streets-v11',
-		tileSize: 512,
-		zoomOffset: -1
-	}).addTo(mymap);
-	
-	//var circle = L.circle([51LAT,4LONG], boundingboxwidth/2).addTo(mymap) 
-	//var bounds = circle.getBounds()
-	//mymap.removeLayer(circle) //hide circle
+	//	.openPopup();
+//	var marker = L.layerGroup([marker1]);
+
 	var center = L.latLng([51LAT,4LONG]);
 	boundsW = center.toBounds(boundingboxwidth);
 	boundsH = center.toBounds(boundingboxheight);	
 	bounds = [[boundsH.getSouth(),boundsW.getWest()],[boundsH.getNorth(),boundsW.getEast()]]
 	rect = L.rectangle(bounds).addTo(mymap)
 	rect.addTo(mymap)
+//	var boundingbox = L.layerGroup([rect]);
+	
+//	var overlayMaps = { 
+//  "Marker Geolocation": marker,
+//	"Boundingbox Area": boundingbox
+//	};
 
+	L.control.layers(baseLayers).addTo(mymap);
+	
 	function onMapClick(e) {
 		boundsW = e.latlng.toBounds(boundingboxwidth);
 		boundsH = e.latlng.toBounds(boundingboxheight);	
