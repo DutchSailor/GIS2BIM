@@ -1,5 +1,5 @@
 mymap.removeLayer(wfsGroup)
-var url = 'URL'
+var url = 'URLpreview'
 var wfsGroup = new L.LayerGroup();
 wfsGroup.addTo(mymap);
 
