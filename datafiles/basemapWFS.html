@@ -1,1 +1,181 @@
+<!DOCTYPE html>
 
+<html>
+<head>
+
+<title>GIS2BIM import WFS</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<style type="text/css">
+	html {
+        overflow: hidden;
+	}
+	</style>
+	
+</head>
+
+<body>
+	
+<div id="mymap"></div>
+
+<script type="text/javascript">
+	/*
+  Leaflet.TileLayer.ColorFilter
+  (c) 2018, Claudio T. Kawakani
+  A simple and lightweight Leaflet plugin to apply CSS filters on map tiles.
+  https://github.com/xtk93x/Leaflet.TileLayer.ColorFilter
+*/
+	L.TileLayer.ColorFilter = L.TileLayer.extend({
+		intialize: function (url, options) {
+			L.TileLayer.prototype.initialize.call(this, url, options);
+		},
+		colorFilter: function () {
+			let VALIDFILTERS = [
+				'blur:px',
+				'brightness:%', 'bright:brightness:%', 'bri:brightness:%',
+				'contrast:%', 'con:contrast:%',
+				'grayscale:%', 'gray:grayscale:%',
+				'hue-rotate:deg', 'hue:hue-rotate:deg', 'hue-rotation:hue-rotate:deg',
+				'invert:%', 'inv:invert:%',
+				'opacity:%', 'op:opacity:%',
+				'saturate:%', 'saturation:saturate:%', 'sat:saturate:%',
+				'sepia:%', 'sep:sepia:%',
+			]
+
+			let colorFilterOptions = this.options.filter ? this.options.filter : [];
+			let filterSettings = colorFilterOptions.map((opt) => {
+				let filter = opt.toLowerCase().split(':');
+				if (filter.length === 2) {
+					let match = VALIDFILTERS.find(vf => {
+						return (vf.split(':')[0] === filter[0]);
+					});
+					if (match) {
+						match = match.split(':');
+						filter[1] += /^\d+$/.test(filter[1]) ? match[match.length - 1] : ''
+						return (`${match[match.length - 2]}(${filter[1]})`);
+					}
+				}
+				return ('');
+			}).join(' ');
+			return (filterSettings);
+		},
+		_initContainer: function () {
+			let tile = L.TileLayer.prototype._initContainer.call(this);
+			this._container.style.filter = this.colorFilter();
+		},
+		updateFilter: function (newFilter) {
+			this.options.filter = newFilter;
+			if (this._container) {
+				this._container.style.filter = this.colorFilter();
+			}
+		},
+	})
+
+	L.tileLayer.colorFilter = function (url, options) {
+		return new L.TileLayer.ColorFilter(url, options);
+	}
+
+	//<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	//<div id="mapid" style="width: 820px; height: 500px;"></div>
+	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+		ESRIworldstreetmapLink = '<a href="http://www.esri.com/">Esri</a>',
+		ESRIworldtopomap = '<a href="http://www.esri.com/">Esri</a>',
+		ESRIaerialLink = '<a href="http://www.esri.com/">Esri</a>';
+	
+	var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		osmAttrib = '&copy; ' + osmLink + ' Contributors',
+		ESRIworldstreetmapUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}.png',
+		ESRIworldstreetmapAttrib = 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+		ESRIworldtopoUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}.png',
+		ESRIworldtopoAttrib = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
+		ESRIaerialUrl = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png',
+		ESRIaerialAttrib = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+
+	let myFilter = ['grayscale:99%'];
+	
+	var osmMap = L.tileLayer.colorFilter(osmUrl, {attribution: osmAttrib,filter: myFilter}),
+		ESRIworldstreetmapMap = L.tileLayer.colorFilter(ESRIworldstreetmapUrl, {attribution: ESRIworldstreetmapAttrib,filter: myFilter}),
+		ESRIworldtopoMap = L.tileLayer.colorFilter(ESRIworldtopoUrl, {attribution: ESRIworldtopoAttrib,filter: myFilter}),
+		ESRIaerialMap = L.tileLayer.colorFilter(ESRIaerialUrl, {attribution: ESRIaerialAttrib,filter: myFilter});
+				
+	var mymap = L.map('mymap', {
+			layers: [ESRIworldtopoMap],
+			//dragging: false,
+			preferCanvas: true,
+			scrollWheelZoom: "center",
+		//	zoomControl: false,
+		//	scrollWheelZoom: false
+		})
+		.setView([51LAT, 4LONG], 17);
+	
+	var baseLayers = {
+		"OSM Mapnik": osmMap,
+		"ESRI World Street Map": ESRIworldstreetmapMap,
+		"ESRI World Topo Map": ESRIworldtopoMap,
+		"ESRI World Imagery": ESRIaerialMap
+	};
+	
+	var boundingboxwidth = WBBOX;
+	var boundingboxheight = HBBOX;
+
+	var marker1 = new L.marker([51LAT, 4LONG],{draggable: false, riseOnHover: true, autoPan: true})//.addTo(mymap)
+		.bindPopup('Center of Boundingbox:(WGS-84)' + mymap.getCenter().lat + ',' + mymap.getCenter().lng)
+		.openPopup();
+	var marker = L.layerGroup([marker1]);
+	
+	var center = L.latLng([51LAT, 4LONG]);
+	boundsW = center.toBounds(boundingboxwidth);
+	boundsH = center.toBounds(boundingboxheight);	
+	bounds = [[boundsH.getSouth(),boundsW.getWest()],[boundsH.getNorth(),boundsW.getEast()]]
+	rect = L.rectangle(bounds)//.addTo(mymap)
+	rect.setStyle({fillColor: '#dddddd'});
+	mymap.fitBounds(bounds)
+	mymap.setMaxBounds(bounds)
+	var boundingbox = L.layerGroup([rect]);
+	
+	var overlayMaps = { 
+    "Marker Geolocation": marker,
+	"Boundingbox Area": boundingbox
+	};
+	
+	L.control.layers(baseLayers,overlayMaps).addTo(mymap);
+	
+	//Set Bounding & Marker on visible
+	mymap.addLayer(boundingbox)
+	mymap.addLayer(marker)
+	
+	//Load WFS-layers
+	//var url = 'https://geodata.nationaalgeoregister.nl/bag/wfs/v1_1?';
+	//var params = 'request=GetFeature&';
+	//params += 'version=2.0.0&';
+	//params += 'service=wfs&';
+	//params += 'typeName=bag:pand&';
+	//params += 'outputFormat=json&';
+	//params += 'srsName=EPSG:4326&';
+	//params += 'bbox=104600,425116,105000,425516';
+	
+	var wfsGroup = new L.LayerGroup();
+	wfsGroup.addTo(mymap);
+
+	//$.getJSON(url + params, function(data) {
+	//	$.each(data.features, function(index, geometry) {
+	//		wfsCurves = L.geoJson(geometry),
+	//		wfsCurves.setStyle({fillColor: '#dddddd', color: 'red'}),
+	//		wfsGroup.addLayer(wfsCurves)
+	//	});
+	//});
+	
+	//Resize map to size of window
+	$(window).on("resize", function() {
+    $("#mymap").height($(window).height()).width($(window).width());
+    mymap.invalidateSize();
+	}).trigger("resize");
+	mymap.setView([51LAT, 4LONG], 17);
+	
+</script>
+</body>
+</html>
