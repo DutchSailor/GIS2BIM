@@ -6,15 +6,18 @@
 
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-	
+    	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+   
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<style type="text/css">
+	</style>
 </head>
 <body>
 
-<div id="mapid" style="width: 820px; height: 600px;"></div>
-<script>
+<div id="mymap"></div>
+
+<script type="text/javascript">
 	
 	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
 		ESRIaerialLink = '<a href="http://www.esri.com/">Esri</a>';
@@ -33,7 +36,7 @@
 		ESRIworldtopoMap = L.tileLayer(ESRIworldtopoUrl, {attribution: ESRIworldtopoAttrib}),
 		ESRIaerialMap = L.tileLayer(ESRIaerialUrl, {attribution: ESRIaerialAttrib});
 		
-	var mymap = L.map('mapid', {
+	var mymap = L.map('mymap', {
 			layers: [ESRIworldstreetmapMap] 
 		})
 		.setView([51LAT, 4LONG], 16);
@@ -95,6 +98,14 @@
 	hiddenElement.target = '_blank'
 	hiddenElement.download = 'FOLDERNAME'
 	hiddenElement.click()	
+	
+	//Resize map to size of window
+	$(window).on("resize", function() {
+    $("#mymap").height($(window).height()).width($(window).width());
+    mymap.invalidateSize();
+	}).trigger("resize");
+	mymap.setView([51LAT, 4LONG], 17);
+	
 </script>
 
 </body>
