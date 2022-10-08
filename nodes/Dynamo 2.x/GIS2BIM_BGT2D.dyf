@@ -1462,7 +1462,7 @@
       "Outputs": [
         {
           "Id": "3fab450fa5df47a2b59811ec623cce84",
-          "Name": "str",
+          "Name": "string",
           "Description": "String made from list of strings.",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -2063,7 +2063,7 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
       "NodeType": "InputNode",
       "Parameter": {
-        "Name": "View",
+        "Name": "Viewa",
         "TypeName": "var",
         "TypeRank": -1,
         "DefaultValue": null,
@@ -2904,6 +2904,7 @@
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
       "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nfrom Autodesk.Revit.DB import *\r\n\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\npoints = UnwrapElement(IN[0])\r\nfamtype = UnwrapElement(IN[1])\r\nlvl = UnwrapElement(IN[2])\r\nelementlist = list()\r\ncounter = 0\r\n\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n# make sure familysymbol is active\r\nif famtype.IsActive == False:\r\n\tfamtype.Activate()\r\n\tdoc.Regenerate()\r\nfor point in points:\r\n\tnewobj = doc.Create.NewFamilyInstance(point.ToXyz(),famtype,lvl)\r\n\telementlist.append(newobj.ToDSType(False))\r\nTransactionManager.Instance.TransactionTaskDone()\r\nOUT = elementlist",
+      "Engine": "IronPython2",
       "VariableInputPorts": true,
       "Id": "f0adf620bd614cd8887d8d1ad70d9418",
       "Inputs": [
@@ -2947,12 +2948,13 @@
         }
       ],
       "Replication": "Disabled",
-      "Description": "Runs an embedded IronPython script."
+      "Description": "Runs an embedded Python script."
     },
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
       "Code": "check = IN[0]\r\nitems = IN[1]\r\nif isinstance(check, (list)): OUT = items\r\nelse: OUT = items[0]",
+      "Engine": "IronPython2",
       "VariableInputPorts": true,
       "Id": "5f70d15b7dba42db8d0f49ac6e1f9f45",
       "Inputs": [
@@ -2987,7 +2989,7 @@
         }
       ],
       "Replication": "Disabled",
-      "Description": "Runs an embedded IronPython script."
+      "Description": "Runs an embedded Python script."
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
@@ -3028,7 +3030,7 @@
       "Inputs": [
         {
           "Id": "a3dabd8eb712481db3f864e409ef843a",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -3077,7 +3079,7 @@
       "Inputs": [
         {
           "Id": "825bbe064d164bceafb8801ef63d5e93",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -3126,7 +3128,7 @@
       "Inputs": [
         {
           "Id": "f387723c70594b9491189b4eeee00d0e",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -3175,7 +3177,7 @@
       "Inputs": [
         {
           "Id": "39eba3a23dc14a9db2b2e554ab66c871",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -3224,7 +3226,7 @@
       "Inputs": [
         {
           "Id": "2a89fa5027094a63bee46c22d8c86f98",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -3273,7 +3275,7 @@
       "Inputs": [
         {
           "Id": "74ccb497eaff4054a56f800edf01fd7a",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -3322,7 +3324,7 @@
       "Inputs": [
         {
           "Id": "cb983572899a4988b980385174d76386",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -3371,7 +3373,7 @@
       "Inputs": [
         {
           "Id": "d8ba9e99d9ae4be08fc9efaf647419f3",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -3420,7 +3422,7 @@
       "Inputs": [
         {
           "Id": "393445ba780648c0a958f5912cc9bac3",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -3520,6 +3522,15 @@
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
+        },
+        {
+          "Id": "9b687e009cf642a6b5d18b3beec91bc2",
+          "Name": "Scale",
+          "Description": "connect polycurves\n\nint\nDefault value : 1000",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
         }
       ],
       "Outputs": [
@@ -3601,6 +3612,15 @@
           "Id": "0b291aba678141b1806771c522f46afe",
           "Name": "Connectpolycurves",
           "Description": "connect polycurves\n\nbool\nDefault value : false",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7c22ba34933746de9336a9d435af58b0",
+          "Name": "Scale",
+          "Description": "connect polycurves\n\nint\nDefault value : 1000",
           "UsingDefaultValue": true,
           "Level": 2,
           "UseLevels": false,
@@ -4342,27 +4362,47 @@
     "b79393ef-f778-4f91-81d0-3438d389991d",
     "c0f0934f-f794-41d7-8294-dfb4b48f2cc4"
   ],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "GIS2BIM for Dynamo 2.x",
+      "Version": "0.11.19",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "dc5c638be4eb4b2dabc518f58f4bf78d",
+        "6b775928bc5b43c3a652fc3ab7679bc1",
+        "66a570defba84bfaae26848129e57a55",
+        "a490bea7a18f4c40835b426be60e3166",
+        "97320521e34e4e69968a4de30ade396d",
+        "cbee0ad3bd5e408d95ee1843d2224ab3",
+        "16b5c2ead6974ee7a7c10cfc61e9acbd",
+        "40330125e6344028b9198051a5f0256f",
+        "c24bbae0170f473698fd18913b891982",
+        "fc60a7a8fd004ead9b9739997ba2bdd2",
+        "bf2b0b94bae447b3b40f3b005899acdc"
+      ]
+    }
+  ],
   "Bindings": [],
   "View": {
     "Dynamo": {
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.2.1.5175",
+      "Version": "2.10.1.3976",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -660836.26442234928,
-      "EyeY": 570673.77104805841,
-      "EyeZ": 768567.62798500143,
-      "LookX": 660831.26442234928,
-      "LookY": -570662.77104805841,
-      "LookZ": -768575.62798500143,
-      "UpX": 0.1906139918075499,
-      "UpY": 0.95630475596303577,
-      "UpZ": -0.22169239916981917
+      "EyeX": -913754.125,
+      "EyeY": 3542825.0,
+      "EyeZ": 2625513.75,
+      "LookX": 913754.125,
+      "LookY": -3542825.0,
+      "LookZ": -2625513.75,
+      "UpX": 0.20907352864742279,
+      "UpY": 0.77162450551986694,
+      "UpZ": -0.60073608160018921
     },
     "NodeViews": [
       {
@@ -4762,8 +4802,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 4003.72172840128,
-        "Y": 1934.44492289606
+        "X": 3960.8817927431433,
+        "Y": 1911.5305387068238
       },
       {
         "ShowGeometry": true,
@@ -5362,8 +5402,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 2476.8268231179709,
-        "Y": 1805.9142943780946
+        "X": 2493.4986304306817,
+        "Y": 1857.5968970474989
       }
     ],
     "Annotations": [
@@ -5446,7 +5486,7 @@
         "Left": 2146.33381653081,
         "Top": 1742.21292913044,
         "Width": 922.39578320836017,
-        "Height": 286.70136524765462,
+        "Height": 364.38396791705873,
         "FontSize": 30.0,
         "InitialTop": 1788.21292913044,
         "InitialHeight": 183.51642901983996,
@@ -5470,11 +5510,11 @@
         ],
         "Left": 3795.11424654683,
         "Top": 4090.2592090996395,
-        "Width": 1353.8921106629814,
+        "Width": 1359.8921106629814,
         "Height": 1493.5741551423971,
         "FontSize": 30.0,
         "InitialTop": 4136.2592090996395,
-        "InitialHeight": 1395.8048860996505,
+        "InitialHeight": 1447.5741551423971,
         "TextblockHeight": 36.0,
         "Background": "#FFC1D676"
       },
@@ -5488,12 +5528,12 @@
           "3204e23eeb4f417aaafd61a445d7b5b6"
         ],
         "Left": 3814.52172840128,
-        "Top": 1888.44492289606,
-        "Width": 1040.2175980404295,
-        "Height": 261.93576462722081,
+        "Top": 1865.5305387068238,
+        "Width": 1039.2175980404295,
+        "Height": 284.850148816457,
         "FontSize": 30.0,
-        "InitialTop": 1934.44492289606,
-        "InitialHeight": 278.99999999999977,
+        "InitialTop": 1911.5305387068238,
+        "InitialHeight": 277.93576462722081,
         "TextblockHeight": 36.0,
         "Background": "#FFC1D676"
       },
@@ -5508,7 +5548,7 @@
         "Left": 4627.90989397724,
         "Top": 1556.66877057611,
         "Width": 613.56455897284013,
-        "Height": 229.52678717884987,
+        "Height": 265.52678717884987,
         "FontSize": 30.0,
         "InitialTop": 1602.66877057611,
         "InitialHeight": 208.52678717884987,
@@ -5516,8 +5556,8 @@
         "Background": "#FFC1D676"
       }
     ],
-    "X": -167.86669400463302,
-    "Y": -714.01138950840448,
-    "Zoom": 0.45882819975601646
+    "X": 159.01520165210115,
+    "Y": -434.67170449351261,
+    "Zoom": 0.30692852070606258
   }
 }

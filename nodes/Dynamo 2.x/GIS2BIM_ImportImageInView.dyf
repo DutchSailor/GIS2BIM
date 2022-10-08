@@ -160,7 +160,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Main part used from Konrad K Sobon\r\n\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n#The inputs to this node will be stored as a list in the IN variables.\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk \r\nfrom Autodesk.Revit.DB import * \r\nimport System\r\n\r\n# Import Element wrapper extension methods\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\n# Import geometry conversion extension methods\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\nintVersion = int(app.VersionNumber)\r\n\r\ndataEnteringNode = IN\r\n\r\nImageWidthM=IN[0]\r\nview=UnwrapElement(IN[1])\r\nfilePath=IN[2]\r\ndeltax=IN[3]\r\ndeltay=IN[4]\r\nres = IN[5]\r\nRunIt = IN[6]\r\n\r\nwidth = ImageWidthM/0.3048\r\nplacement=System.Enum.GetValues(BoxPlacement)[0]\r\nx = deltax/304.8\r\ny = deltay/304.8\r\nrefPt = XYZ(x,y,0)\r\n\r\n#Set Image Import Options\r\n\r\nif intVersion > 2020:\r\n\tiio = ImagePlacementOptions()\r\n\t\t\r\n\tmessage = None\r\n\tif placement != None:\r\n\t\tiio.PlacementPoint = placement\r\n\tif refPt !=None:\r\n\t\tiio.Location = refPt\r\n\telse: \r\n\t\tmessage = \"Please specify placement point.\"\r\n#\tif res !=None:\r\n#\t\tiio.Resolution = res\r\n#\telse:\r\n#\t\tiio.Resolution = 72\r\nelse:\r\n\tiio= ImageImportOptions()\r\n\t\t\r\n\tmessage = None\r\n\tif placement != None:\r\n\t\tiio.Placement = placement\r\n\tif refPt !=None:\r\n\t\tiio.RefPoint = refPt\r\n\telse: \r\n\t\tmessage = \"Please specify placement point.\"\r\n\tif res !=None:\r\n\t\tiio.Resolution = res\r\n\telse:\r\n\t\tiio.Resolution = 72\r\n\r\nif RunIt:\r\n\t# Start Transaction\r\n\tdoc = DocumentManager.Instance.CurrentDBDocument\r\n\tTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n\tnewElement = clr.StrongBox[Element]()\r\n\tif intVersion > 2020:\r\n\t\tp = ModelPathUtils.ConvertUserVisiblePathToModelPath(filePath)\r\n\t\tref = ExternalResourceReference.CreateLocalResource(doc,ExternalResourceTypes.BuiltInExternalResourceTypes.Image, p, PathType.Absolute)\r\n\t\telementOut = ImageInstance.Create(doc,view,ImageType.Create(doc, ImageTypeOptions(ref,ImageTypeSource.Link)).Id,iio)\r\n\telse:\r\n\t\telementOut = doc.Import(file = filePath, options = iio, view = view, element = newElement)\r\n\t\r\n\t#End Transaction\r\n\tTransactionManager.Instance.TransactionTaskDone()\r\n\tmessage = \"Succes\"\r\nelse: \r\n\tmessage = \"Set Runit to true\"\r\n\r\n\r\n#newElementID = newElement.Id\r\n\r\nimg = elementOut#UnwrapElement(newElement)\r\nw = img.LookupParameter(\"Width\")\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\nw.Set(width)\r\nTransactionManager.Instance.TransactionTaskDone()\r\n\r\nnewElement = img.Name#newElement.Name\r\n\r\nOUT = iio,message, newElement",
+      "Code": "# Main part used from Konrad K Sobon\r\n\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n#The inputs to this node will be stored as a list in the IN variables.\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk \r\nfrom Autodesk.Revit.DB import * \r\nimport System\r\n\r\n# Import Element wrapper extension methods\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\n# Import geometry conversion extension methods\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\nintVersion = int(app.VersionNumber)\r\n\r\ndataEnteringNode = IN\r\n\r\nImageWidthM=IN[0]\r\nview=UnwrapElement(IN[1])\r\nfilePath=IN[2]\r\ndeltax=IN[3]\r\ndeltay=IN[4]\r\nres = IN[5]\r\nRunIt = IN[6]\r\n\r\nwidth = ImageWidthM/0.3048\r\nplacement=System.Enum.GetValues(BoxPlacement)[0]\r\nx = deltax/304.8\r\ny = deltay/304.8\r\nrefPt = XYZ(x,y,0)\r\n\r\n#Set Image Import Options\r\n\r\nif intVersion > 2020:\r\n\tiio = ImagePlacementOptions()\r\n\t\t\r\n\tmessage = None\r\n\tif placement != None:\r\n\t\tiio.PlacementPoint = placement\r\n\tif refPt !=None:\r\n\t\tiio.Location = refPt\r\n\telse: \r\n\t\tmessage = \"Please specify placement point.\"\r\n#\tif res !=None:\r\n#\t\tiio.Resolution = res\r\n#\telse:\r\n#\t\tiio.Resolution = 72\r\nelse:\r\n\tiio= ImageImportOptions()\r\n\t\t\r\n\tmessage = None\r\n\tif placement != None:\r\n\t\tiio.Placement = placement\r\n\tif refPt !=None:\r\n\t\tiio.RefPoint = refPt\r\n\telse: \r\n\t\tmessage = \"Please specify placement point.\"\r\n\tif res !=None:\r\n\t\tiio.Resolution = res\r\n\telse:\r\n\t\tiio.Resolution = 72\r\n\r\nif RunIt:\r\n\t# Start Transaction\r\n\tdoc = DocumentManager.Instance.CurrentDBDocument\r\n\tTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n\tnewElement = clr.StrongBox[Element]()\r\n\tif intVersion > 2020:\r\n\t\tp = ModelPathUtils.ConvertUserVisiblePathToModelPath(filePath)\r\n\t\tref = ExternalResourceReference.CreateLocalResource(doc,ExternalResourceTypes.BuiltInExternalResourceTypes.Image, p, PathType.Absolute)\r\n\t\telementOut = ImageInstance.Create(doc,view,ImageType.Create(doc, ImageTypeOptions(ref,ImageTypeSource.Link)).Id,iio)\r\n\telse:\r\n\t\telementOut = doc.Import(file = filePath, options = iio, view = view, element = newElement)\r\n\t\r\n\t#End Transaction\r\n\tTransactionManager.Instance.TransactionTaskDone()\r\n\tmessage = \"Succes\"\r\nelse: \r\n\tmessage = \"Set Runit to true\"\r\n\r\n\r\n#newElementID = newElement.Id\r\n\r\nif intVersion > 2020:\r\n\timg = elementOut\r\nelse:\r\n\timg = UnwrapElement(newElement)\r\nw = img.LookupParameter(\"Width\")\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\nw.Set(width)\r\nTransactionManager.Instance.TransactionTaskDone()\r\n\r\nnewElement = img.Name#newElement.Name\r\n\r\nOUT = iio,message, newElement",
       "VariableInputPorts": true,
       "Id": "0f8f9430659b492189247d90ba148303",
       "Inputs": [
@@ -459,7 +459,7 @@
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.5.0.7460",
+      "Version": "2.3.1.11775",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
@@ -477,129 +477,129 @@
     },
     "NodeViews": [
       {
-        "ShowGeometry": true,
-        "Name": "Input",
         "Id": "61105a333a2b40e7acc4bfd607a7ccdd",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "Input",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": -58.392647191623105,
         "Y": 305.60289092390417
       },
       {
-        "ShowGeometry": true,
-        "Name": "Input",
         "Id": "bdda4c0130354a97beeb41bdf98d7763",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "Input",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": -58.392647191623105,
         "Y": 872.15142073640459
       },
       {
-        "ShowGeometry": true,
-        "Name": "Input",
         "Id": "e5705b26bda9452db9d920d34dd58e55",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "Input",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": -58.392647191623105,
         "Y": 389.89175519220788
       },
       {
-        "ShowGeometry": true,
-        "Name": "Input",
         "Id": "0cf4656eca964450b776b0cbc9754ccb",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "Input",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": -58.392647191623105,
         "Y": 464.31484488822093
       },
       {
-        "ShowGeometry": true,
-        "Name": "Input",
         "Id": "acb8f1352c8c4428a451552ba56d6e2b",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "Input",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": -58.392647191623105,
         "Y": 541.77040976797775
       },
       {
-        "ShowGeometry": true,
-        "Name": "Python Script",
         "Id": "0f8f9430659b492189247d90ba148303",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "Python Script",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": 821.51621521991819,
         "Y": 456.03643526201154
       },
       {
-        "ShowGeometry": true,
-        "Name": "Code Block",
         "Id": "692f6eadf19649169c6b1e0e317b4cf7",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "Code Block",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": -58.392647191623105,
         "Y": 699.10777878564386
       },
       {
-        "ShowGeometry": true,
-        "Name": "Boolean",
         "Id": "2ca7e28852424a45ab3b7911199e77d0",
         "IsSetAsInput": true,
         "IsSetAsOutput": false,
+        "Name": "Boolean",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": -58.392647191623105,
         "Y": 780.17361463719681
       },
       {
-        "ShowGeometry": true,
-        "Name": "Output",
         "Id": "ba9bf56ed91447d6b1b747c274baedb8",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "Output",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": 1124.6134822601175,
         "Y": 464.67501313319804
       },
       {
-        "ShowGeometry": true,
-        "Name": "String",
         "Id": "6453576f09a14f8c8fb72df663a2fd4d",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "String",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": 288.4855075727441,
         "Y": 949.93300392569586
       },
       {
-        "ShowGeometry": true,
-        "Name": "List.LastItem",
         "Id": "04ae024c1bdf451fb5c3d65f53290ee5",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "List.LastItem",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": 809.0773651983734,
         "Y": 890.96203888419655
       },
       {
-        "ShowGeometry": true,
-        "Name": "String.Split",
         "Id": "b5d88f1d89cc40d8a8b4f800f0c57833",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Name": "String.Split",
+        "ShowGeometry": true,
         "Excluded": false,
         "X": 458.91337024623874,
         "Y": 893.46741592811577
       }
     ],
     "Annotations": [],
-    "X": 110.70094167198181,
-    "Y": -267.1704401251958,
-    "Zoom": 1.0032375029116349
+    "X": -95.2144977102746,
+    "Y": -101.70280434628228,
+    "Zoom": 0.75016533798556029
   }
 }
