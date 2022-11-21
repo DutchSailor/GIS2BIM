@@ -1,0 +1,1400 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "MLA_GIS2BIM_CZ_REALplus",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Revit.View": {
+        "Key": "Revit.Elements.Views.View",
+        "Value": "RevitNodes.dll"
+      },
+      "String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      },
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "Get": {
+        "Key": "DesignScript.Builtin.Get",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "PolyCurve": {
+        "Key": "Autodesk.DesignScript.Geometry.PolyCurve",
+        "Value": "ProtoGeometry.dll"
+      },
+      "DataSets": {
+        "Key": "Lists.DataSets",
+        "Value": "LunchBox.dll"
+      },
+      "DesignScript.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "DesignScript.Builtin.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "FileSystem": {
+        "Key": "DSCore.IO.FileSystem",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "b63222ee-2912-4530-b657-a20ca20ea9f7",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "f466ddd9637441a6b1f95a66a47f110e",
+      "Inputs": [
+        {
+          "Id": "0e1bd2bb05064e07adc7c7fee0432ce2",
+          "Name": "Scale",
+          "Description": "GIS units are usually in meters\n\ndouble\nDefault value : 1000",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "e31621f770a34f058f4b02723fc6d574",
+          "Name": "EastWest",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "dbc57312582b43c5a3ba68b6495bd0b3",
+          "Name": "NorthSouth",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9d79a711ec574f9993fde0819f35f359",
+          "Name": "Elevation",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b90557c26b4b465d9f3e0cc80cb231e3",
+          "Name": "Angle to True North",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the current shared coordinate"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "1b8585e3-81f4-499f-8e18-81d010124896",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "da45eab108b442ee95f2bae3c45de497",
+      "Inputs": [
+        {
+          "Id": "83e4091de3fe4cdc809e04664996051f",
+          "Name": "CoordinateX",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "808939802e3b49979286a447d6da8369",
+          "Name": "CoordinateY",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0bd68cdcafa84a1ca6ffdaa0fda2bdce",
+          "Name": "BoxWidth",
+          "Description": "width of the boundingbox\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "39002a6d564f44b690a614991c480d99",
+          "Name": "BoxHeight",
+          "Description": "height of the boundingbox\n\ndouble",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a9ae4a5129c04a99b987ed538e4591fa",
+          "Name": "Boxstring",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ecc75ca191b0420894822da54fbdf3f0",
+          "Name": "Boxstring2",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "929f9641a34c45549ebe88b03969b4ce",
+          "Name": "Xmin",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "759fd919230440eb9f480283ce07b424",
+          "Name": "Xmax",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "bca952a80750400b98e7bd043586ef1b",
+          "Name": "Ymin",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "29ffc9a72bb545b19ba2067f4a32303a",
+          "Name": "Ymax",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9648c87a69e04a01b97b9fde760dfbdd",
+          "Name": "PolygonString",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "create boundingboxstring for webrequests based on coördinates and dimensions"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "1000;",
+      "Id": "aa24607d04ee4ecdb880613b8a005c33",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "5abd1d46c1bb4a8589872092c5d94547",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"GIS2BIM\";\n\"Duplicate\";",
+      "Id": "2b048033d2fb44fdbb8f6fbcb4ea5341",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "f51c7af255b247bcbaf91233318fb4d0",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4d500ee523e5433cbfc0c4975807343a",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Revit.Views.Views.Duplicate@Revit.Elements.Views.View,string,string",
+      "Id": "0bbe38e1a40042dca0af98de8d8e244a",
+      "Inputs": [
+        {
+          "Id": "646898c73d00428da444050497a0c797",
+          "Name": "view",
+          "Description": "View to duplicate.\n\nView",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "586536fffa714d0fa609a0c960803e5b",
+          "Name": "name",
+          "Description": "Name to be assigned to new view.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8596b807a01149628c2c785d6429f096",
+          "Name": "options",
+          "Description": "Duplicate options. Ex: Duplicate as Dependent.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5bfd7d1a7bfe4ed38d2334f7c4ed224f",
+          "Name": "view",
+          "Description": "New View.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Duplicates an existing view.\n\nViews.Duplicate (view: View, name: string, options: string): View"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "4743c784-373d-4ed2-bd25-a92e88bc49f4",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "7170c186bf784e48a91ae9be3b039698",
+      "Inputs": [
+        {
+          "Id": "b564e74e01894be4be121f62b256fce5",
+          "Name": "Viewname",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "0ec6b2e1e4e8491eb7427b02f4b8a3ba",
+          "Name": "view",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Longest",
+      "Description": "select a view by its name"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "4743c784-373d-4ed2-bd25-a92e88bc49f4",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "5bde1d59552545f6b2595fc547270581",
+      "Inputs": [
+        {
+          "Id": "4a97dceb5bb44cb3830e85dfd212b161",
+          "Name": "Viewname",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a8743fdfb71a494babe2c2a8c696bcbf",
+          "Name": "view",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "select a view by its name"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "directory=FileSystem.DirectoryName(path)+\"/Gisdata/\"+server+\"/\";\ndirectory+\"GIS2BIM_\"+name+\".png\";\n\"GIS2BIM_\"+name;",
+      "Id": "96ca634c95ba493a84161ca920756688",
+      "Inputs": [
+        {
+          "Id": "bbb4438c98904072b9fee153c942f8f1",
+          "Name": "path",
+          "Description": "path",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2464857079d34de7af5382af836de91e",
+          "Name": "server",
+          "Description": "server",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b919728838c948b9afb1b7df0b3abef4",
+          "Name": "name",
+          "Description": "name",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7bfbcd7c155d436ab6657701d1ad25e0",
+          "Name": "",
+          "Description": "directory",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b380bd2b9a6f4ed192d61b0d41b89827",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "bd58e866f6c146fabe22ca12e913c614",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DirectoryObject, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "5583e455ab884788bce2ef39c7d70d2f",
+      "Inputs": [
+        {
+          "Id": "24a63e7035b841c28b6c90226ef06bc3",
+          "Name": "path",
+          "Description": "Path to the directory (type: string)",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "50deca2c69764630b761a1e20c62de9f",
+          "Name": "directory",
+          "Description": "Directory object.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a directory object from a path"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "1355f94d-cbe1-451b-b6cf-5e7dab407717",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "8cb0161d4a06448f9ffb73de3a929da6",
+      "Inputs": [
+        {
+          "Id": "9480225c91cf434ca825386a625520c0",
+          "Name": "WMSwebrequest",
+          "Description": "url for WMS webrequest\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1b065e72ac5545e5aa6ddacfb56f6cbd",
+          "Name": "Bitmap",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Longest",
+      "Description": "a webrequest based on WMS-protocol"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "67fbdaa0-25cc-4f5c-91a7-263e934e71f7",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "7e24c870a6434f6a9361f3c377b76f44",
+      "Inputs": [
+        {
+          "Id": "aca66b6cabea4b31bdd203bcee138ffe",
+          "Name": "ImageObject",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e0136b4670e342f09bbfe150426e570f",
+          "Name": "FileNamePath",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5dd8b2c19aa541e68565f1dbc19db6e5",
+          "Name": "FileNamePath",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Longest",
+      "Description": "Write Image to file"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "2652eeea-0a2f-4100-9027-32c61cd67686",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "79a7eec98b0443758c101bef586cba26",
+      "Inputs": [
+        {
+          "Id": "a8f9e61de95e441c85d0e5ce30879426",
+          "Name": "refresh",
+          "Description": "bool\nDefault value : true",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "3f8e836230cc4a738d6ef1ddb01d312e",
+          "Name": "path",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "If the document is workshared, the node returns the path to the central document as a string. Otherwise a null value will be returned."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "ecce77dc-1290-438e-a056-970b256fd553",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "7c26fb81138444c29d01df58eec269a5",
+      "Inputs": [
+        {
+          "Id": "7ec60cb8c6db4da6aa4dd303bcf72e9a",
+          "Name": "passThrough",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "aa2bb74a0c58454b8c61267b80107244",
+          "Name": "waitFor",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a502746eb44142528b5ffa3cfc638f2b",
+          "Name": "passThrough",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Forces a sequential order of execution. The node wired into the output of the Passthrough node will be executed *after* the node wired into the waitFor input (e.g. important for some Revit operations). The value of the passThrough input will be passed on to the node wired into the output port of the Passthrough node."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "69824e7d-ba97-4d5f-ae91-522bf95f083b",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "e28f8e8a33cc4f1abcc9d0c17144d955",
+      "Inputs": [
+        {
+          "Id": "d7f632118d9d47609136d5351e795b92",
+          "Name": "ImageWidthMeters",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3a0f2f2e8a9e420f9bdf931f102e0ef0",
+          "Name": "view",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8a86d1ad129643abb12c53c9ebdfd95a",
+          "Name": "ImagePath",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9237cd9e2c7643ca9a094efd7909d425",
+          "Name": "DeltaX",
+          "Description": "mm\n\ndouble\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "92846eec353848b79e4af622b7d0a9c5",
+          "Name": "DeltaY",
+          "Description": "mm\n\ndouble\nDefault value : 0",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "790f4fdc037840ce9b0c67779bd88f47",
+          "Name": "",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Longest",
+      "Description": "Import rasterimage in view"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "ecce77dc-1290-438e-a056-970b256fd553",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "b1e7fc778b2a4ab196ce46ad41592ec9",
+      "Inputs": [
+        {
+          "Id": "309dc8acfb334c1fb390ec24e82931b0",
+          "Name": "passThrough",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1a093a9f7c084724889e536198637567",
+          "Name": "waitFor",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "3dfb14197aa94902ae86d5da1d7bfc2c",
+          "Name": "passThrough",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Forces a sequential order of execution. The node wired into the output of the Passthrough node will be executed *after* the node wired into the waitFor input (e.g. important for some Revit operations). The value of the passThrough input will be passed on to the node wired into the output port of the Passthrough node."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.GetItemAtIndex@var[]..[],int",
+      "Id": "fd9d6a5388eb4824a379557eb45cdfd8",
+      "Inputs": [
+        {
+          "Id": "6ab4add66bda42e3ab024d7998ef1c53",
+          "Name": "list",
+          "Description": "List to fetch an item from.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c8574e8247204439aaa7963d38215a74",
+          "Name": "index",
+          "Description": "Index of the item to be fetched.\n\nint",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "887691c2cc4943feadd6252dae536ad2",
+          "Name": "item",
+          "Description": "Item in the list at the given index.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Returns an item from the given list that's located at the specified index.\n\nList.GetItemAtIndex (list: var[]..[], index: int): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "//geomorfologie\n\"cenia_geomorfologie\";\n// overzichtskaart van Tsjechië\n\"cenia_prehledka\";\n//schaduwmap\n\"cenia_stinovani\";\n//topo achtergond\n\"cenia_t_podklad\";",
+      "Id": "73ccfda88104417193fa7894e701c9ab",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "627744b7df2745b794261460f2be07ee",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "db0d48b13298431d915f0f4f23e03a98",
+          "Name": "",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1d3869612e3d48278d66d7cf90fe4f25",
+          "Name": "",
+          "Description": "Value of expression at line 6",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "92bb6d7d560f47339a7a8e1038394a52",
+          "Name": "",
+          "Description": "Value of expression at line 8",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.WatchImageCore, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "53c25ea660564cf8994de95d4852fb16",
+      "Inputs": [
+        {
+          "Id": "4068e1a4561645c5afdebd762f773063",
+          "Name": "image",
+          "Description": "Image for visualization",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "509c5fcb26d542f38b39923303c4f7ed",
+          "Name": "image",
+          "Description": "Image for visualization",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Previews an image"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "0e87a863-8bfd-4a7d-85ca-74413965cbfb",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "05a2c0f51a974c06bede66b85cb77747",
+      "Inputs": [
+        {
+          "Id": "69308be3a37b4c6691489867fd56cb18",
+          "Name": "bbox",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "31a0227d2a0444edb6c2a7227024d1cc",
+          "Name": "server",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "49768897352749c6a746a6ab5194f842",
+          "Name": "url",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d976a7daa0e74d28b8f81faf9f8e98d5",
+          "Name": "layername",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "49e77264a67b40a487c7da5ee9806c19",
+          "Name": "layernumber",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "713b7ff880164ec882aa7c6f3890d459",
+          "Name": "server",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Czech_gov_geoportal"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "e31621f770a34f058f4b02723fc6d574",
+      "End": "808939802e3b49979286a447d6da8369",
+      "Id": "55e7444e8a8e44ceb8b39aac530e2ef4"
+    },
+    {
+      "Start": "dbc57312582b43c5a3ba68b6495bd0b3",
+      "End": "83e4091de3fe4cdc809e04664996051f",
+      "Id": "8522ab56180d431cb727a9ed187bfa2c"
+    },
+    {
+      "Start": "a9ae4a5129c04a99b987ed538e4591fa",
+      "End": "69308be3a37b4c6691489867fd56cb18",
+      "Id": "db758300cb744cd996e20a00fb46bb9e"
+    },
+    {
+      "Start": "5abd1d46c1bb4a8589872092c5d94547",
+      "End": "0bd68cdcafa84a1ca6ffdaa0fda2bdce",
+      "Id": "cd09ddc227d44cdaa39a9c372f9ccce0"
+    },
+    {
+      "Start": "5abd1d46c1bb4a8589872092c5d94547",
+      "End": "39002a6d564f44b690a614991c480d99",
+      "Id": "98290a9941ff4c7e9cca8cbb3c548052"
+    },
+    {
+      "Start": "5abd1d46c1bb4a8589872092c5d94547",
+      "End": "d7f632118d9d47609136d5351e795b92",
+      "Id": "b7b91475205a4695a2b859e28da80c97"
+    },
+    {
+      "Start": "f51c7af255b247bcbaf91233318fb4d0",
+      "End": "4a97dceb5bb44cb3830e85dfd212b161",
+      "Id": "e6c2c6f52fc247c99d38bd0e733817b9"
+    },
+    {
+      "Start": "4d500ee523e5433cbfc0c4975807343a",
+      "End": "8596b807a01149628c2c785d6429f096",
+      "Id": "45df9985f98d4a308646086da1c99b23"
+    },
+    {
+      "Start": "5bfd7d1a7bfe4ed38d2334f7c4ed224f",
+      "End": "1a093a9f7c084724889e536198637567",
+      "Id": "8146ac55e74a412ba7ddb85fe6c28b2f"
+    },
+    {
+      "Start": "0ec6b2e1e4e8491eb7427b02f4b8a3ba",
+      "End": "3a0f2f2e8a9e420f9bdf931f102e0ef0",
+      "Id": "d5320f098bfb435b95ac8564cefdde13"
+    },
+    {
+      "Start": "a8743fdfb71a494babe2c2a8c696bcbf",
+      "End": "646898c73d00428da444050497a0c797",
+      "Id": "db85a8fadc1d49cf864853714ca7b425"
+    },
+    {
+      "Start": "7bfbcd7c155d436ab6657701d1ad25e0",
+      "End": "24a63e7035b841c28b6c90226ef06bc3",
+      "Id": "d4f2914e814a45f7af0147adf857c599"
+    },
+    {
+      "Start": "b380bd2b9a6f4ed192d61b0d41b89827",
+      "End": "7ec60cb8c6db4da6aa4dd303bcf72e9a",
+      "Id": "4c482c0bf4794a0dbeb75901ac24f72a"
+    },
+    {
+      "Start": "bd58e866f6c146fabe22ca12e913c614",
+      "End": "586536fffa714d0fa609a0c960803e5b",
+      "Id": "a5889dbcc4ce41bc85f2704e512d770a"
+    },
+    {
+      "Start": "bd58e866f6c146fabe22ca12e913c614",
+      "End": "309dc8acfb334c1fb390ec24e82931b0",
+      "Id": "36b80c0891f74c898f9b132f6aa06827"
+    },
+    {
+      "Start": "50deca2c69764630b761a1e20c62de9f",
+      "End": "aa2bb74a0c58454b8c61267b80107244",
+      "Id": "fde121da887745d4841ef72f0d2e9c02"
+    },
+    {
+      "Start": "1b065e72ac5545e5aa6ddacfb56f6cbd",
+      "End": "aca66b6cabea4b31bdd203bcee138ffe",
+      "Id": "d1cd2b6422f94396a8f5325e23abc8d2"
+    },
+    {
+      "Start": "1b065e72ac5545e5aa6ddacfb56f6cbd",
+      "End": "4068e1a4561645c5afdebd762f773063",
+      "Id": "293130db6a494b3288644723fc361260"
+    },
+    {
+      "Start": "5dd8b2c19aa541e68565f1dbc19db6e5",
+      "End": "8a86d1ad129643abb12c53c9ebdfd95a",
+      "Id": "811b1a0d883b4b13b4a86f2b165df473"
+    },
+    {
+      "Start": "3f8e836230cc4a738d6ef1ddb01d312e",
+      "End": "bbb4438c98904072b9fee153c942f8f1",
+      "Id": "28e2c8e1c5e54bbabcf38bd268b093b4"
+    },
+    {
+      "Start": "a502746eb44142528b5ffa3cfc638f2b",
+      "End": "e0136b4670e342f09bbfe150426e570f",
+      "Id": "695d9a5dcff74cca8af75a1b82153b63"
+    },
+    {
+      "Start": "3dfb14197aa94902ae86d5da1d7bfc2c",
+      "End": "b564e74e01894be4be121f62b256fce5",
+      "Id": "aa6a1730438f474abb40f3a2e77e65cd"
+    },
+    {
+      "Start": "887691c2cc4943feadd6252dae536ad2",
+      "End": "b919728838c948b9afb1b7df0b3abef4",
+      "Id": "e9f8199d9ff24be286120822caf6a568"
+    },
+    {
+      "Start": "627744b7df2745b794261460f2be07ee",
+      "End": "31a0227d2a0444edb6c2a7227024d1cc",
+      "Id": "91980aca3d344466b77f8f41281a6735"
+    },
+    {
+      "Start": "49768897352749c6a746a6ab5194f842",
+      "End": "9480225c91cf434ca825386a625520c0",
+      "Id": "ad9f9658e5004d08aaf33085b8494745"
+    },
+    {
+      "Start": "d976a7daa0e74d28b8f81faf9f8e98d5",
+      "End": "6ab4add66bda42e3ab024d7998ef1c53",
+      "Id": "8672834b78c64a07b557a0bcba3cf977"
+    },
+    {
+      "Start": "49e77264a67b40a487c7da5ee9806c19",
+      "End": "c8574e8247204439aaa7963d38215a74",
+      "Id": "dda6871790bd42e2b5276475b38eb2fd"
+    },
+    {
+      "Start": "713b7ff880164ec882aa7c6f3890d459",
+      "End": "2464857079d34de7af5382af836de91e",
+      "Id": "9d2dc527c7e640d3b8d132bc287126a9"
+    }
+  ],
+  "Dependencies": [
+    "b63222ee-2912-4530-b657-a20ca20ea9f7",
+    "1b8585e3-81f4-499f-8e18-81d010124896",
+    "4743c784-373d-4ed2-bd25-a92e88bc49f4",
+    "1355f94d-cbe1-451b-b6cf-5e7dab407717",
+    "67fbdaa0-25cc-4f5c-91a7-263e934e71f7",
+    "2652eeea-0a2f-4100-9027-32c61cd67686",
+    "ecce77dc-1290-438e-a056-970b256fd553",
+    "69824e7d-ba97-4d5f-ae91-522bf95f083b",
+    "0e87a863-8bfd-4a7d-85ca-74413965cbfb"
+  ],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "GIS2BIM for Dynamo 2.x",
+      "Version": "0.11.24",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "f466ddd9637441a6b1f95a66a47f110e",
+        "da45eab108b442ee95f2bae3c45de497",
+        "8cb0161d4a06448f9ffb73de3a929da6",
+        "7e24c870a6434f6a9361f3c377b76f44",
+        "e28f8e8a33cc4f1abcc9d0c17144d955",
+        "05a2c0f51a974c06bede66b85cb77747"
+      ]
+    },
+    {
+      "Name": "archi-lab.net",
+      "Version": "2023.213.1523",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "0bbe38e1a40042dca0af98de8d8e244a"
+      ]
+    },
+    {
+      "Name": "spring nodes",
+      "Version": "210.1.1",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "79a7eec98b0443758c101bef586cba26"
+      ]
+    },
+    {
+      "Name": "Clockwork for Dynamo 2.x",
+      "Version": "2.4.0",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "7c26fb81138444c29d01df58eec269a5",
+        "b1e7fc778b2a4ab196ce46ad41592ec9"
+      ]
+    }
+  ],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    }
+  ],
+  "Author": "None provided",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 10000.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.1.8246",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -761928.875,
+      "EyeY": 570.18695068359375,
+      "EyeZ": 1032480.9375,
+      "LookX": 83.625,
+      "LookY": -629.510498046875,
+      "LookZ": -278.875,
+      "UpX": 0.22874967000275298,
+      "UpY": 0.6045991024856503,
+      "UpZ": -0.76297672121140625
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_GetSharedCoordinate",
+        "Id": "f466ddd9637441a6b1f95a66a47f110e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -3425.7349328948949,
+        "Y": 743.54701622870459
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_CreateBoundingBox",
+        "Id": "da45eab108b442ee95f2bae3c45de497",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -3097.2960194015595,
+        "Y": 745.06637705017829
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "aa24607d04ee4ecdb880613b8a005c33",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -3259.344060891051,
+        "Y": 991.91457858873332
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "2b048033d2fb44fdbb8f6fbcb4ea5341",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1176.8204833250793,
+        "Y": 1249.1837465682652
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Views.Duplicate",
+        "Id": "0bbe38e1a40042dca0af98de8d8e244a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -768.37637505489784,
+        "Y": 1212.5440864809602
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "View.SelectByName",
+        "Id": "7170c186bf784e48a91ae9be3b039698",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -306.58159662897287,
+        "Y": 1098.8964943410988
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "View.MLA_SelectByName",
+        "Id": "5bde1d59552545f6b2595fc547270581",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -989.48760635693,
+        "Y": 1213.2161205316334
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "96ca634c95ba493a84161ca920756688",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1786.8501796949902,
+        "Y": 805.81697897336721
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Directory From Path",
+        "Id": "5583e455ab884788bce2ef39c7d70d2f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1131.9988651250603,
+        "Y": 799.47041724576218
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_WebrequestWMS",
+        "Id": "8cb0161d4a06448f9ffb73de3a929da6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1986.3845231071602,
+        "Y": 677.18217739984721
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_ImageToFile",
+        "Id": "7e24c870a6434f6a9361f3c377b76f44",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -671.86184508906024,
+        "Y": 681.3434976528182
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "ꟿ Document.CentralPath",
+        "Id": "79a7eec98b0443758c101bef586cba26",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1988.9039831635603,
+        "Y": 765.36601369892423
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Passthrough",
+        "Id": "7c26fb81138444c29d01df58eec269a5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -962.98343219844025,
+        "Y": 745.63994908338225
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_ImportImageInView",
+        "Id": "e28f8e8a33cc4f1abcc9d0c17144d955",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -85.063258097577091,
+        "Y": 1244.832728332829
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Passthrough",
+        "Id": "b1e7fc778b2a4ab196ce46ad41592ec9",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -597.06607320771582,
+        "Y": 1099.6831566321362
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.GetItemAtIndex",
+        "Id": "fd9d6a5388eb4824a379557eb45cdfd8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1987.5989271212002,
+        "Y": 876.16023883953517
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "73ccfda88104417193fa7894e701c9ab",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -2763.2771639522784,
+        "Y": 799.86263387721658
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch Image",
+        "Id": "53c25ea660564cf8994de95d4852fb16",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1647.9549049842883,
+        "Y": 383.76611095702577
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_CzechRepublicGeoservicesLibrary_geoportal",
+        "Id": "05a2c0f51a974c06bede66b85cb77747",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -2435.2843980499538,
+        "Y": 745.98394410362721
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "5f80ad1133f44985812a7344f4a17249",
+        "Title": "creates bigger squared boundingbox",
+        "Nodes": [
+          "aa24607d04ee4ecdb880613b8a005c33",
+          "f466ddd9637441a6b1f95a66a47f110e",
+          "da45eab108b442ee95f2bae3c45de497"
+        ],
+        "Left": -3435.7349328948949,
+        "Top": 690.54701622870459,
+        "Width": 626.43891349333535,
+        "Height": 394.36756236002873,
+        "FontSize": 36.0,
+        "InitialTop": 743.54701622870459,
+        "InitialHeight": 393.36756236002873,
+        "TextblockHeight": 43.0,
+        "Background": "#FFFFB8D8"
+      },
+      {
+        "Id": "a4c5f045ee494a0581feb04a3b657c1e",
+        "Title": "place downloaded images in view",
+        "Nodes": [
+          "7170c186bf784e48a91ae9be3b039698",
+          "e28f8e8a33cc4f1abcc9d0c17144d955",
+          "2b048033d2fb44fdbb8f6fbcb4ea5341",
+          "0bbe38e1a40042dca0af98de8d8e244a",
+          "5bde1d59552545f6b2595fc547270581",
+          "b1e7fc778b2a4ab196ce46ad41592ec9"
+        ],
+        "Left": -1186.8204833250793,
+        "Top": 1045.8964943410988,
+        "Width": 1353.7572252275022,
+        "Height": 395.93623399173021,
+        "FontSize": 36.0,
+        "InitialTop": 1098.8964943410988,
+        "InitialHeight": 295.2872522271665,
+        "TextblockHeight": 43.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "b5b5a4dfbdc54693a5cfdc67458334d3",
+        "Title": "wms foto`s",
+        "Nodes": [
+          "8cb0161d4a06448f9ffb73de3a929da6",
+          "7e24c870a6434f6a9361f3c377b76f44",
+          "96ca634c95ba493a84161ca920756688",
+          "79a7eec98b0443758c101bef586cba26",
+          "5583e455ab884788bce2ef39c7d70d2f",
+          "7c26fb81138444c29d01df58eec269a5",
+          "fd9d6a5388eb4824a379557eb45cdfd8"
+        ],
+        "Left": -1998.9039831635603,
+        "Top": 624.18217739984721,
+        "Width": 1626.0421380745001,
+        "Height": 370.97806143968796,
+        "FontSize": 36.0,
+        "InitialTop": 677.18217739984721,
+        "InitialHeight": 343.97806143968796,
+        "TextblockHeight": 43.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": 1639.9767262633427,
+    "Y": 2.1725130929769705,
+    "Zoom": 0.40362909221822557
+  }
+}
