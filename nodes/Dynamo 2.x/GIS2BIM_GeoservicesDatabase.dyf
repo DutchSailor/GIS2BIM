@@ -1,0 +1,397 @@
+{
+  "Uuid": "7f6235e8-aa27-4464-858c-b899a06a239f",
+  "IsCustomNode": true,
+  "Category": "GIS2BIM.Geoservices",
+  "Description": "Returns a actual list of WFS/WMS/WCS services and requests from the Github-repository of GIS2BIM.",
+  "Name": "GIS2BIM_GeoservicesDatabase",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DesignScript.Builtin.Dictionary.ValueAtKey@string",
+      "Id": "9e6fa8d04bea4256afdfc74abd74da0f",
+      "Inputs": [
+        {
+          "Id": "ea7832d0386b4e48ac8b02eef3831afd",
+          "Name": "dictionary",
+          "Description": "DesignScript.Builtin.Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7b027943bae4480f91c88b60d0592b7a",
+          "Name": "key",
+          "Description": "The key in the Dictionary to obtain value for\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d8b635dc67be409e96cd409a130094ba",
+          "Name": "value",
+          "Description": "Value at the specified key or null if it is not set",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Obtain the value at a specified key\n\nDictionary.ValueAtKey (key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DesignScript.Builtin.Dictionary.Keys",
+      "Id": "4e573517ced94343a40b9e7f75eba38d",
+      "Inputs": [
+        {
+          "Id": "58f207bc1747408fb2f32224d85d960b",
+          "Name": "dictionary",
+          "Description": "DesignScript.Builtin.Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "31dd3c7218764275820c7023da8770c4",
+          "Name": "keys",
+          "Description": "Keys of the Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Produces the keys in a Dictionary.\n\nDictionary.Keys: string[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.FirstItem@var[]..[]",
+      "Id": "3d227f07083a435397b7d23f6250f596",
+      "Inputs": [
+        {
+          "Id": "a1b9e45fc62b4b6ebcac10de6aceea2f",
+          "Name": "list",
+          "Description": "List to get the first item from.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2d5628b64ea44f3997cd187beb0b1cdf",
+          "Name": "item",
+          "Description": "First item in the list.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Returns the first item in a list.\n\nList.FirstItem (list: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DesignScript.Builtin.Dictionary.Values",
+      "Id": "c06067e755b549f78eeeed5cd044f9f7",
+      "Inputs": [
+        {
+          "Id": "9bce329e682c4254976b99bdd0c8899b",
+          "Name": "dictionary",
+          "Description": "DesignScript.Builtin.Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "fbe1ec6d85f24f2dafcfa55dbc8ed5b0",
+          "Name": "values",
+          "Description": "Values of the dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Produces the values in a Dictionary.\n\nDictionary.Values: var[]"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.WebRequest, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "29a3c52323dd47379b6cc13c16ed64b7",
+      "Inputs": [
+        {
+          "Id": "acfd698d699947c58bb3527edbe9c0f4",
+          "Name": "url",
+          "Description": "The url for the web request as a string.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "eaf221b89c5d4a32a5ff0b05bd295288",
+          "Name": "string",
+          "Description": "Content of a web request as a string.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Make a web request given a url."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.Data.ParseJSON@string",
+      "Id": "26d52e25e7564b79a7bf6108538ebf1a",
+      "Inputs": [
+        {
+          "Id": "228bcf7b43544d4291b3f2a0ed28990c",
+          "Name": "json",
+          "Description": "A JSON string\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6c0a05c951a04624bf3d34f1cd954ce7",
+          "Name": "result",
+          "Description": "The result type depends on the content of the input string. The result type can be a primitive value (e.g. string, boolean, double), a List, or a Dictionary.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Parse converts an arbitrary JSON string to a value. It is the opposite of JSON.Stringify.\n\nData.ParseJSON (json: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"https://raw.githubusercontent.com/DutchSailor/GIS2BIM/master/GIS2BIM_Data.json\";",
+      "Id": "890ef2613b94487082aaff500d833611",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "509aa54754d14d19b8e58d71e0028885",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "GeoservicesList",
+      "Id": "587b6ab6fcc945e188b4954c9a5b9952",
+      "Inputs": [
+        {
+          "Id": "457634e39d0647e8bc8e2d9007eee2b2",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "d8b635dc67be409e96cd409a130094ba",
+      "End": "457634e39d0647e8bc8e2d9007eee2b2",
+      "Id": "b7a4130190c64d229175cfadad487165"
+    },
+    {
+      "Start": "31dd3c7218764275820c7023da8770c4",
+      "End": "7b027943bae4480f91c88b60d0592b7a",
+      "Id": "8a53c3289f74428a935180dd15ecd3a6"
+    },
+    {
+      "Start": "2d5628b64ea44f3997cd187beb0b1cdf",
+      "End": "ea7832d0386b4e48ac8b02eef3831afd",
+      "Id": "21cec92d59c54eb9aa0eff91f8202e46"
+    },
+    {
+      "Start": "2d5628b64ea44f3997cd187beb0b1cdf",
+      "End": "58f207bc1747408fb2f32224d85d960b",
+      "Id": "a220698c163b4feca8dbcfc7182c0679"
+    },
+    {
+      "Start": "fbe1ec6d85f24f2dafcfa55dbc8ed5b0",
+      "End": "a1b9e45fc62b4b6ebcac10de6aceea2f",
+      "Id": "6bd3dc4d7ee24ad1a7e7eaa3056391a2"
+    },
+    {
+      "Start": "eaf221b89c5d4a32a5ff0b05bd295288",
+      "End": "228bcf7b43544d4291b3f2a0ed28990c",
+      "Id": "baa40704f6844f03919cad4daf22a28c"
+    },
+    {
+      "Start": "6c0a05c951a04624bf3d34f1cd954ce7",
+      "End": "9bce329e682c4254976b99bdd0c8899b",
+      "Id": "595c65faf63e4fed9b2db955d20b7925"
+    },
+    {
+      "Start": "509aa54754d14d19b8e58d71e0028885",
+      "End": "acfd698d699947c58bb3527edbe9c0f4",
+      "Id": "2a8752a88efe4c47b9e5433d2a60a976"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.1.8246",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -176840992.0,
+      "EyeY": 200500592.0,
+      "EyeZ": 191720704.0,
+      "LookX": 26625184.0,
+      "LookY": -200458096.0,
+      "LookZ": -88806240.0,
+      "UpX": 0.22874967000275298,
+      "UpY": 0.6045991024856503,
+      "UpZ": -0.76297672121140625
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionary.ValueAtKey",
+        "Id": "9e6fa8d04bea4256afdfc74abd74da0f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2493.6510249913313,
+        "Y": 310.66666666666652
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionary.Keys",
+        "Id": "4e573517ced94343a40b9e7f75eba38d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2211.135116850201,
+        "Y": 404.67652314915654
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.FirstItem",
+        "Id": "3d227f07083a435397b7d23f6250f596",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1952.794475128961,
+        "Y": 403.11734736120661
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionary.Values",
+        "Id": "c06067e755b549f78eeeed5cd044f9f7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1667.9934581101611,
+        "Y": 401.78789934710653
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Web Request",
+        "Id": "29a3c52323dd47379b6cc13c16ed64b7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1159.2778848902112,
+        "Y": 545.20987105086647
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Data.ParseJSON",
+        "Id": "26d52e25e7564b79a7bf6108538ebf1a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1335.6377740798812,
+        "Y": 545.09304612009646
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "890ef2613b94487082aaff500d833611",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 367.11111111111086,
+        "Y": 549.58277220298646
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "587b6ab6fcc945e188b4954c9a5b9952",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2926.1338120398286,
+        "Y": 337.21982448072225
+      }
+    ],
+    "Annotations": [],
+    "X": -1267.2534970532743,
+    "Y": -24.279237041743443,
+    "Zoom": 0.65088413848656868
+  }
+}

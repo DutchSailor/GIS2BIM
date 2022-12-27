@@ -1,0 +1,167 @@
+{
+  "Uuid": "fb7c49c3-0244-4f49-a827-87dfe7497daf",
+  "IsCustomNode": true,
+  "Category": "GIS2BIM.Image",
+  "Description": "Makes a System.Drawing.Bitmap transparant",
+  "Name": "GIS2BIM_ImageMakeTransparant",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import sys\r\nsys.path.append(\"C:\\Program Files (x86)\\IronPython 2.7\\Lib\")\r\n\r\nimport clr\r\n\r\nclr.AddReference(\"System.Drawing\")\r\nclr.AddReference(\"System\")\r\nfrom System.Drawing import Image\r\nfrom System.Drawing import Bitmap\r\nfrom System.Drawing import Graphics\r\nimg= IN[0]\r\n\r\nbmp2 = Bitmap(img)\r\nbmp2.MakeTransparent()\r\n\r\nOUT = bmp2",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "894a8db550d54bfaad71914aa3f35465",
+      "Inputs": [
+        {
+          "Id": "84b5bc777bcb4d8fb3293c740522a4ce",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "457a68b1b7dd45d0a1fac5aa0f60f42f",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Bitmap",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "e5aacbb178ee48cbaefedc849735c323",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "0c87e8b83573409588c36386d5a93f85",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Bitmap",
+      "Id": "4826d6df630a4ebb96bfe21dade28683",
+      "Inputs": [
+        {
+          "Id": "330af71f2d114e77ac139c8b1a2c0b07",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "457a68b1b7dd45d0a1fac5aa0f60f42f",
+      "End": "330af71f2d114e77ac139c8b1a2c0b07",
+      "Id": "21a27b5a9392492b889d0efb7ab247c1"
+    },
+    {
+      "Start": "0c87e8b83573409588c36386d5a93f85",
+      "End": "84b5bc777bcb4d8fb3293c740522a4ce",
+      "Id": "07e9ff62657c4edc91e404034ce55563"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.1.8246",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -2954.51806640625,
+      "EyeY": 35812.3671875,
+      "EyeZ": 25740.583984375,
+      "LookX": 7282.33837890625,
+      "LookY": -35304.23046875,
+      "LookZ": -16597.9296875,
+      "UpX": 0.30977416038513184,
+      "UpY": 0.63682633638381958,
+      "UpZ": -0.70603984594345093
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "894a8db550d54bfaad71914aa3f35465",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 510.66666666666652,
+        "Y": 340.44444444444434
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "e5aacbb178ee48cbaefedc849735c323",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 314.66666666666669,
+        "Y": 346.66666666666669
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "4826d6df630a4ebb96bfe21dade28683",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 764.44444444444457,
+        "Y": 341.33333333333331
+      }
+    ],
+    "Annotations": [],
+    "X": 0.0,
+    "Y": 0.0,
+    "Zoom": 1.0
+  }
+}
