@@ -1,0 +1,621 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "MLA_GIS2BIM_KLIK_V1",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Color": {
+        "Key": "DSCore.Color",
+        "Value": "DSCoreNodes.dll"
+      },
+      "DesignScript.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "DesignScript.Builtin.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "DSCore.String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      },
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "b63222ee-2912-4530-b657-a20ca20ea9f7",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "d35af567c2814de59c9f11f56c895be2",
+      "Inputs": [
+        {
+          "Id": "ba9fc471c1d242d189f827ea7f266551",
+          "Name": "Scale",
+          "Description": "GIS units are usually in meters\n\ndouble\nDefault value : 1000",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6eb6663d4ed741ef94365c36af5e89d5",
+          "Name": "EastWest",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4ba056d8321c4c759f1620f56f3b0230",
+          "Name": "NorthSouth",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3a81efe3774d440ca66794238ac28368",
+          "Name": "Elevation",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "916b5ba25e924703b7831a7b8f326f3e",
+          "Name": "Angle to True North",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the current shared coordinate"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.ModelCurve.ByCurve@Autodesk.DesignScript.Geometry.Curve",
+      "Id": "9f1054288659403b923472a1247856d4",
+      "Inputs": [
+        {
+          "Id": "028b884b989140c8a868973bc0fe2921",
+          "Name": "curve",
+          "Description": "Curve",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1d7004520eb9430695c76cf8231d4699",
+          "Name": "ModelCurve",
+          "Description": "ModelCurve",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Construct a Revit ModelCurve element from a Curve\n\nModelCurve.ByCurve (curve: Curve): ModelCurve"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"Line Style\";",
+      "Id": "47d3749ffc854011b4c31f070f9c03f1",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "03ea2a3a097041268021e622ccbd1950",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.SetParameterByName@string,var",
+      "Id": "d826e5de3cb040cc9cfbdc752c6f71fc",
+      "Inputs": [
+        {
+          "Id": "a4217a945a1c48429c9a34b44e61e689",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": true,
+          "KeepListStructure": true
+        },
+        {
+          "Id": "4e4386ada404447c8b789d78d7b976bd",
+          "Name": "parameterName",
+          "Description": "The name of the parameter to set.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cc691978a0b44641becc92c689bdc09f",
+          "Name": "value",
+          "Description": "The value.\n\nvar",
+          "UsingDefaultValue": false,
+          "Level": 1,
+          "UseLevels": true,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "e23a0458b7ec459c95d68f191bcfe59d",
+          "Name": "Element",
+          "Description": "Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Set one of the element's parameters.\n\nElement.SetParameterByName (parameterName: string, value: var): Element"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "000116ab-252d-42c3-bb9a-fc482710a3ac",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "5db142861a3b48f6a0c6380fd6317c97",
+      "Inputs": [
+        {
+          "Id": "35a3282909964981a5ff2d62cc891232",
+          "Name": "filepaths",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1786bb9950bc46de84790bb3385e6a83",
+          "Name": "RDX",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7be48e3b94f04387b99e7a357575203b",
+          "Name": "RDY",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2a0ac3f52c114d3ba8a9454e151e1d95",
+          "Name": "1 curves",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0d102990bd664da7b00b6c805269d74c",
+          "Name": "2 features",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d77f9dd1e54e4ed19867363eef9296c1",
+          "Name": "3 LineTypeNames",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7ffac259a40c43fcab7eaf02eff80643",
+          "Name": "4 Unique_features",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Reads the KLIC json files and filters the lines"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "3cab8fa7-8664-40f0-9534-366efbe884b7",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "095f5df54fc545e1a3785f9e5d2d2935",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "0ebb6bbf776d411fbf86a5c3d5d40a33",
+          "Name": "01 (central)modelpath",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ab5f74bc508f4689a2d5f2eebe1f1085",
+          "Name": "02 (central)modeldir",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "167f1fb0555c486d9c78f1c1e728beca",
+          "Name": "03 gisdatadir",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0f8d150f562b45479cd6453817ed5035",
+          "Name": "04 imagedir",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "df9cafe5583f4e72bcccc6d49d92e22e",
+          "Name": "05 KLICfiles",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Gets the filepaths from the model."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "c83dd81c-2a3f-48cf-a36b-c49c4e835dcc",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "15cbb3232ca343cab1dc9bab6aee65e4",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "cdc655c73b54437f9a8a443a70181492",
+          "Name": "01 Names",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7e5ddfc2a0804034a76e3808e6df295b",
+          "Name": "02 Graphicstyles",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "539497eb2ea4451aba6420937344ff1f",
+          "Name": "03 GraphicStylesPatternIds",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Gets all Graphic Styles in the project."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "d3b04d49-a02a-4bd9-bdbc-579c9faa9f4a",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "9278f26a9dd04edd922c54844c6d01f0",
+      "Inputs": [
+        {
+          "Id": "5f1867b8b4684ed2879cb9867c404f14",
+          "Name": "LineTypeName",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "88629373a19b4fa7bfb2df4ecf5858d9",
+          "Name": "LineTypeNamesInProject",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3076fa72eb9d4ad7a32701714653799c",
+          "Name": "GraphicstylesInProject",
+          "Description": "Element[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "bc65838519164cdc919eaee8720bc930",
+          "Name": "01 graphicstyle",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get a Graphic Style by name"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "6eb6663d4ed741ef94365c36af5e89d5",
+      "End": "1786bb9950bc46de84790bb3385e6a83",
+      "Id": "15422584082b49a49a6b8346f9e64c3c"
+    },
+    {
+      "Start": "4ba056d8321c4c759f1620f56f3b0230",
+      "End": "7be48e3b94f04387b99e7a357575203b",
+      "Id": "6858f1920dbf44159534421cbcdb78cd"
+    },
+    {
+      "Start": "1d7004520eb9430695c76cf8231d4699",
+      "End": "a4217a945a1c48429c9a34b44e61e689",
+      "Id": "327cd68468c34dc98cf97c3728c7ba16"
+    },
+    {
+      "Start": "03ea2a3a097041268021e622ccbd1950",
+      "End": "4e4386ada404447c8b789d78d7b976bd",
+      "Id": "00e311dcb54b4b278adae5704c02213e"
+    },
+    {
+      "Start": "2a0ac3f52c114d3ba8a9454e151e1d95",
+      "End": "028b884b989140c8a868973bc0fe2921",
+      "Id": "105faed4f3a84fb0b8d8454a718db450"
+    },
+    {
+      "Start": "d77f9dd1e54e4ed19867363eef9296c1",
+      "End": "5f1867b8b4684ed2879cb9867c404f14",
+      "Id": "b064abbd62bb4adbbab5a884f5c62f94"
+    },
+    {
+      "Start": "df9cafe5583f4e72bcccc6d49d92e22e",
+      "End": "35a3282909964981a5ff2d62cc891232",
+      "Id": "7ee4cb1404ec43f38c61069581a62c16"
+    },
+    {
+      "Start": "cdc655c73b54437f9a8a443a70181492",
+      "End": "88629373a19b4fa7bfb2df4ecf5858d9",
+      "Id": "a1d1ddec2bb64ec697134699da3400a2"
+    },
+    {
+      "Start": "7e5ddfc2a0804034a76e3808e6df295b",
+      "End": "3076fa72eb9d4ad7a32701714653799c",
+      "Id": "2468446ba344480fbd90f5c20baaca6b"
+    },
+    {
+      "Start": "bc65838519164cdc919eaee8720bc930",
+      "End": "cc691978a0b44641becc92c689bdc09f",
+      "Id": "531e7fc318d44193875e488ce3bfcf82"
+    }
+  ],
+  "Dependencies": [
+    "b63222ee-2912-4530-b657-a20ca20ea9f7",
+    "000116ab-252d-42c3-bb9a-fc482710a3ac",
+    "3cab8fa7-8664-40f0-9534-366efbe884b7",
+    "c83dd81c-2a3f-48cf-a36b-c49c4e835dcc",
+    "d3b04d49-a02a-4bd9-bdbc-579c9faa9f4a"
+  ],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "GIS2BIM for Dynamo 2.x",
+      "Version": "0.11.24",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "d35af567c2814de59c9f11f56c895be2"
+      ]
+    }
+  ],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 10000.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.1.8246",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -98113.7239066759,
+      "EyeY": 430159.61391932768,
+      "EyeZ": -677552.56500461884,
+      "LookX": 33395.194958392734,
+      "LookY": -50877.301654911542,
+      "LookZ": -30935.74097874295,
+      "UpX": 0.4291267991065979,
+      "UpY": 0.81106412410736084,
+      "UpZ": -0.39752402901649475
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_GetSharedCoordinate",
+        "Id": "d35af567c2814de59c9f11f56c895be2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 457.53570972639841,
+        "Y": 447.93962824988978
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "ModelCurve.ByCurve",
+        "Id": "9f1054288659403b923472a1247856d4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1289.1900943861961,
+        "Y": 375.47935391477614
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "47d3749ffc854011b4c31f070f9c03f1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1356.737618477948,
+        "Y": 467.35568718200568
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Element.SetParameterByName",
+        "Id": "d826e5de3cb040cc9cfbdc752c6f71fc",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1610.8810617353497,
+        "Y": 375.81373607424592
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "KLICToCurves",
+        "Id": "5db142861a3b48f6a0c6380fd6317c97",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 800.173617904765,
+        "Y": 387.64216133765467
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "FilePaths",
+        "Id": "095f5df54fc545e1a3785f9e5d2d2935",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 537.91796539353322,
+        "Y": 246.05351061342418
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GetAll",
+        "Id": "15cbb3232ca343cab1dc9bab6aee65e4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 859.52886534878,
+        "Y": 574.338909238475
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "ByName",
+        "Id": "9278f26a9dd04edd922c54844c6d01f0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1155.5284997597562,
+        "Y": 562.13596470069126
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "f4b94d3633e84448aa9517b3b879f532",
+        "Title": "tested with: \r\n- revit 2022.1\r\n- dynamo 2.12.1\r\n\r\npython (default) dependencies:\r\n-json\r\n-Path\r\n-time\r\n\r\ninput = list of klicfiles generated with the klicviewer\r\n",
+        "Nodes": [],
+        "Left": 211.2933904645422,
+        "Top": 255.62631436351865,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": 275.48049379104509,
+    "Y": 91.1125858655409,
+    "Zoom": 0.74384689769160883
+  }
+}

@@ -1,0 +1,648 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "MLA_GIS2BIM_KLIK_createLijntypes_V1",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Color": {
+        "Key": "DSCore.Color",
+        "Value": "DSCoreNodes.dll"
+      },
+      "DesignScript.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "DesignScript.Builtin.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "DSCore.String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      },
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "b63222ee-2912-4530-b657-a20ca20ea9f7",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "d35af567c2814de59c9f11f56c895be2",
+      "Inputs": [
+        {
+          "Id": "ba9fc471c1d242d189f827ea7f266551",
+          "Name": "Scale",
+          "Description": "GIS units are usually in meters\n\ndouble\nDefault value : 1000",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6eb6663d4ed741ef94365c36af5e89d5",
+          "Name": "EastWest",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4ba056d8321c4c759f1620f56f3b0230",
+          "Name": "NorthSouth",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3a81efe3774d440ca66794238ac28368",
+          "Name": "Elevation",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "916b5ba25e924703b7831a7b8f326f3e",
+          "Name": "Angle to True North",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the current shared coordinate"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\nclr.AddReference('RevitAPI')\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\nclr.AddReference('RevitNodes')\nimport Revit\nclr.ImportExtensions(Revit.Elements)\n\nclr.AddReference('RevitServices')\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\nimport random\n\n# The inputs to this node will be stored as a list in the IN variables.\ndataEnteringNode = IN\n\nKLICfeaturetypes= IN[0]\ndefaultlinestyle = IN[1]\n\n#get current document and graphic category of graphicstyles\ndoc = DocumentManager.Instance.CurrentDBDocument\ncat = Category.GetCategory(doc, BuiltInCategory.OST_Lines)\ngs = cat.GetGraphicsStyle(GraphicsStyleType.Projection)\ngscat = gs.GraphicsStyleCategory.SubCategories\n\n#create new linstyle\ndef createnewlinestyle(name, weight, linePatternElem, color):\n    TransactionManager.Instance.EnsureInTransaction(doc)\n    newLineStyleSubCat = doc.Settings.Categories.NewSubcategory(cat, name)\n    newLineStyleSubCat.SetLineWeight(weight,GraphicsStyleType.Projection)\n    newLineStyleSubCat.LineColor = color\n    newLineStyleSubCat.SetLinePatternId(linePatternElem, GraphicsStyleType.Projection)\n    TransactionManager.Instance.TransactionTaskDone()\n    return(newLineStyleSubCat.GetGraphicsStyle(GraphicsStyleType.Projection))\n  \nLinestylenames = []\nLinestyles = []\nLinegraphicstylepatternids = []\n\n#get all linestyles in document  \nfor i in gscat:\n    #get all linestylenames\n    Linestylename = i.Name\n    Linestylenames.append(Linestylename)\n    #get all grahicstyle of all linestyles\n    Linegraphicstyle = i.GetGraphicsStyle(GraphicsStyleType.Projection)\n    Linestyles.append(Linegraphicstyle)\n    #get all pattern id`s of graphicstyles\n    Linegraphicstylepatternid = i.GetLinePatternId(GraphicsStyleType.Projection)\n    Linegraphicstylepatternids.append(Linegraphicstylepatternid)\n\nOUTgraphicstyles = []\nunique_list = []\nunique_list_graphicstyles = []\n#get featuretypes from the klicfiles and search corresponding graphicstyles (same name as featuretype)\nfor featuretype in KLICfeaturetypes:\n    KLICLineStyleName = 'KLIC_' + str(featuretype)\n    try:\n        # check if linestyle is already in the project and get the graphicstyle\n        index = Linestylenames.index(KLICLineStyleName)\n        graphicstyle = Linestyles[index]\n        OUTgraphicstyles.append(graphicstyle)\n        print(KLICLineStyleName + ' linestyle found in the project')\n        #print(index, graphicstyle, featuretype)\n    except:\n        #create new lines style with name of featuretype if not already created done (in the uniquelist thus....)\n        try: \n            index = unique_list.index(KLICLineStyleName)\n            graphicstyle = unique_list_graphicstyles[index]\n            OUTgraphicstyles.append(graphicstyle)\n            print(KLICLineStyleName + ' already created once by this script')\n        except:\n            #get patternid from the default linestyle to use for the new lynstyle \n            index = Linestylenames.index(defaultlinestyle)\n            graphicstylepatternid = Linegraphicstylepatternids[index]\n            #create some new values for the new linestyle\n            colorred = random.randrange(0, 255, 10)\n            colorgreen = random.randrange(0, 255, 10)\n            colorblue = random.randrange(0, 255, 10)\n            color = Autodesk.Revit.DB.Color(colorred,colorgreen,colorblue)\n            weight = 8\n            #create a new linestyle with above parameters\n            print(KLICLineStyleName)\n            newlinestyle = createnewlinestyle(KLICLineStyleName, weight, graphicstylepatternid, color)\n            #add the new linegraphicstyle to the output and to the uniquelist\n            OUTgraphicstyles.append(newlinestyle)\n            unique_list.append(KLICLineStyleName)\n            unique_list_graphicstyles.append(newlinestyle)\n            print('new linestyle wil be created: ', index, ' : ', newlinestyle, ' : ', graphicstylepatternid, ' : ', color)   \n            \nOUT = OUTgraphicstyles, unique_list, unique_list_graphicstyles",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "483b93c8c9ae4b67a7e229b920b1991f",
+      "Inputs": [
+        {
+          "Id": "124d852615954b9c8cf44b7f16606bde",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4fddd90f64df434eb2eed250695ae025",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "14c0de6b75df47caa256c52573d2cc82",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "000116ab-252d-42c3-bb9a-fc482710a3ac",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "7d17bb2df0bc46baadc82e571b8ba20b",
+      "Inputs": [
+        {
+          "Id": "5c5b1c70169946aba0505be10cd15f09",
+          "Name": "filepath",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "feb67be90fc04bd18b2fd343867d9bb2",
+          "Name": "RDX",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "440c3d6dd6b64e8f838a3baca87fd351",
+          "Name": "RDY",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c83c52426db3489ca689006a5db02afa",
+          "Name": "1 curves",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b2ab679cbc6a468eaf1eefa0e15de366",
+          "Name": "2 features",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8f8b1617c3b541afa36528e3a3dbc39f",
+          "Name": "3 LineTypeNames",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5d3a685b711949c481782f2c38f0faf5",
+          "Name": "4 Unique_features",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Longest",
+      "Description": "Reads the KLIC json files and filters the lines"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "3cab8fa7-8664-40f0-9534-366efbe884b7",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "0639ae53f7584cd89720e4232729109b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "cb536f4b41ca405e8629f6ae6e7b252e",
+          "Name": "01 (central)modelpath",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c2757eb995bc4d2c9672337474d3acbf",
+          "Name": "02 (central)modeldir",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "57531fc7753242d8b8c87280430cdbad",
+          "Name": "03 gisdatadir",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c4e334a632da4f10ac4da2b118e64886",
+          "Name": "04 imagedir",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f3d15145e233421887a3b4b2c40d991a",
+          "Name": "05 KLICfiles",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Gets the filepaths from the model."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.Flatten@var[]..[],int",
+      "Id": "323b3e5bb1af4fd69c8a5a372f880f19",
+      "Inputs": [
+        {
+          "Id": "5b0e7f1a895549c29a02b11e1b0a1210",
+          "Name": "list",
+          "Description": "List to flatten.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2b5dc7eda04e4e2197d616c92b35c252",
+          "Name": "amount",
+          "Description": "Layers of list nesting to remove (-1 will remove all list nestings)\n\nint\nDefault value : -1",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "868cf1c309414629b47d2b50da10497c",
+          "Name": "list",
+          "Description": "Flattened list by amount",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Flattens a nested list of lists by a certain amount.\n\nList.Flatten (list: var[]..[], amount: int = -1): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"<Medium Lines>\";",
+      "Id": "db620a04b58f4e20a4eeb3514a84f438",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "9288f91ae24448cab1ece3d26245c04a",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.UniqueItems@var[]..[]",
+      "Id": "cd6d795fbc43442f936197246b392e19",
+      "Inputs": [
+        {
+          "Id": "05296d989fe84f129be50059194135a5",
+          "Name": "list",
+          "Description": "List to filter duplicates out of.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7688f805d4f74bb48ed3ffafc4087f46",
+          "Name": "list",
+          "Description": "Filtered list.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Creates a new list containing all unique items in the given list.\n\nList.UniqueItems (list: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "d3b04d49-a02a-4bd9-bdbc-579c9faa9f4a",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "1ac5436fc1724d868ba8a7f623a071db",
+      "Inputs": [
+        {
+          "Id": "63b4a0e8689946dabad97fe3932ec857",
+          "Name": "LineTypeName",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e44588e87b834e6aa44392230b748b1a",
+          "Name": "LineTypeNamesInProject",
+          "Description": "string[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e8d82607cd1d4560aad7500dd4c6891a",
+          "Name": "GraphicstylesInProject",
+          "Description": "Element[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a57293a7c7cc4b9682e11589ce5b313c",
+          "Name": "01 graphicstyle",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get a Graphic Style by name"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "c83dd81c-2a3f-48cf-a36b-c49c4e835dcc",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "7ae3c1e3ab8f4a529a202a3e16def39a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "b61cedf15e5644c6a12236a6d144fdce",
+          "Name": "01 Names",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4b893d40d29345f6ad8fb0212af8d7df",
+          "Name": "02 Graphicstyles",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d39c380d922945bbb7c6644e629cf97d",
+          "Name": "03 GraphicStylesPatternIds",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Gets all Graphic Styles in the project."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "6eb6663d4ed741ef94365c36af5e89d5",
+      "End": "feb67be90fc04bd18b2fd343867d9bb2",
+      "Id": "6d04f9a06e5e46c18e07949b70c1e7b4"
+    },
+    {
+      "Start": "4ba056d8321c4c759f1620f56f3b0230",
+      "End": "440c3d6dd6b64e8f838a3baca87fd351",
+      "Id": "5c0a37758bdb419ca01efd03335613a4"
+    },
+    {
+      "Start": "5d3a685b711949c481782f2c38f0faf5",
+      "End": "5b0e7f1a895549c29a02b11e1b0a1210",
+      "Id": "17772142927f40d7977ff8d4ff7f6fd8"
+    },
+    {
+      "Start": "f3d15145e233421887a3b4b2c40d991a",
+      "End": "5c5b1c70169946aba0505be10cd15f09",
+      "Id": "dc32de9b5aaf4a62883f47582a9beffa"
+    },
+    {
+      "Start": "868cf1c309414629b47d2b50da10497c",
+      "End": "05296d989fe84f129be50059194135a5",
+      "Id": "78f84448e7264542815829875f2cc6ac"
+    },
+    {
+      "Start": "9288f91ae24448cab1ece3d26245c04a",
+      "End": "4fddd90f64df434eb2eed250695ae025",
+      "Id": "ae1259ac6977464dbe1dda9f6af78e53"
+    },
+    {
+      "Start": "9288f91ae24448cab1ece3d26245c04a",
+      "End": "63b4a0e8689946dabad97fe3932ec857",
+      "Id": "a52d9f880f3542ae80cbcca64970f517"
+    },
+    {
+      "Start": "7688f805d4f74bb48ed3ffafc4087f46",
+      "End": "124d852615954b9c8cf44b7f16606bde",
+      "Id": "4cb67b6587a44e2a83b13a01d380e150"
+    },
+    {
+      "Start": "b61cedf15e5644c6a12236a6d144fdce",
+      "End": "e44588e87b834e6aa44392230b748b1a",
+      "Id": "7e8bbaf7a52941afa03573185203884a"
+    },
+    {
+      "Start": "4b893d40d29345f6ad8fb0212af8d7df",
+      "End": "e8d82607cd1d4560aad7500dd4c6891a",
+      "Id": "5439e02cb03046ef80b3c4c9838f4e65"
+    }
+  ],
+  "Dependencies": [
+    "b63222ee-2912-4530-b657-a20ca20ea9f7",
+    "000116ab-252d-42c3-bb9a-fc482710a3ac",
+    "3cab8fa7-8664-40f0-9534-366efbe884b7",
+    "d3b04d49-a02a-4bd9-bdbc-579c9faa9f4a",
+    "c83dd81c-2a3f-48cf-a36b-c49c4e835dcc"
+  ],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "GIS2BIM for Dynamo 2.x",
+      "Version": "0.11.24",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "d35af567c2814de59c9f11f56c895be2"
+      ]
+    }
+  ],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.12",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 10000.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.1.8246",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -23914.2578125,
+      "EyeY": 18807.115234375,
+      "EyeZ": 80465.59375,
+      "LookX": 17914.2578125,
+      "LookY": -19407.115234375,
+      "LookZ": -86585.59375,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_GetSharedCoordinate",
+        "Id": "d35af567c2814de59c9f11f56c895be2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 323.10451272244791,
+        "Y": 607.50496420700506
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script get or create graphicstyles",
+        "Id": "483b93c8c9ae4b67a7e229b920b1991f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1584.3945177411879,
+        "Y": 617.54224907580135
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_KLICToCurves",
+        "Id": "7d17bb2df0bc46baadc82e571b8ba20b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 714.82341153550544,
+        "Y": 519.47134594870818
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GIS2BIM_filepaths",
+        "Id": "0639ae53f7584cd89720e4232729109b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 403.50064357751637,
+        "Y": 385.32741693830326
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.Flatten",
+        "Id": "323b3e5bb1af4fd69c8a5a372f880f19",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1100.7109177401844,
+        "Y": 592.998028090657
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "default linestyle to use",
+        "Id": "db620a04b58f4e20a4eeb3514a84f438",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 617.68306752487547,
+        "Y": 798.44780821426878
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.UniqueItems",
+        "Id": "cd6d795fbc43442f936197246b392e19",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1307.4053844061812,
+        "Y": 592.65264919058382
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "ByName",
+        "Id": "1ac5436fc1724d868ba8a7f623a071db",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1025.967570416849,
+        "Y": 910.39169871073659
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GetAll",
+        "Id": "7ae3c1e3ab8f4a529a202a3e16def39a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 607.09686994143613,
+        "Y": 954.0796700814567
+      }
+    ],
+    "Annotations": [],
+    "X": -198.55589930704446,
+    "Y": -185.71325281657255,
+    "Zoom": 0.85001083314901837
+  }
+}
