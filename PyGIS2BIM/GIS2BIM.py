@@ -45,7 +45,7 @@ import json
 import math
 import re
 from zipfile import ZipFile
-from PIL import Image
+#from PIL import Image
 	
 #Common functions
 def GetWebServerData(servertitle, category, parameter):
@@ -58,6 +58,18 @@ def GetWebServerData(servertitle, category, parameter):
 		test.append(i["title"])
 	result = data[test.index(servertitle)][parameter]
 	return result
+
+def xmldata(myurl, xPathStrings):
+    urlFile = urllib.request.urlopen(myurl)
+    tree = ET.parse(urlFile)
+    xPathResults = []
+    for xPathString in xPathStrings:
+        a = tree.findall(xPathString)
+        xPathResulttemp2 = []
+        for xPathResult in a:
+            xPathResulttemp2.append(xPathResult.text)
+        xPathResults.append(xPathResulttemp2)
+    return xPathResults
 
 def GetWebServerDataService(category,service):
 	#Get a list with webserverdata from github repository of GIS2BIM(up to date list of GIS-servers & requests)
@@ -156,6 +168,8 @@ def GML_poslistData(tree,xPathString,dx,dy,scale,DecimalNumbers):
             x +=XYZCountDimensions
         xyPosList.append(coordSplitXY)
     return xyPosList
+
+
 
 def CreateBoundingBox(CoordinateX,CoordinateY,BoxWidth,BoxHeight,DecimalNumbers):
 #Create Boundingboxstring for use in webrequests.
@@ -570,3 +584,252 @@ class GeoLocation:
 
         return [GeoLocation.from_radians(min_lat, min_lon),
                 GeoLocation.from_radians(max_lat, max_lon)]
+
+def download_image(url, index, results):
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
+    results[index] = img
+
+
+def download_images(urls):
+    results = [None] * len(urls)
+    threads = []
+
+    for index, url in enumerate(urls):
+        thread = threading.Thread(target=download_image, args=(url, index, results))
+        thread.start()
+        threads.append(thread)
+
+    # Wacht tot alle threads zijn voltooid
+    for thread in threads:
+        thread.join()
+
+    return results
+
+
+def TMS(zoom_level, rdx, rdy, width, layer, downloadimage: bool):
+    zoomlevels = [zoom_level]
+    boundingbox_widths = [width]
+    layers = [layer]
+
+    zoomleveldata = {0: 3440.640,
+                     1: 1720.320,
+                     2: 860.160,
+                     3: 430.080,
+                     4: 215.040,
+                     5: 107.520,
+                     6: 53.720,
+                     7: 26.880,
+                     8: 13.440,
+                     9: 6.720,
+                     10: 3.360,
+                     11: 1.680,
+                     12: 0.840,
+                     13: 0.420,
+                     14: 0.210,
+                     15: 0.105,
+                     16: 0.0575}
+
+    pixel_width = 256
+    xcorner = -285401.92
+    ycorner = 903402.0
+
+    Resolutions = []
+    for x in zoomlevels:
+        Resolutions.append(zoomleveldata[x])
+
+    TileColumns = []
+    TileRows = []
+    DeltaX = []
+    DeltaY = []
+
+    for x in Resolutions:
+        a = pixel_width * x
+        # TileColumns.append(Rdx-Xcorner)
+        # TileRows.append(a)
+        TileY = (ycorner - rdy) / a
+        TileX = (rdx - xcorner) / a
+        TileYRound = int(TileY)
+        TileXRound = int(TileX)
+        TilePercentageY = TileX - TileXRound
+        TilePercentageX = TileY - TileYRound
+        DeltaYM = TilePercentageY * pixel_width * x
+        DeltaXM = TilePercentageX * pixel_width * x
+
+        TileRows.append(TileYRound)
+        TileColumns.append(TileXRound)
+        DeltaY.append(DeltaYM)
+        DeltaX.append(DeltaXM)
+
+    UniqueTileColumns = []
+    UniqueTileRows = []
+    TileColumns2 = []
+    TileRows2 = []
+
+    for x, j, k, l in zip(TileColumns, TileRows, boundingbox_widths, Resolutions):
+        TileWidth = pixel_width * l
+        c = math.ceil(k / TileWidth)
+        b = math.ceil(c / 2) * 2
+        UniqueTileColumns.append(range(int((x - b / 2)), 1 + int(x + b / 2)))
+        UniqueTileRows.append(range((int(j - b / 2)), 1 + int(j + b / 2)))
+
+    for x in UniqueTileColumns:
+        # de list:
+        a = []
+
+        counter = len(x)
+
+    for j in x:  # elke unieke tile
+        a.append(x)
+
+    flatA = []
+
+    for sublist in a:
+        for item in sublist:
+            flatA.append(item)
+
+    TileColumns2.append(flatA)
+    counter = 0
+
+    for x in UniqueTileRows:
+        # de list:
+        a = []
+        counter = len(x)
+
+        for j in x:  # elke unieke tile
+            a.append([int(j)] * counter)
+
+        flatA = []
+
+        for sublist in a:
+            for item in sublist:
+                flatA.append(item)
+
+        TileRows2.append(flatA)
+        counter = 0
+
+    TotalTileWidth = []
+    TotalTileHeight = []
+    TileColumnMin = min(UniqueTileColumns[0])
+    TileColumnsMax = max(UniqueTileColumns[0])
+    TileRowsMin = min(UniqueTileRows[0])
+    TileRowsMax = max(UniqueTileRows[0])
+    TileWidthHeight = (903401.92 - 22598.08) * pow(0.5, zoom_level)
+    Rdxmin = TileColumnMin * TileWidthHeight - 285401.92
+    # LET OP: WMTS TILING KOMT VAN BOVEN DAAROM HIERONDER MAX I.P.V. MIN
+    Rdymin = 903401.92 - TileRowsMax * TileWidthHeight - TileWidthHeight
+
+    # 22598.08
+    for x, j in zip(Resolutions, UniqueTileColumns):
+        a = len(j) * pixel_width * x
+        TotalTileWidth.append(a)
+
+    for x, j in zip(Resolutions, UniqueTileRows):
+        a = len(j) * pixel_width * x
+        TotalTileHeight.append(a)
+
+    Rdxmax = Rdxmin + TotalTileWidth[0]
+    Rdymax = Rdymin + TotalTileHeight[0]
+    print(Rdxmin - rdx)
+    print(Rdymin - rdy)
+
+    # string1 = "http://geodata.nationaalgeoregister.nl/tiles/service/wmts?&request=GetTile&VERSION=1.0.0&LAYER="
+    string1 = "https://service.pdok.nl/lv/bgt/wmts/v1_0?request=GetTile&service=WMTS&VERSION=1.0.0&LAYER="
+    string3 = "&STYLE=default&TILEMATRIXSET=EPSG:28992&TILEMATRIX=EPSG:28992:"
+    string34 = "&TILEROW="
+    string5 = "&TILECOL="
+    string7 = "&FORMAT=image/png8";
+
+    urlList = []
+
+    for x, j, k, z in zip(TileColumns2, TileRows2, layers, zoomlevels):
+        a = []
+
+        for l, m in zip(x, j):
+            b = string1 + str(k) + string3 + str(z) + string34 + str(m) + string5 + str(l) + string7
+            a.append(b)
+        urlList.append(a)
+
+    bitmaps2 = []
+
+    if downloadimage:
+        for x in urlList:
+            bitmaps = download_images(x)
+            # for j in i:
+            #  response = requests.get(j)
+            #  img = Image.open(BytesIO(response.content))
+            #  bitmaps.append(img)
+            #  print(img)
+            # DIT MOET SNELLER, RETERTRAAG
+            bitmaps2.append(bitmaps)
+            combined_bitmaps = []
+            for a, b, c in zip(bitmaps2, UniqueTileColumns, UniqueTileRows):
+                total_width = len(b) * pixel_width
+                total_height = len(c) * pixel_width
+                img = Image.new('RGB', (total_width, total_height))
+                lpx = []
+                n = 0
+                for l in j:
+                    lpx.append(n * pixel_width)
+                    n = n + 1
+
+                LPy = []
+                n = 0
+                for x in c:
+                    LPy.append(n * pixel_width)
+                    n = n + 1
+
+                LPx2 = []
+                n = len(LPy)
+                for x in lpx:
+                    LPx2.append([x] * n)
+
+                LPx3 = []
+                for sublist in LPx2:
+                    for item in sublist:
+                        LPx3.append(item)
+
+                LPy2 = []
+                for x in lpx:
+                    LPy2.append(LPy)
+
+                LPy3 = []
+                for sublist in LPy2:
+                    for item in sublist:
+                        LPy3.append(item)
+
+                LPy4 = reversed(LPy3)
+
+                for m, n, o in zip(a, LPy3, LPx3):
+                    img.paste(m, (n, o))
+                combined_bitmaps.append(img)
+                return combined_bitmaps[0], TotalTileWidth[0], TotalTileHeight[0], Rdxmin, Rdymin, Rdxmax, Rdymax
+    else:
+        return (
+        TotalTileWidth[0], TotalTileHeight[0], TileColumnMin, TileColumnsMax, TileRowsMin, TileRowsMax, Rdxmin, Rdymin,
+        Rdxmax, Rdymax, TileWidthHeight)
+
+
+def toPix(point1, Xmin, Ymin, TotalWidth, TotalHeight, ImgWidthPix, ImgHeightPix):
+    # Give a pixel on an image
+    x = point1.x
+    y = point1.y
+    xpix = math.floor(((x - Xmin) / TotalWidth) * ImgWidthPix)
+    ypix = ImgHeightPix - math.floor(((y - Ymin) / TotalHeight) * ImgHeightPix)  # min vanwege coord stelsel Image.Draw
+    return xpix, ypix
+
+
+def pointToPILLine(imgdrawobj, color: str, width: float, pnts, dx, dy, TotalTileWidthM, TotalTileHeightM, imgwidthpix,
+                   imgheightpix):
+    ind = 0
+    for i in pnts:
+        try:
+            P1 = toPix(pnts[ind], dx, dy, TotalTileWidthM, TotalTileHeightM, imgwidthpix,
+                       imgheightpix)
+            P2 = toPix(pnts[ind + 1], dx, dy, TotalTileWidthM, TotalTileHeightM, imgwidthpix,
+                       imgheightpix)
+            imgdrawobj.line([P1, P2], fill=color, width=width)
+        except:
+            pass
+        ind = ind + 1
+        return P1, P2

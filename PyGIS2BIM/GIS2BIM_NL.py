@@ -32,10 +32,11 @@ from . import GIS2BIM
 import sys
 import json
 import urllib
+import urllib.request
 import time
 import xml.etree.ElementTree as ET
 
-import PyPackages.requests
+#import PyPackages.requests
 
 #import urllib.request, json
 
@@ -54,6 +55,8 @@ NLPDOKLuchtfoto2017 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2017_28992','w
 NLPDOKLuchtfoto2018 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2018_28992','webserverRequests','serverrequestprefix')
 NLPDOKLuchtfoto2019 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2019_28992','webserverRequests','serverrequestprefix')
 NLPDOKLuchtfoto2020 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2020_28992','webserverRequests','serverrequestprefix')
+NLPDOKLuchtfotoActueel = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_actueel_28992','webserverRequests','serverrequestprefix')
+
 NLTUDelftBAG3DV2 = "https://data.3dbag.nl/api/BAG3D_v2/wfs?&request=GetFeature&typeName=BAG3D_v2:bag_tiles_3k&bbox="
 NLTUDelftBAG3DV2DownloadPrefix = "http://data.3dbag.nl/cityjson/v21031_7425c21b/3dbag_v21031_7425c21b_"
 NLPDOKBGTURL1 = "https://api.pdok.nl/lv/bgt/download/v1_0/full/custom"
@@ -76,21 +79,22 @@ xPathStringsCadastreTextAngle = [NLPDOKxPathStringsCadastreTextAngle, NLPDOKxPat
 #Country specific
 
 #NL Netherlands
-def NL_GetLocationData(PDOKServer,City,Streetname,Housenumber):
+def NL_GetLocationData(PDOKServer, City, Streetname, Housenumber):
 # Use PDOK location server to get X & Y data
-    requestURL =  PDOKServer + City +"%20and%20" + Streetname + "%20and%20" + Housenumber
-    urlFile = urllib.request.urlopen(requestURL)
-    jsonList = json.load(urlFile)
-    jsonList = jsonList["response"]["docs"]
-    jsonList1 = jsonList[0]
-    RD = jsonList1['centroide_rd']
-    RD = RD.replace("("," ").replace(")"," ")
-    RD = RD.split()
-    RDx = float(RD[1])
-    RDy = float(RD[2])
-    result = [RDx,RDy,requestURL]
+	SN = Streetname.replace(" ", "%20")
+	requestURL =  PDOKServer + City +"%20and%20" + SN + "%20and%20" + Housenumber
+	urlFile = urllib.request.urlopen(requestURL)
+	jsonList = json.load(urlFile)
+	jsonList = jsonList["response"]["docs"]
+	jsonList1 = jsonList[0]
+	RD = jsonList1['centroide_rd']
+	RD = RD.replace("("," ").replace(")"," ")
+	RD = RD.split()
+	RDx = float(RD[1])
+	RDy = float(RD[2])
+	result = [RDx,RDy,requestURL]
 	
-    return result
+	return result
 	
 def bgtDownloadURL(X,Y,bboxWidth,bboxHeight,timeout):
 	polygonString = GIS2BIM.CreateBoundingBoxPolygon(X,Y,bboxWidth,bboxHeight,2)
