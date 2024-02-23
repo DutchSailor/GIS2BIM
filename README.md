@@ -14,9 +14,9 @@ Version 0.10.0 released on 10-09-2019. This is the last version for Dynamo 1.x.(
 
 GIS2BIM 0.11.18 can be used for Revit 2020, Revit 2021 and older dynamo versions.
 
-Version 0.12.0 released on 27-12-2022. This is the version for Dynamo 2.x. This dynamopackage is called 'GIS2BIM for Dynamo 2.x'
-(Revit 2022 and Dynamo > 2.8.
-
+Version 0.12.2 released on 23-02-2024. This is the version for Dynamo 2.x. This dynamopackage is called 'GIS2BIM for Dynamo 2.x'
+Works with Revit 2024 and Dynamo 2.x.
+For meshes use mesh toolkit version 4.0.0.
 
 ## Installation
 Installation is possible via the dynamo built-in package manager.
