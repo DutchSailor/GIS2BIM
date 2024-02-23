@@ -1,0 +1,338 @@
+{
+  "Uuid": "93ac073c-cf6f-4603-ac41-f37f9b753a0f",
+  "IsCustomNode": true,
+  "Category": "MLA+.LineStyle",
+  "Description": "Create a new line style",
+  "Name": "Create",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      },
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "Revit.Elements.Element": {
+        "Key": "Revit.Elements.Element",
+        "Value": "RevitNodes.dll"
+      },
+      "DSCore.String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Revit.Elements.LinePatternElement": {
+        "Key": "Revit.Elements.LinePatternElement",
+        "Value": "RevitNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "name",
+        "TypeName": "string",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "b262db7f3dd14fa98333a68dd315b507",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c8419a70286f497a85866826d255a83a",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "graphicstyle",
+        "TypeName": "Revit.Elements.LinePatternElement",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "57027cf3ef3a4155b7babedf5d740e93",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "aeaadb8553914fe2997db24feec82412",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "weight",
+        "TypeName": "int",
+        "TypeRank": 0,
+        "DefaultValue": "2",
+        "Description": ""
+      },
+      "Id": "e90137bfa0994117a0a4fe168ba65d69",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "dae1fd4fdea84aff889c9265871f8f93",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "RGB",
+        "TypeName": "int",
+        "TypeRank": 1,
+        "DefaultValue": "[255, 255, 255]",
+        "Description": ""
+      },
+      "Id": "73c4aa879b8c4f5abe4c0d238ef1ae79",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "73685de2a4c04be89a92e1ece0f7dfb4",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "01 LineStyleName",
+      "Id": "eb1d369cd1aa426599c1d440bc0a4bb4",
+      "Inputs": [
+        {
+          "Id": "056dccd659644998b63956da3299bead",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\nclr.AddReference('RevitAPI')\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\nclr.AddReference('RevitNodes')\nimport Revit\nclr.ImportExtensions(Revit.Elements)\n\nclr.AddReference('RevitServices')\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\nimport random\n\n# The inputs to this node will be stored as a list in the IN variables.\ndataEnteringNode = IN\n\nNewLineStyleName = IN[0]\ngraphicstylepatternid = [1]\nweight = IN[2]\ncolor = IN[3]\n\n#get current document and graphic category of graphicstyles\ndoc = DocumentManager.Instance.CurrentDBDocument\ncat = Category.GetCategory(doc, BuiltInCategory.OST_Lines)\ngs = cat.GetGraphicsStyle(GraphicsStyleType.Projection)\ngscat = gs.GraphicsStyleCategory.SubCategories\n\n#create new linstyle\ndef createnewlinestyle(name, weight, linePatternElemId, color):\n    TransactionManager.Instance.EnsureInTransaction(doc)\n    newLineStyleSubCat = doc.Settings.Categories.NewSubcategory(cat, name)\n    newLineStyleSubCat.SetLineWeight(weight,GraphicsStyleType.Projection)\n    newLineStyleSubCat.LineColor = color\n    newLineStyleSubCat.SetLinePatternId(linePatternElem, GraphicsStyleType.Projection)\n    TransactionManager.Instance.TransactionTaskDone()\n    return(newLineStyleSubCat.GetGraphicsStyle(GraphicsStyleType.Projection))\n\ntry:\n    color = Autodesk.Revit.DB.Color(color[0],color[1],color[2])\n    linestyle = createnewlinestyle(NewLineStyleName, weight, graphicstylepatternid, color)\n    print(\"linestyle created: \" + linestyle + \" with color: \", color[0], \"_\", color[1], \"_\",color[2])\nexcept:\n    linestyle = NewLineStyleName\n    print(\"linestyle: \" + linestyle + \" bestaat al\")\n  \n            \nOUT = linestyle",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "7be062c0b593493a8f87c93d2f574ce5",
+      "Inputs": [
+        {
+          "Id": "c5e36567eba04d46b6ce4d3b660d9a79",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0eda49648b5940fab41996b2588f2baa",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "dfdeaf1945e84c0d80c6c2182f7ea3b7",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f73610236ce54a989a16543e63009ca2",
+          "Name": "IN[3]",
+          "Description": "Input #3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "212fcfe4fa39453d884a40ac9e6afb78",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "c8419a70286f497a85866826d255a83a",
+      "End": "c5e36567eba04d46b6ce4d3b660d9a79",
+      "Id": "39fa74d47bff4c3bb5bb084c4a19b549"
+    },
+    {
+      "Start": "aeaadb8553914fe2997db24feec82412",
+      "End": "0eda49648b5940fab41996b2588f2baa",
+      "Id": "8819452dc3ce4a0b807cc028e356b64c"
+    },
+    {
+      "Start": "dae1fd4fdea84aff889c9265871f8f93",
+      "End": "dfdeaf1945e84c0d80c6c2182f7ea3b7",
+      "Id": "fcaffeeeea80492097c8340ad5533e6c"
+    },
+    {
+      "Start": "73685de2a4c04be89a92e1ece0f7dfb4",
+      "End": "f73610236ce54a989a16543e63009ca2",
+      "Id": "ac56bc442ac248a0a257bd92c7834e93"
+    },
+    {
+      "Start": "212fcfe4fa39453d884a40ac9e6afb78",
+      "End": "056dccd659644998b63956da3299bead",
+      "Id": "8f745e5be1ee4e5c80ffa526bf5094ee"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.1.8246",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -23914.2578125,
+      "EyeY": 18807.115234375,
+      "EyeZ": 80465.59375,
+      "LookX": 17914.2578125,
+      "LookY": -19407.115234375,
+      "LookZ": -86585.59375,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "b262db7f3dd14fa98333a68dd315b507",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 232.5,
+        "Y": 251.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "57027cf3ef3a4155b7babedf5d740e93",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -61.137982195845552,
+        "Y": 316.43916913946583
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "e90137bfa0994117a0a4fe168ba65d69",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 229.62166172106822,
+        "Y": 386.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "73c4aa879b8c4f5abe4c0d238ef1ae79",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 119.69584569732945,
+        "Y": 454.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "eb1d369cd1aa426599c1d440bc0a4bb4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 835.34866468842711,
+        "Y": 289.60830860534128
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script get or create graphicstyles",
+        "Id": "7be062c0b593493a8f87c93d2f574ce5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 459.16617210682477,
+        "Y": 288.48367952522256
+      }
+    ],
+    "Annotations": [],
+    "X": 23.152499999999989,
+    "Y": 60.952499999999986,
+    "Zoom": 0.8425
+  }
+}

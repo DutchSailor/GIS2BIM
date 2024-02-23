@@ -13,7 +13,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import sys\r\nimport json\r\nimport urllib\r\n\r\nurl = IN[0]\r\ncategory = IN[1]\r\nservertitle = IN[2]\r\nparameter = IN[3]\r\nreq = urllib.request.urlopen(url)\r\nreq = req.read().decode('utf-8')\r\ndata = json.loads(req)['GIS2BIMserversRequests'][category]\r\n\r\ntest = []\r\nfor i in data:\r\n\ttest.append(i[\"title\"])\r\nresult = data[test.index(servertitle)][parameter]\r\n\r\nOUT = result\r\n\r\n",
+      "Code": "import sys\r\nimport json\r\nimport urllib\r\nimport urllib.request\r\n\r\nurl = IN[0]\r\ncategory = IN[1]\r\nservertitle = IN[2]\r\nparameter = IN[3]\r\n\r\nreq = urllib.request.urlopen(url)\r\nprint (req)\r\nreq = req.read().decode('utf-8')\r\ndata = json.loads(req)['GIS2BIMserversRequests'][category]\r\n\r\ntest = []\r\nfor i in data:\r\n\ttest.append(i[\"title\"])\r\nresult = data[test.index(servertitle)][parameter]\r\n\r\nOUT = result\r\n\r\n",
       "Engine": "CPython3",
       "VariableInputPorts": true,
       "Id": "67b2e9daef8f4bd6bfcdda25fa069535",
@@ -304,8 +304,8 @@
       }
     ],
     "Annotations": [],
-    "X": -931.88018440100745,
-    "Y": -329.83236755193752,
-    "Zoom": 1.0792537289518345
+    "X": -759.66910212758353,
+    "Y": -222.56772091878304,
+    "Zoom": 0.62740812659763456
   }
 }
