@@ -20,12 +20,14 @@
       "Id": "1ceb8d699ae5484dae5d112924072b03",
       "Name": "Afmeting boundingbox in meters(breedte, hoogte)",
       "Type": "number",
+      "Type2": "number",
       "Value": "400",
       "MaximumValue": 400000.0,
       "MinimumValue": 100.0,
       "StepValue": 1.0,
       "NumberType": "Integer",
-      "Description": "A slider that produces integer values."
+      "Description": "Produces integer values",
+      "SelectedIndex": 0
     }
   ],
   "Outputs": [],
@@ -34,8 +36,8 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
       "FunctionSignature": "69824e7d-ba97-4d5f-ae91-522bf95f083b",
       "FunctionType": "Graph",
-      "NodeType": "FunctionNode",
       "Id": "3e62a63666984929a86081f0c5eadff9",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "1be6fcb100ca4c79af71c8a4d150fcc0",
@@ -48,7 +50,7 @@
         },
         {
           "Id": "79c996fc3e9d468b86a8cacbf0a42550",
-          "Name": "View",
+          "Name": "view",
           "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -99,9 +101,8 @@
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
-      "NodeType": "FunctionNode",
-      "FunctionSignature": "DSCore.IO.Image.WriteToFile@string,var",
       "Id": "5bfe36a1e6e949548498a63c13c176ea",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "0b630bfe49524f09a3189feddeb40901",
@@ -125,23 +126,24 @@
       "Outputs": [
         {
           "Id": "7d8bf4b5b94f4e0e98b3a20eaeb3ecf7",
-          "Name": "ok",
-          "Description": "It is successful or not.",
+          "Name": "image",
+          "Description": "Created image object",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
         }
       ],
+      "FunctionSignature": "DSCore.IO.Image.WriteToFile@string,var",
       "Replication": "Auto",
-      "Description": "Write the image to a path, given the specified file name.\n\nImage.WriteToFile (path: string, image: var): void"
+      "Description": "Write the image to a path, given the specified file name.\n\nImage.WriteToFile (path: string, image: var): var"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
       "FunctionSignature": "fef879de-e940-463f-b7e8-4295ddce2895",
       "FunctionType": "Graph",
-      "NodeType": "FunctionNode",
       "Id": "b48283d094c842859687c92ff85390c8",
+      "NodeType": "FunctionNode",
       "Inputs": [],
       "Outputs": [
         {
@@ -188,8 +190,8 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
       "FunctionSignature": "8bf21b26-1292-40d1-8d8a-bcb4cc163f44",
       "FunctionType": "Graph",
-      "NodeType": "FunctionNode",
       "Id": "b08383e46818442084c3f7abd0537716",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "d0ac7cb9a15a4f35993ce1adb2eb5e11",
@@ -408,6 +410,51 @@
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
+        },
+        {
+          "Id": "367423046a13488ab95370b0e35068d8",
+          "Name": "AHN3(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fd96a9b07c3143fb9459f50b3ca11467",
+          "Name": "luchtfoto 2019(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c3d7dea0f85a4247bb2c6d068d61c165",
+          "Name": "BAG3D V2(OGC WFS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a99d63574742499ab82411cf2359cfec",
+          "Name": "luchtfoto 2020(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "596643b8117b48408d349d3dc27990af",
+          "Name": "luchtfoto actueel(OGC WMS)",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
         }
       ],
       "Replication": "Auto",
@@ -417,8 +464,8 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
       "FunctionSignature": "1813c488-6cc1-4cc0-aaf5-ea0606534144",
       "FunctionType": "Graph",
-      "NodeType": "FunctionNode",
       "Id": "3d7ff32e8a004d54a8f898186b3cabae",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "4a102c5889cf46b2a9fb5dd4badfae3f",
@@ -491,9 +538,8 @@
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
-      "NodeType": "CodeBlockNode",
-      "Code": "\"28992\";",
       "Id": "fb5e2df8cc994314a7173133d916ae78",
+      "NodeType": "CodeBlockNode",
       "Inputs": [],
       "Outputs": [
         {
@@ -507,18 +553,18 @@
         }
       ],
       "Replication": "Disabled",
-      "Description": "Allows for DesignScript code to be authored directly"
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "\"28992\";"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
-      "NodeType": "FunctionNode",
-      "FunctionSignature": "DSCore.String.ToNumber@string",
       "Id": "ae9dafba9722452989f411c70d24f04f",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "cbd4646707bd45e695fd868fe7bcf3b9",
-          "Name": "str",
-          "Description": "String to be converted.\n\nstring",
+          "Name": "string",
+          "Description": "String to be converted\n\nstring",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -529,26 +575,26 @@
         {
           "Id": "2647bd060b90488b88f04694764abb17",
           "Name": "number",
-          "Description": "Integer or double-type number.",
+          "Description": "Integer or double-type number",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
         }
       ],
+      "FunctionSignature": "DSCore.String.ToNumber@string",
       "Replication": "Auto",
-      "Description": "Converts a string to an integer or a double.\n\nString.ToNumber (str: string): var[]..[]"
+      "Description": "Converts a string to an integer or a double.\n\nString.ToNumber (string: string): var[]..[]"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
-      "NodeType": "FunctionNode",
-      "FunctionSignature": "DSCore.String.ToNumber@string",
       "Id": "c73fae090a3f4e80a04429e956ceb5c1",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "00b36c3a92fe452fadaa00064f52b31b",
-          "Name": "str",
-          "Description": "String to be converted.\n\nstring",
+          "Name": "string",
+          "Description": "String to be converted\n\nstring",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -559,22 +605,23 @@
         {
           "Id": "12cbb00c2ad749b89b7bc4c904e3eb4a",
           "Name": "number",
-          "Description": "Integer or double-type number.",
+          "Description": "Integer or double-type number",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
         }
       ],
+      "FunctionSignature": "DSCore.String.ToNumber@string",
       "Replication": "Auto",
-      "Description": "Converts a string to an integer or a double.\n\nString.ToNumber (str: string): var[]..[]"
+      "Description": "Converts a string to an integer or a double.\n\nString.ToNumber (string: string): var[]..[]"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
       "FunctionSignature": "1b8585e3-81f4-499f-8e18-81d010124896",
       "FunctionType": "Graph",
-      "NodeType": "FunctionNode",
       "Id": "47f030e863c149f4977eb1189173b4b0",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "9cbaa2c2011f433abcba2e1ff61d4a68",
@@ -667,6 +714,15 @@
           "Level": 2,
           "UseLevels": false,
           "KeepListStructure": false
+        },
+        {
+          "Id": "cd5bc2be8a274a32aa95321929f3230d",
+          "Name": "PolygonString",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
         }
       ],
       "Replication": "Auto",
@@ -676,8 +732,8 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
       "FunctionSignature": "1355f94d-cbe1-451b-b6cf-5e7dab407717",
       "FunctionType": "Graph",
-      "NodeType": "FunctionNode",
       "Id": "10693df1884c407bafca4d2931569dd0",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "4728a534a81b46a293ba514b39377344",
@@ -705,8 +761,8 @@
     },
     {
       "ConcreteType": "CoreNodeModels.WatchImageCore, CoreNodeModels",
-      "NodeType": "ExtensionNode",
       "Id": "e7353c71b3bd4d0e8f3b4ed75522bab9",
+      "NodeType": "ExtensionNode",
       "Inputs": [
         {
           "Id": "045e43723a894baabb066e0005bff50d",
@@ -734,9 +790,8 @@
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
-      "NodeType": "FunctionNode",
-      "FunctionSignature": "Revit.Application.Document.ActiveView",
       "Id": "7408d9b971d642c6b56b4e2eb2bda993",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "b01f3ba210024c30967f054c07951626",
@@ -759,14 +814,14 @@
           "KeepListStructure": false
         }
       ],
+      "FunctionSignature": "Revit.Application.Document.ActiveView",
       "Replication": "Auto",
       "Description": "Get the active view for the document\n\nDocument.ActiveView: View"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
-      "NodeType": "FunctionNode",
-      "FunctionSignature": "Revit.Application.Document.Current",
       "Id": "fa0e97b0a01b4eacb6f63ca2a6e4586b",
+      "NodeType": "FunctionNode",
       "Inputs": [],
       "Outputs": [
         {
@@ -779,14 +834,14 @@
           "KeepListStructure": false
         }
       ],
+      "FunctionSignature": "Revit.Application.Document.Current",
       "Replication": "Auto",
       "Description": "Get the current document\n\nDocument.Current: Document"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
-      "NodeType": "FunctionNode",
-      "FunctionSignature": "Revit.Application.Document.FilePath",
       "Id": "a87a842385b3434f84a146e049a1cfa3",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "b209c812d64a4dadbb8e26131f99ee1c",
@@ -809,18 +864,18 @@
           "KeepListStructure": false
         }
       ],
+      "FunctionSignature": "Revit.Application.Document.FilePath",
       "Replication": "Auto",
       "Description": "The full path of the Document.\n\nDocument.FilePath: string"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
-      "NodeType": "FunctionNode",
-      "FunctionSignature": "DSCore.String.Replace@string,string,string",
       "Id": "f4872f34060248b2b3d1e7500401ce6c",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "c2f19edd5cd74ca9bfddc5a8f065a810",
-          "Name": "str",
+          "Name": "string",
           "Description": "String to replace substrings in.\n\nstring",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -849,7 +904,7 @@
       "Outputs": [
         {
           "Id": "ef1c89a9222e468f9248aa2e9ed8e75d",
-          "Name": "str",
+          "Name": "string",
           "Description": "String with replacements made.",
           "UsingDefaultValue": false,
           "Level": 2,
@@ -857,14 +912,14 @@
           "KeepListStructure": false
         }
       ],
+      "FunctionSignature": "DSCore.String.Replace@string,string,string",
       "Replication": "Auto",
-      "Description": "Replaces all occurrences of text in a string with other text.\n\nString.Replace (str: string, searchFor: string, replaceWith: string): string"
+      "Description": "Replaces all occurrences of text in a string with other text.\n\nString.Replace (string: string, searchFor: string, replaceWith: string): string"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
-      "NodeType": "CodeBlockNode",
-      "Code": "\".rvt\";\n\"_bestemmingsplan_bouwvlak.jpg\";",
       "Id": "0f6d41da988d40d2a39aa7c48a768e69",
+      "NodeType": "CodeBlockNode",
       "Inputs": [],
       "Outputs": [
         {
@@ -887,14 +942,15 @@
         }
       ],
       "Replication": "Disabled",
-      "Description": "Allows for DesignScript code to be authored directly"
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "\".rvt\";\n\"_bestemmingsplan_bouwvlak.jpg\";"
     },
     {
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
       "FunctionSignature": "ecce77dc-1290-438e-a056-970b256fd553",
       "FunctionType": "Graph",
-      "NodeType": "FunctionNode",
       "Id": "66fb719e43d64131ad5ff26524f5ee50",
+      "NodeType": "FunctionNode",
       "Inputs": [
         {
           "Id": "dc5d68050c524cdab6a9e777d92637bd",
@@ -931,19 +987,18 @@
     },
     {
       "ConcreteType": "CoreNodeModels.Input.IntegerSlider, CoreNodeModels",
-      "NodeType": "NumberInputNode",
       "NumberType": "Integer",
-      "InputValue": 400,
       "MaximumValue": 400000,
       "MinimumValue": 100,
       "StepValue": 1,
       "Id": "1ceb8d699ae5484dae5d112924072b03",
+      "NodeType": "NumberInputNode",
       "Inputs": [],
       "Outputs": [
         {
           "Id": "dfdc9b937bf8415fb2e021a120192694",
           "Name": "",
-          "Description": "Int32",
+          "Description": "Int64",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -951,129 +1006,154 @@
         }
       ],
       "Replication": "Disabled",
-      "Description": "A slider that produces integer values."
+      "Description": "Produces integer values",
+      "InputValue": 400
     }
   ],
   "Connectors": [
     {
       "Start": "8bede68d32574583af4cc69a7be983fe",
       "End": "cbd4646707bd45e695fd868fe7bcf3b9",
-      "Id": "0262bb41eef24711a00df62a25c0e7f8"
+      "Id": "0262bb41eef24711a00df62a25c0e7f8",
+      "IsHidden": "False"
     },
     {
       "Start": "13beb2387af240ada38ac9fbc5654339",
       "End": "00b36c3a92fe452fadaa00064f52b31b",
-      "Id": "ed724706654e48f29a805fde36d2cd90"
+      "Id": "ed724706654e48f29a805fde36d2cd90",
+      "IsHidden": "False"
     },
     {
       "Start": "dd9f5d6d48f04284824af7ca17815380",
       "End": "4728a534a81b46a293ba514b39377344",
-      "Id": "37b09c6d07854390b63b3f6ff76c48ee"
+      "Id": "37b09c6d07854390b63b3f6ff76c48ee",
+      "IsHidden": "False"
     },
     {
       "Start": "36dba11537fe498186211b73761060a4",
       "End": "9cbaa2c2011f433abcba2e1ff61d4a68",
-      "Id": "5d2f950a1923475997b35c181b81a5c2"
+      "Id": "5d2f950a1923475997b35c181b81a5c2",
+      "IsHidden": "False"
     },
     {
       "Start": "ea8d57b8467540cbbbb921a44bdd534d",
       "End": "d70e2a5cbff74ac894b124fa85d7b950",
-      "Id": "d2f274efe42741439c1ca6e062caf30b"
+      "Id": "d2f274efe42741439c1ca6e062caf30b",
+      "IsHidden": "False"
     },
     {
       "Start": "f8d501c37bef4d4e998c10e6c8e0cfdd",
       "End": "a0b9d6474dca4bb48abdc0d966f43acc",
-      "Id": "31663da59ab4432d982ed9ff67743701"
+      "Id": "31663da59ab4432d982ed9ff67743701",
+      "IsHidden": "False"
     },
     {
       "Start": "2647bd060b90488b88f04694764abb17",
       "End": "043bbb44a9fc4c28accee27794397b31",
-      "Id": "24456668c7384afa81e3976fc8bc5ebc"
+      "Id": "24456668c7384afa81e3976fc8bc5ebc",
+      "IsHidden": "False"
     },
     {
       "Start": "12cbb00c2ad749b89b7bc4c904e3eb4a",
       "End": "790cd8cf4aef43e6adad10ffd92246c3",
-      "Id": "482b64e6846f4262b2f01354062f656c"
+      "Id": "482b64e6846f4262b2f01354062f656c",
+      "IsHidden": "False"
     },
     {
       "Start": "6a3cd302f87c4e7cadec5b8c64246627",
       "End": "d0ac7cb9a15a4f35993ce1adb2eb5e11",
-      "Id": "aeab16f8d7904ecb8b77476888b11d90"
+      "Id": "aeab16f8d7904ecb8b77476888b11d90",
+      "IsHidden": "False"
     },
     {
       "Start": "781d674a880949d38ca5be3d0d4c73b1",
       "End": "045e43723a894baabb066e0005bff50d",
-      "Id": "304d9859985c45f389842a6521c8bff9"
+      "Id": "304d9859985c45f389842a6521c8bff9",
+      "IsHidden": "False"
     },
     {
       "Start": "781d674a880949d38ca5be3d0d4c73b1",
       "End": "34cf07fae0704eb98d3dbea8a0c9f396",
-      "Id": "8802ba7672c9425081ddc283bf416de5"
+      "Id": "8802ba7672c9425081ddc283bf416de5",
+      "IsHidden": "False"
     },
     {
       "Start": "781d674a880949d38ca5be3d0d4c73b1",
       "End": "91e56de67c62453387242774a3a85204",
-      "Id": "7293448eb90645368060f325632efa6f"
+      "Id": "7293448eb90645368060f325632efa6f",
+      "IsHidden": "False"
     },
     {
       "Start": "d8b68cc342e242f8a279162027d04452",
       "End": "79c996fc3e9d468b86a8cacbf0a42550",
-      "Id": "d10c75d06d804854a7537fca3b686e61"
+      "Id": "d10c75d06d804854a7537fca3b686e61",
+      "IsHidden": "False"
     },
     {
       "Start": "bdfb8a6a695f4a9782d54058b556861e",
       "End": "b209c812d64a4dadbb8e26131f99ee1c",
-      "Id": "7b4804c96e0d418da8146eaae528ab04"
+      "Id": "7b4804c96e0d418da8146eaae528ab04",
+      "IsHidden": "False"
     },
     {
       "Start": "bdfb8a6a695f4a9782d54058b556861e",
       "End": "b01f3ba210024c30967f054c07951626",
-      "Id": "a57fa4dd18804d498e15609e5bc3b2fe"
+      "Id": "a57fa4dd18804d498e15609e5bc3b2fe",
+      "IsHidden": "False"
     },
     {
       "Start": "435e24af163d4d758b586fad29c1c704",
       "End": "c2f19edd5cd74ca9bfddc5a8f065a810",
-      "Id": "63f510cd6a6944348990b3271e309417"
+      "Id": "63f510cd6a6944348990b3271e309417",
+      "IsHidden": "False"
     },
     {
       "Start": "ef1c89a9222e468f9248aa2e9ed8e75d",
       "End": "0b630bfe49524f09a3189feddeb40901",
-      "Id": "598ab86e15e7409fab313af01790ee8f"
+      "Id": "598ab86e15e7409fab313af01790ee8f",
+      "IsHidden": "False"
     },
     {
       "Start": "ef1c89a9222e468f9248aa2e9ed8e75d",
       "End": "dc5d68050c524cdab6a9e777d92637bd",
-      "Id": "0a9f3f38f4894e5f82f72507e7d8a065"
+      "Id": "0a9f3f38f4894e5f82f72507e7d8a065",
+      "IsHidden": "False"
     },
     {
       "Start": "0e5bc44214694dbcb1e67bb1b11955aa",
       "End": "8d0fd2b689804f2abb0dcbe95a2077b3",
-      "Id": "a70e448fcaf74d3482bb8f77bfba3442"
+      "Id": "a70e448fcaf74d3482bb8f77bfba3442",
+      "IsHidden": "False"
     },
     {
       "Start": "598e908f1397422fa9305b617c771c3d",
       "End": "7fdae552b702474b9fdbc7eed949c8f6",
-      "Id": "0ba47d5126fb41b79be7acc6a1dd0500"
+      "Id": "0ba47d5126fb41b79be7acc6a1dd0500",
+      "IsHidden": "False"
     },
     {
       "Start": "6483308523144890846c18ea3cf45956",
       "End": "23adf09b9b0b4ca8b3fd327cfa9d28a6",
-      "Id": "30c88a622515495eaee0e947cd3932fb"
+      "Id": "30c88a622515495eaee0e947cd3932fb",
+      "IsHidden": "False"
     },
     {
       "Start": "dfdc9b937bf8415fb2e021a120192694",
       "End": "1be6fcb100ca4c79af71c8a4d150fcc0",
-      "Id": "67b208fe21e944b7a357c6e92d6e7a9d"
+      "Id": "67b208fe21e944b7a357c6e92d6e7a9d",
+      "IsHidden": "False"
     },
     {
       "Start": "dfdc9b937bf8415fb2e021a120192694",
       "End": "ebc9bbd7e7934711a6c694a1526ff4d0",
-      "Id": "f5b1fed7c2114ae6a15043735be699d4"
+      "Id": "f5b1fed7c2114ae6a15043735be699d4",
+      "IsHidden": "False"
     },
     {
       "Start": "dfdc9b937bf8415fb2e021a120192694",
       "End": "2414d8e4e149408f9431db06993900ac",
-      "Id": "a6fd65963c7d422981eaf64b744497ce"
+      "Id": "a6fd65963c7d422981eaf64b744497ce",
+      "IsHidden": "False"
     }
   ],
   "Dependencies": [
@@ -1085,18 +1165,79 @@
     "1355f94d-cbe1-451b-b6cf-5e7dab407717",
     "ecce77dc-1290-438e-a056-970b256fd553"
   ],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "GIS2BIM for Dynamo 2.x",
+      "Version": "0.12.1",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "3e62a63666984929a86081f0c5eadff9",
+        "b48283d094c842859687c92ff85390c8",
+        "b08383e46818442084c3f7abd0537716",
+        "3d7ff32e8a004d54a8f898186b3cabae",
+        "47f030e863c149f4977eb1189173b4b0",
+        "10693df1884c407bafca4d2931569dd0"
+      ]
+    },
+    {
+      "Name": "Clockwork for Dynamo 2.x",
+      "Version": "2.6.0",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "66fb719e43d64131ad5ff26524f5ee50"
+      ]
+    },
+    {
+      "Name": "Model GIS.rvt",
+      "ReferenceType": "External",
+      "Nodes": [
+        "a87a842385b3434f84a146e049a1cfa3"
+      ]
+    },
+    {
+      "Name": "Model GIS_bestemmingsplan.jpg",
+      "ReferenceType": "External",
+      "Nodes": [
+        "f4872f34060248b2b3d1e7500401ce6c",
+        "66fb719e43d64131ad5ff26524f5ee50"
+      ]
+    }
+  ],
+  "Thumbnail": null,
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.18",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "6.0",
+      "Data": {}
+    }
+  ],
+  "Author": "None provided",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
   "Bindings": [],
   "View": {
     "Dynamo": {
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": true,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.2.1.5175",
+      "Version": "2.18.1.5096",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
-      "Name": "Background Preview",
+      "Name": "_Background Preview",
       "EyeX": -17.0,
       "EyeY": 24.0,
       "EyeZ": 50.0,
@@ -1107,184 +1248,185 @@
       "UpY": 1.0,
       "UpZ": 0.0
     },
+    "ConnectorPins": [],
     "NodeViews": [
       {
-        "ShowGeometry": true,
-        "Name": "GIS2BIM_ImportImageInView",
         "Id": "3e62a63666984929a86081f0c5eadff9",
+        "Name": "GIS2BIM_ImportImageInView",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 3620.7809535031615,
         "Y": -33.90500405287446
       },
       {
-        "ShowGeometry": true,
-        "Name": "Image.WriteToFile",
         "Id": "5bfe36a1e6e949548498a63c13c176ea",
+        "Name": "Image.WriteToFile",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 3919.0998427956429,
         "Y": 224.6333334785657
       },
       {
-        "ShowGeometry": true,
-        "Name": "GIS2BIM_GetRevitSiteLocation",
         "Id": "b48283d094c842859687c92ff85390c8",
+        "Name": "GIS2BIM_GetRevitSiteLocation",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1636.6258141681976,
         "Y": -974.98777456412984
       },
       {
-        "ShowGeometry": true,
-        "Name": "GIS2BIM_NetherlandsGeoservicesLibrary",
         "Id": "b08383e46818442084c3f7abd0537716",
+        "Name": "GIS2BIM_NetherlandsGeoservicesLibrary",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 3199.9955625939292,
         "Y": -1105.3202205628741
       },
       {
-        "ShowGeometry": true,
-        "Name": "GIS2BIM_TransformCRS_epsg",
         "Id": "3d7ff32e8a004d54a8f898186b3cabae",
+        "Name": "GIS2BIM_TransformCRS_epsg",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 2287.5301517836215,
         "Y": -1100.1809908236924
       },
       {
-        "ShowGeometry": true,
-        "Name": "Code Block",
         "Id": "fb5e2df8cc994314a7173133d916ae78",
+        "Name": "Code Block",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1924.0514183543173,
         "Y": -1077.750155947024
       },
       {
-        "ShowGeometry": true,
-        "Name": "String.ToNumber",
         "Id": "ae9dafba9722452989f411c70d24f04f",
+        "Name": "String.ToNumber",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1924.0514183543173,
         "Y": -966.29699277642931
       },
       {
-        "ShowGeometry": true,
-        "Name": "String.ToNumber",
         "Id": "c73fae090a3f4e80a04429e956ceb5c1",
+        "Name": "String.ToNumber",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1924.0514183543173,
         "Y": -880.26466712567117
       },
       {
-        "ShowGeometry": true,
-        "Name": "GIS2BIM_CreateBoundingBox",
         "Id": "47f030e863c149f4977eb1189173b4b0",
+        "Name": "GIS2BIM_CreateBoundingBox",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 2680.0287923513251,
         "Y": -1105.645234311216
       },
       {
-        "ShowGeometry": true,
-        "Name": "GIS2BIM_WebrequestWMS",
         "Id": "10693df1884c407bafca4d2931569dd0",
+        "Name": "GIS2BIM_WebrequestWMS",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 4080.5766535134594,
         "Y": -993.50665330131324
       },
       {
-        "ShowGeometry": true,
-        "Name": "Watch Image",
         "Id": "e7353c71b3bd4d0e8f3b4ed75522bab9",
+        "Name": "Watch Image",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 4519.7208776193065,
         "Y": -993.09419668437977
       },
       {
-        "ShowGeometry": true,
-        "Name": "Document.ActiveView",
         "Id": "7408d9b971d642c6b56b4e2eb2bda993",
+        "Name": "Document.ActiveView",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1514.9762584372629,
         "Y": -69.076501318211285
       },
       {
-        "ShowGeometry": true,
-        "Name": "Document.Current",
         "Id": "fa0e97b0a01b4eacb6f63ca2a6e4586b",
+        "Name": "Document.Current",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1304.4275237676325,
         "Y": -67.985797235063274
       },
       {
-        "ShowGeometry": true,
-        "Name": "Document.FilePath",
         "Id": "a87a842385b3434f84a146e049a1cfa3",
+        "Name": "Document.FilePath",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1515.363602975201,
         "Y": 32.317908635437789
       },
       {
-        "ShowGeometry": true,
-        "Name": "String.Replace",
         "Id": "f4872f34060248b2b3d1e7500401ce6c",
+        "Name": "String.Replace",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1889.1493669971796,
         "Y": 85.06100848277
       },
       {
-        "ShowGeometry": true,
-        "Name": "Code Block",
         "Id": "0f6d41da988d40d2a39aa7c48a768e69",
+        "Name": "Code Block",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1520.1024423847964,
         "Y": 146.02189164915126
       },
       {
-        "ShowGeometry": true,
-        "Name": "Passthrough",
         "Id": "66fb719e43d64131ad5ff26524f5ee50",
+        "Name": "Passthrough",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 3198.1834796229446,
         "Y": 18.808739325235138
       },
       {
-        "ShowGeometry": true,
-        "Name": "Afmeting boundingbox in meters(breedte, hoogte)",
         "Id": "1ceb8d699ae5484dae5d112924072b03",
+        "Name": "Afmeting boundingbox in meters(breedte, hoogte)",
         "IsSetAsInput": true,
         "IsSetAsOutput": false,
         "Excluded": false,
+        "ShowGeometry": true,
         "X": 1291.8493874641995,
         "Y": -640.86009923146548
       }
@@ -1293,6 +1435,10 @@
       {
         "Id": "d60ff630b66541dc80471d595c0d0f31",
         "Title": "Bepaal actieve view & bestandsnaam",
+        "DescriptionText": null,
+        "IsExpanded": true,
+        "WidthAdjustment": 0.0,
+        "HeightAdjustment": 0.0,
         "Nodes": [
           "7408d9b971d642c6b56b4e2eb2bda993",
           "fa0e97b0a01b4eacb6f63ca2a6e4586b",
@@ -1300,37 +1446,45 @@
           "f4872f34060248b2b3d1e7500401ce6c",
           "0f6d41da988d40d2a39aa7c48a768e69"
         ],
+        "HasNestedGroups": false,
         "Left": 1294.4275237676325,
-        "Top": -122.07650131821129,
-        "Width": 811.72184322954718,
-        "Height": 371.09839296736254,
+        "Top": -142.1876124293224,
+        "Width": 838.05517656288066,
+        "Height": 430.32061518958471,
         "FontSize": 36.0,
+        "GroupStyleId": "00000000-0000-0000-0000-000000000000",
         "InitialTop": -69.076501318211285,
         "InitialHeight": 360.09839296736254,
-        "TextblockHeight": 43.0,
+        "TextblockHeight": 63.111111111111114,
         "Background": "#FFC1D676"
       },
       {
         "Id": "52d7683e2e6f406d994de4cd46a7e1a4",
         "Title": "Afbeelding inladen",
+        "DescriptionText": null,
+        "IsExpanded": true,
+        "WidthAdjustment": 0.0,
+        "HeightAdjustment": 0.0,
         "Nodes": [
           "3e62a63666984929a86081f0c5eadff9",
           "5bfe36a1e6e949548498a63c13c176ea",
           "66fb719e43d64131ad5ff26524f5ee50"
         ],
+        "HasNestedGroups": false,
         "Left": 3188.1834796229446,
-        "Top": -86.90500405287446,
-        "Width": 911.91636317269831,
-        "Height": 430.53833753144016,
+        "Top": -107.01611516398557,
+        "Width": 948.91636317269831,
+        "Height": 494.20500419810685,
         "FontSize": 36.0,
+        "GroupStyleId": "00000000-0000-0000-0000-000000000000",
         "InitialTop": -33.90500405287446,
         "InitialHeight": 403.53833753144016,
-        "TextblockHeight": 43.0,
+        "TextblockHeight": 63.111111111111114,
         "Background": "#FFC1D676"
       }
     ],
-    "X": -2565.5063315883644,
-    "Y": 1239.4976262542655,
-    "Zoom": 0.94135259395618365
+    "X": -1079.715742635882,
+    "Y": 535.79956308761393,
+    "Zoom": 0.386591878278723
   }
 }

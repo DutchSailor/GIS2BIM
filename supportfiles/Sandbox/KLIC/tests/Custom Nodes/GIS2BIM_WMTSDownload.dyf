@@ -1,0 +1,1177 @@
+{
+  "Uuid": "f08b5dc0-e62e-4f4e-a7fd-d43cb3b624c6",
+  "IsCustomNode": true,
+  "Category": "KC.GIS2BIM",
+  "Description": "Download an image from WMTS Server based on a boundingbox, image size and service capabilities.",
+  "Name": "WMTSDownload",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "wmtsServerURLs",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "929d37518ecf43c693aff85006231718",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "3f6fde0c6b4940d7918f10a8e7ab7435",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "bboxSize",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "ba9a42dc26714d96a823ee9e78e520dd",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "2b88b36daf0142ab91fbe0d65e6c7760",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "xCoordinate",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "ae3ae18b2dc2402d879094df2e610ada",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "08662a82dbe444eb8c32e6c7be0b0293",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "yCoordinate",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "e8ad95fc4d154232a70f2f2c53560b53",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "f427624e9c5e4db59d5df2ddf3bed5fd",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "targetSizeOnSheet",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": "100",
+        "Description": ""
+      },
+      "Id": "a140cf38f064421fa6614e2c8a27b2ea",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "d80e2993a1d64e87b3a5e0b9d45008bc",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "TileImages;",
+      "Id": "d31e8e06d43143b2b3f437c3e9fc4bfe",
+      "Inputs": [
+        {
+          "Id": "43e807e7918b405b8243548aa3e7f48e",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "layers",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": "null",
+        "Description": ""
+      },
+      "Id": "ed0636962c814bf39ea37938f5b7792e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "01d8818b58fe42f589ec1e15446f030f",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "TileURLs;",
+      "Id": "53b3548c39b94484bea6428b0636d14b",
+      "Inputs": [
+        {
+          "Id": "6ed0d79f72a941009e22f45851312b2e",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "tileMatrixSets",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": "null",
+        "Description": ""
+      },
+      "Id": "c1f450c8d7744e839932c65e2fd07232",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "285345acd3e44150a7c5d7ed2e9a4e4e",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nzoomLevelsPerLayer = IN[0]\r\ntargetResolution = IN[1] # m/pixel ~ 1.6 = 3000px for 500m\r\n\r\ndef pickZoomLevel(zoomLevels):\r\n    selectedZoomLevel = zoomLevels[-1]\r\n    for zoomLevel in zoomLevels:\r\n        resolution = zoomLevel['resolution']\r\n        if resolution < targetResolution:\r\n            selectedZoomLevel = zoomLevel\r\n            break;\r\n\r\n    return selectedZoomLevel\r\n\r\nif type(zoomLevelsPerLayer[0]) == list:\r\n    selectedLevels = []\r\n    for layer in zoomLevelsPerLayer:\r\n        selectedLevels.append(pickZoomLevel(layer))\r\nelse:\r\n    selectedLevels = pickZoomLevel(zoomLevelsPerLayer)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = selectedLevels",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "a0181229a37e43d2af60f5d2061213bf",
+      "Inputs": [
+        {
+          "Id": "c3c5b17df3ee40dc93d9cc0f3cf49e0b",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6b3d65ffd2fe4fe1966a8449d8d84a75",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "42a8ed354ddc4bb0890da14655ab79aa",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "zoomLevels;\ntargetResolution;",
+      "Id": "fb0986440b294777b2f111d789eae8c6",
+      "Inputs": [
+        {
+          "Id": "4866ee5fcee64bb1bcae7b75a091d113",
+          "Name": "zoomLevels",
+          "Description": "zoomLevels",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3b2e1ac895734da29eb97b83953f3056",
+          "Name": "targetResolution",
+          "Description": "targetResolution",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1f092472424845b4a5443965ea1300d4",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "111c9922c43c4176962e0e428a42d5ed",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "urlTemplates;\nzoomLevels;\nRDx;\nRDy;\nbboxDiameter;",
+      "Id": "9e9e9aec7d7d4984bc821d13b395d6c6",
+      "Inputs": [
+        {
+          "Id": "3331ffcb3bbd44aa996bd2387f94d6ab",
+          "Name": "urlTemplates",
+          "Description": "urlTemplates",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d937ad4df8924f14aebc5bde12751817",
+          "Name": "zoomLevels",
+          "Description": "zoomLevels",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f6e2c43ad9de47c394a323c01ee0134d",
+          "Name": "RDx",
+          "Description": "RDx",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "901476957fab406eae689c7e660d41c2",
+          "Name": "RDy",
+          "Description": "RDy",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5c7dcbffb4804ecea55a58eff0d9eada",
+          "Name": "bboxDiameter",
+          "Description": "bboxDiameter",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "67a7f265480349ba966258ad1d682422",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4e157e954b4a46ba8aae5868b3141463",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e0b5f1eaf8ec462893c5997e2e9261cb",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2642af91c72e42ae939c09c7cbd09b82",
+          "Name": "",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "66bbb35338894a5395fa802417330d44",
+          "Name": "",
+          "Description": "Value of expression at line 5",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\nimport math\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nurlTemplates = IN[0]\r\nzoomLevels = IN[1]\r\nX = int(IN[2])\r\nY = int(IN[3])\r\nbboxRadius = float(IN[4]) / 2\r\n\r\n\r\ndef getURLsForLayerAndLevel(urlTemplate, zoomLevel):\r\n    \r\n    # Calculate BBox Extends\r\n    bboxTop = Y + bboxRadius\r\n    bboxBottom = Y - bboxRadius\r\n    bboxLeft = X - bboxRadius\r\n    bboxRight = X + bboxRadius\r\n    \r\n    # Calculate Tile Coordinates\r\n    rowBase = zoomLevel['rowOrigin']\r\n    colBase = zoomLevel['columnOrigin']\r\n    tileContentSize = zoomLevel['tileContentSize']\r\n    tileMatrix = zoomLevel['identifier']\r\n    tilePixelSize = zoomLevel['tileWidth']\r\n    \r\n    tileRowMinParam = (rowBase - bboxTop) / tileContentSize\r\n    tileColumnMinParam = (bboxLeft - colBase) / tileContentSize\r\n    tileRowMaxParam = (rowBase - bboxBottom) / tileContentSize\r\n    tileColumnMaxParam = (bboxRight - colBase) / tileContentSize\r\n    \r\n    \r\n    \r\n    tileRowMin = math.floor(tileRowMinParam)\r\n    tileColumnMin = math.floor(tileColumnMinParam)\r\n    tileRowMax = math.floor(tileRowMaxParam)\r\n    tileColumnMax = math.floor(tileColumnMaxParam)\r\n    \r\n    rowTileNumbers = range(tileRowMin, tileRowMax + 1)\r\n    colTileNumbers = range(tileColumnMin, tileColumnMax + 1)\r\n    \r\n    print('VALUES', rowBase, bboxTop, bboxBottom, tileRowMin, tileRowMax, tileColumnMin, tileColumnMax, tileContentSize, zoomLevel['resolution'], zoomLevel['scaleDenominator'], zoomLevel['matrixWidth'])\r\n    \r\n    # Prepare URLs\r\n    urls = []\r\n    for row in rowTileNumbers:\r\n        for column in colTileNumbers:\r\n            urls.append(urlTemplate.format(TileMatrix = tileMatrix, TileRow = row, TileCol = column))\r\n    \r\n    # Get Cropping Information in pixels\r\n    topDiff = (tileRowMinParam - tileRowMin) * tilePixelSize\r\n    leftDiff = (tileColumnMinParam - tileColumnMin) * tilePixelSize\r\n    bottomDiff = (1 - (tileRowMaxParam - tileRowMax)) * tilePixelSize\r\n    rightDiff = (1 - (tileColumnMaxParam - tileColumnMax)) * tilePixelSize\r\n    \r\n    cropDiffs = [topDiff, leftDiff, bottomDiff, rightDiff]\r\n\r\n    return [len(rowTileNumbers), len(colTileNumbers), tilePixelSize, cropDiffs, urls]\r\n\r\n\r\nif type(urlTemplates) is list:\r\n    urlLists = []\r\n    for index, template in enumerate(urlTemplates):\r\n        urlLists.append(getURLsForLayerAndLevel(template, zoomLevels[index]))\r\nelse:\r\n    urlLists = getURLsForLayerAndLevel(urlTemplates, zoomLevels)\r\n\r\n\r\n# Return URL(s)\r\nOUT = urlLists\r\n\r\n# print('TILE COORDINATES', tileRowMin, tileRowMax, tileColumnMin, tileColumnMax, tileMatrix)\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "7e4143cc2db541ddbcc9c7048b3b1a3f",
+      "Inputs": [
+        {
+          "Id": "82c0a7ddf7a2488cb0c11cdb3952ede8",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e7613fa9ceea43a49a047088e33929df",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "68ca3e102a194da19c844788b023a858",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3cacc51bf766424cab9800d53ca6d7ee",
+          "Name": "IN[3]",
+          "Description": "Input #3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "55c9f06195274e55b8270112c40bcfc0",
+          "Name": "IN[4]",
+          "Description": "Input #4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "318f53dd12474a93bc874b4e6a9955d1",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import sys\r\nsys.path.append(\"C:\\Program Files (x86)\\IronPython 2.7\\Lib\")\r\n\r\nimport clr\r\nclr.AddReference(\"System.Drawing\")\r\nclr.AddReference(\"System\")\r\nfrom System.Drawing import Image\r\nfrom System.Drawing import Image\r\nfrom System.Drawing import Bitmap\r\nfrom System.Drawing import Graphics\r\nfrom System.Net import WebRequest\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nurlResults = IN[0]\r\n\r\ndef downloadWMTSTiles(urls):\r\n    bitmaps = []\r\n    for i in urls:\r\n    \trequest = WebRequest.Create(i)\r\n    \trequest.Accept = \"text/html\"\r\n    \trequest.UserAgent = \"Mozilla/5.0\"\r\n    \tresponse = request.GetResponse()\r\n    \tbitmaps.append(Image.FromStream(response.GetResponseStream()))\r\n    \r\n    return bitmaps\r\n\r\ndef combineTiles(tiles, rowCount, colCount, pixels, cropDiffs):\r\n    topDiff, leftDiff, bottomDiff, rightDiff = cropDiffs\r\n\r\n    totalHeight = rowCount * pixels - topDiff - bottomDiff\r\n    totalWidth = colCount * pixels - leftDiff - rightDiff\r\n    \r\n    # create image object for the new image\r\n    combinedImage = Bitmap(totalWidth, totalHeight)\r\n    combinedImageGraphics = Graphics.FromImage(combinedImage)\r\n    \r\n    rowPositions = []\r\n    colPositions = []\r\n    \r\n    for i in range(rowCount):\r\n        for j in range(colCount):\r\n            rowPositions.append(i * pixels - topDiff) # Move \"out\" of image to crop\r\n            colPositions.append(j * pixels - leftDiff)\r\n    \r\n    # print('DEBUG', len(bitmaps), rowCount, colCount, rowPositions, colPositions, totalHeight, totalWidth)\r\n    \r\n    for image, x, y in zip(tiles, colPositions, rowPositions):\r\n    \tcombinedImageGraphics.DrawImage(image, x, y, pixels, pixels)\r\n    \r\n    return combinedImage\r\n\r\n\r\nif type(urlResults[0]) is list:\r\n    images = []\r\n    for urlResult in urlResults:\r\n        rowCount = urlResult[0]\r\n        columnCount = urlResult[1]\r\n        pixels = urlResult[2]\r\n        cropDiffs = urlResult[3]\r\n        urls = urlResult[4]\r\n        tiles = downloadWMTSTiles(urls)\r\n        images.append(combineTiles(tiles, rowCount, columnCount, pixels, cropDiffs))\r\nelse:\r\n    rowCount = urlResults[0]\r\n    columnCount = urlResults[1]\r\n    pixels = urlResults[2]\r\n    cropDiffs = urlResults[3]\r\n    urls = urlResults[4]\r\n    tiles = downloadWMTSTiles(urls)\r\n    images = combineTiles(tiles, rowCount, columnCount, pixels, cropDiffs)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = images\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "566dfb85095a41d198ff5429915f8c75",
+      "Inputs": [
+        {
+          "Id": "cd0833da6d5d464d847f5de3a373622e",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "539d72a899ab41129f779d95176f6281",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# sys.path.append(\"C:\\Program Files (x86)\\IronPython 2.7\\Lib\")\r\n\r\nimport requests\r\nimport xmltodict\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nurls = IN[0]\r\ntileSets = IN[1]\r\nXYOrder = IN[2]\r\n\r\n# Helper Functions\r\ndef getOnlyFirstOrSelected(collection, selector = None, idPath = None):\r\n    if type(collection) == list:\r\n        # Fallback: Use first layer\r\n        selectedItem = collection[0]\r\n        \r\n        if selector is not None and idPath is not None:\r\n            for index, item in enumerate(collection):\r\n                if item[idPath] == selector:\r\n                    selectedItem = collection[index]\r\n    else:\r\n        selectedItem = collection\r\n    \r\n    return selectedItem\r\n\r\n# Function wrapper for automatic lacing\r\ndef getLevelsForLayer(url, tileSet):\r\n    url += '?request=GetCapabilities&service=wmts'\r\n    # STEP 1: Download Capabilites XML\r\n    xml = requests.get(url).content\r\n    \r\n    data = xmltodict.parse(xml)\r\n    \r\n    # STEP 2: Parse Capabilities\r\n    tileMatrices = getOnlyFirstOrSelected(data['Capabilities']['Contents']['TileMatrixSet'], tileSet, 'ows:Identifier')['TileMatrix']\r\n    \r\n    pixelSize = 0.00028 # meter per pixel\r\n    \r\n    # Ordering of the Coordinates depends on the CRS - figure out automatically?\r\n    if XYOrder:\r\n        rowIndex = 1\r\n        columnIndex = 0\r\n    else:\r\n        rowIndex = 0\r\n        columnIndex = 1\r\n    \r\n    zoomLevels = []\r\n    for tileMatrix in tileMatrices:\r\n        \r\n        identifier = tileMatrix['ows:Identifier']\r\n        scaleDenominator = float(tileMatrix['ScaleDenominator'])\r\n        rowOrigin = float(tileMatrix['TopLeftCorner'].split(' ')[rowIndex])\r\n        columnOrigin = float(tileMatrix['TopLeftCorner'].split(' ')[columnIndex])\r\n        tileWidth = int(tileMatrix['TileWidth'])\r\n        tileHeight = int(tileMatrix['TileHeight'])\r\n        matrixWidth = int(tileMatrix['MatrixWidth'])\r\n        matrixHeight = int(tileMatrix['MatrixHeight'])\r\n        \r\n        # calculate additional attributes\r\n        tileResolution = pixelSize * scaleDenominator\r\n        tileContentSize = tileWidth * tileResolution\r\n        \r\n        zoomLevel = {\r\n            'identifier': identifier,\r\n            'scaleDenominator': scaleDenominator,\r\n            'rowOrigin': rowOrigin,\r\n            'columnOrigin': columnOrigin,\r\n            'tileWidth': tileWidth,\r\n            'tileHeight': tileHeight,\r\n            'matrixWidth': matrixWidth,\r\n            'matrixHeight': matrixHeight,\r\n            'resolution': tileResolution,\r\n            'tileContentSize': tileContentSize,\r\n        }\r\n        \r\n        zoomLevels.append(zoomLevel)\r\n        \r\n    return zoomLevels\r\n\r\n# Lacing Code\r\nif type(urls) is list:\r\n    layerLevels = []\r\n    for index, url in enumerate(urls):\r\n        layerLevels.append(getLevelsForLayer(url, tileSets[index]))\r\nelse:\r\n    layerLevels = getLevelsForLayer(urls, tileSets)\r\n\r\n# STEP 3: Return Zoom Levels\r\nOUT = layerLevels\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "1cea3203904a4dd7a4de80b719501f3a",
+      "Inputs": [
+        {
+          "Id": "cc2b4bc158a946a3b35035cac534fd3c",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "10f501a14fd043908e9d73feac84307d",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "73b14612d70d4cd8843c473b9b340f76",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f4947f0a88984bd4b5630e9e8d89ce33",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nbboxDiameter = IN[0]\r\nsizeOnSheet = IN[1]\r\n\r\nMM_IN_INCH = 25.4\r\nTARGET_PRINT_RESOLUTION = 300 # dpi\r\n\r\npixelsPerImage = TARGET_PRINT_RESOLUTION * sizeOnSheet / MM_IN_INCH\r\n\r\nmetersPerPixel = bboxDiameter / pixelsPerImage\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = metersPerPixel\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "6c457ec6ad584345986f2f82d4f295a6",
+      "Inputs": [
+        {
+          "Id": "96674fb180bb443c87f8a0ff35626599",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3ea2bc99542d41858a99eb328e36aa8a",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "9c3dd10b51c3497bbc63848e689e9d1c",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "URLTemplates = result[0];\nTileSets = result[1];",
+      "Id": "f379fd93e04b40fc975bc6bf860d3dbf",
+      "Inputs": [
+        {
+          "Id": "8e21dece9cc6472abd96742518ec8b46",
+          "Name": "result",
+          "Description": "result",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "e2d3fc446cc44544b31cad4a701f988e",
+          "Name": "",
+          "Description": "URLTemplates",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "efee6f0dea014930a5e13e7fd4627da3",
+          "Name": "",
+          "Description": "TileSets",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "XYOrder = true;\ntopLeftOrigin = true;",
+      "Id": "59a80071638c4a7c8874b08700e8547d",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "48c529a16e034a5dabe3247c3001de1e",
+          "Name": "",
+          "Description": "XYOrder",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9e819f5da02e45e2a3e0c360b59e63b5",
+          "Name": "",
+          "Description": "topLeftOrigin",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# sys.path.append(\"C:\\Program Files (x86)\\IronPython 2.7\\Lib\")\r\n\r\nimport re\r\nimport requests\r\nimport xmltodict\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nurls = IN[0]\r\nselectedLayers = IN[1]\r\nselectedTileSets = IN[2]\r\n\r\n# Helper Functions\r\ndef getOnlyFirstOrSelected(collection, selector = None, idPath = None):\r\n    if type(collection) is list:\r\n        # Fallback: Use first layer\r\n        selectedItem = collection[0]\r\n        \r\n        if selector is not None and idPath is not None:\r\n            for index, item in enumerate(collection):\r\n                if item[idPath] == selector:\r\n                    selectedItem = collection[index]\r\n    else:\r\n        selectedItem = collection\r\n    \r\n    return selectedItem\r\n\r\n# Function wrapper for automatic lacing\r\ndef getLevelsForLayer(baseurl, selectedLayer, selectedTileSet):\r\n    \r\n    # STEP 1: Download Capabilites XML\r\n    url = baseurl + '?request=GetCapabilities&service=wmts' \r\n    xml = requests.get(url).content\r\n    \r\n    data = xmltodict.parse(xml)\r\n    \r\n    # STEP 2: Parse Capabilities\r\n    availableLayers = data['Capabilities']['Contents']['Layer']\r\n    layerData = getOnlyFirstOrSelected(availableLayers, selectedLayer, 'ows:Identifier')\r\n    \r\n    try:\r\n        templateURL = getOnlyFirstOrSelected(layerData['ResourceURL'])['@template']\r\n    except:\r\n        #templateURL = baseurl + '/' + selectedLayer + '/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png'\r\n        templateURL = baseurl + '?layer=' + selectedLayer + '&style={Style}&tilematrixset={TileMatrixSet}&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix={TileMatrix}&TileCol={TileCol}&TileRow={TileRow}'\r\n    \r\n    try:\r\n        defaultStyle = getOnlyFirstOrSelected(layerData['Style'])['ows:Identifier']\r\n    except:\r\n        defaultStyle = 'default'\r\n        \r\n    tileMatrixSet = getOnlyFirstOrSelected(layerData['TileMatrixSetLink'], selectedTileSet, 'TileMatrixSet')['TileMatrixSet']\r\n    \r\n    # print('URL', templateURL, defaultStyle, tileMatrixSet)\r\n    \r\n    templateURL = re.sub('{Style}', defaultStyle, templateURL)\r\n    templateURL = re.sub('{TileMatrixSet}', tileMatrixSet, templateURL)\r\n    \r\n    # print('URL', templateURL, defaultStyle, tileMatrixSet)\r\n    \r\n    return [templateURL, tileMatrixSet]\r\n    \r\nif type(urls) is list:\r\n    templates = []\r\n    tileMatrices = []\r\n    for index, url in enumerate(urls):\r\n        if selectedLayers is not None: \r\n            if type(selectedLayers) == list:\r\n                layer = selectedLayers[index]\r\n            else: \r\n                layer = selectedLayers \r\n        else:\r\n            layer = None\r\n        if selectedTileSets is not None: \r\n            if type(selectedTileSets) == list:\r\n                tileSet = selectedTileSets[index]\r\n            else: \r\n                tileSet = selectedTileSets \r\n        else:\r\n            tileSet = None\r\n        result = getLevelsForLayer(url, layer, tileSet)\r\n        templates.append(result[0])\r\n        tileMatrices.append(result[1])\r\n    layerTemplates = [templates, tileMatrices]\r\nelse:\r\n    print('DATA', urls, selectedLayers, selectedTileSets)\r\n    layerTemplates = getLevelsForLayer(urls, selectedLayers, selectedTileSets)\r\n\r\n# STEP 3: Return Zoom Levels\r\nOUT = layerTemplates\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "dad515711ee1497e8bc54d86204d64af",
+      "Inputs": [
+        {
+          "Id": "3f7a27112a4c42399554685450184eac",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7fee4cc034464d40beadf2427fe8e874",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c41513b39c7e4f108fa101046c513dde",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f3aef8482f7441d69e0ed82df18c3678",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "3f6fde0c6b4940d7918f10a8e7ab7435",
+      "End": "cc2b4bc158a946a3b35035cac534fd3c",
+      "Id": "856a526b035e481190d5752de38dd179"
+    },
+    {
+      "Start": "3f6fde0c6b4940d7918f10a8e7ab7435",
+      "End": "3f7a27112a4c42399554685450184eac",
+      "Id": "0554b1f2a9814156b5a056a1b429a2d5"
+    },
+    {
+      "Start": "2b88b36daf0142ab91fbe0d65e6c7760",
+      "End": "5c7dcbffb4804ecea55a58eff0d9eada",
+      "Id": "5e144795d1ff4af8ad600f7556c5f181"
+    },
+    {
+      "Start": "2b88b36daf0142ab91fbe0d65e6c7760",
+      "End": "96674fb180bb443c87f8a0ff35626599",
+      "Id": "39940ecf9de54829b5ca8c042480ca09"
+    },
+    {
+      "Start": "08662a82dbe444eb8c32e6c7be0b0293",
+      "End": "f6e2c43ad9de47c394a323c01ee0134d",
+      "Id": "a9801a20ca114b48a716578163cde8b0"
+    },
+    {
+      "Start": "f427624e9c5e4db59d5df2ddf3bed5fd",
+      "End": "901476957fab406eae689c7e660d41c2",
+      "Id": "21992a8709b343989d51bd933090ac59"
+    },
+    {
+      "Start": "d80e2993a1d64e87b3a5e0b9d45008bc",
+      "End": "3ea2bc99542d41858a99eb328e36aa8a",
+      "Id": "587bc7d137734b2b985db8b8de0c36e3"
+    },
+    {
+      "Start": "01d8818b58fe42f589ec1e15446f030f",
+      "End": "7fee4cc034464d40beadf2427fe8e874",
+      "Id": "ecceaaa9f4eb46ffaff1ea9bb9b77adc"
+    },
+    {
+      "Start": "285345acd3e44150a7c5d7ed2e9a4e4e",
+      "End": "c41513b39c7e4f108fa101046c513dde",
+      "Id": "0ae089940ab74aabb85a4758d9a61bf7"
+    },
+    {
+      "Start": "42a8ed354ddc4bb0890da14655ab79aa",
+      "End": "d937ad4df8924f14aebc5bde12751817",
+      "Id": "8d7ad7ff84914354ae6f5074297f8891"
+    },
+    {
+      "Start": "1f092472424845b4a5443965ea1300d4",
+      "End": "c3c5b17df3ee40dc93d9cc0f3cf49e0b",
+      "Id": "be75e89f9ae1480a99795277c2d2667e"
+    },
+    {
+      "Start": "111c9922c43c4176962e0e428a42d5ed",
+      "End": "6b3d65ffd2fe4fe1966a8449d8d84a75",
+      "Id": "17ae623bae0a47fd8b73890c1c6ebf82"
+    },
+    {
+      "Start": "67a7f265480349ba966258ad1d682422",
+      "End": "82c0a7ddf7a2488cb0c11cdb3952ede8",
+      "Id": "8feb4e138717403dbebcb505ce294dab"
+    },
+    {
+      "Start": "4e157e954b4a46ba8aae5868b3141463",
+      "End": "e7613fa9ceea43a49a047088e33929df",
+      "Id": "2265f3726426432e9ebcb0e6a3cb1e0e"
+    },
+    {
+      "Start": "e0b5f1eaf8ec462893c5997e2e9261cb",
+      "End": "68ca3e102a194da19c844788b023a858",
+      "Id": "c48490fb9d394b4f9c3f2d04b7995bca"
+    },
+    {
+      "Start": "2642af91c72e42ae939c09c7cbd09b82",
+      "End": "3cacc51bf766424cab9800d53ca6d7ee",
+      "Id": "8b67e84749da4d668f7bfc35fc8ac219"
+    },
+    {
+      "Start": "66bbb35338894a5395fa802417330d44",
+      "End": "55c9f06195274e55b8270112c40bcfc0",
+      "Id": "0ca830a07b9b47aba9e453e7eaec9906"
+    },
+    {
+      "Start": "318f53dd12474a93bc874b4e6a9955d1",
+      "End": "cd0833da6d5d464d847f5de3a373622e",
+      "Id": "26401ed9e4d24dbbaa6df712bcf3183f"
+    },
+    {
+      "Start": "318f53dd12474a93bc874b4e6a9955d1",
+      "End": "6ed0d79f72a941009e22f45851312b2e",
+      "Id": "52612d00fab34f2fb0dcbe29bcd85dce"
+    },
+    {
+      "Start": "539d72a899ab41129f779d95176f6281",
+      "End": "43e807e7918b405b8243548aa3e7f48e",
+      "Id": "a7b6ec585d48423d876a4dc20d41dd1e"
+    },
+    {
+      "Start": "f4947f0a88984bd4b5630e9e8d89ce33",
+      "End": "4866ee5fcee64bb1bcae7b75a091d113",
+      "Id": "a41937519a524c4db4c61b62fe872931"
+    },
+    {
+      "Start": "9c3dd10b51c3497bbc63848e689e9d1c",
+      "End": "3b2e1ac895734da29eb97b83953f3056",
+      "Id": "f3dcbdb8f1c145deaaa6f29645459023"
+    },
+    {
+      "Start": "e2d3fc446cc44544b31cad4a701f988e",
+      "End": "3331ffcb3bbd44aa996bd2387f94d6ab",
+      "Id": "01040fab29f14b70a6c7a551556cdda5"
+    },
+    {
+      "Start": "efee6f0dea014930a5e13e7fd4627da3",
+      "End": "10f501a14fd043908e9d73feac84307d",
+      "Id": "0bbbf959414a4945a20d89a6afdb7e1e"
+    },
+    {
+      "Start": "48c529a16e034a5dabe3247c3001de1e",
+      "End": "73b14612d70d4cd8843c473b9b340f76",
+      "Id": "328242b6ce8e40c0833d93b027317a24"
+    },
+    {
+      "Start": "f3aef8482f7441d69e0ed82df18c3678",
+      "End": "8e21dece9cc6472abd96742518ec8b46",
+      "Id": "a126dc93fc3347918f1426e3d231ed86"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.1.8246",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "929d37518ecf43c693aff85006231718",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 220.839515355395,
+        "Y": 516.61031814306
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "ba9a42dc26714d96a823ee9e78e520dd",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 220.839515355395,
+        "Y": 770.089189922151
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "ae3ae18b2dc2402d879094df2e610ada",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 220.839515355395,
+        "Y": 612.825162471662
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "e8ad95fc4d154232a70f2f2c53560b53",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 220.839515355395,
+        "Y": 679.55430918141
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "a140cf38f064421fa6614e2c8a27b2ea",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 220.839515355395,
+        "Y": 846.299495800557
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "d31e8e06d43143b2b3f437c3e9fc4bfe",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3780.3854592748194,
+        "Y": 714.53579182119631
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "ed0636962c814bf39ea37938f5b7792e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 218.44496394554653,
+        "Y": 936.09491970400188
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "53b3548c39b94484bea6428b0636d14b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3796.8863792077,
+        "Y": 962.27402582395234
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "c1f450c8d7744e839932c65e2fd07232",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 226.6021242578791,
+        "Y": 1018.4887140129374
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "selectZoomLevel.py",
+        "Id": "a0181229a37e43d2af60f5d2061213bf",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2226.4806891540229,
+        "Y": 859.167939950658
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "fb0986440b294777b2f111d789eae8c6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1852.6466191954232,
+        "Y": 873.7909409472461
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "9e9e9aec7d7d4984bc821d13b395d6c6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2621.253464782586,
+        "Y": 605.838520190447
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "CreateTileURLs.py",
+        "Id": "7e4143cc2db541ddbcc9c7048b3b1a3f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2964.3812270215558,
+        "Y": 585.2981950456
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "DownloadAndCombineWMTSTiles.py",
+        "Id": "566dfb85095a41d198ff5429915f8c75",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 3234.0763797674763,
+        "Y": 610.955994611217
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GetWMTSZoomLevels.py",
+        "Id": "1cea3203904a4dd7a4de80b719501f3a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1466.0560687287857,
+        "Y": 522.51271589118778
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "SheetResolution.py",
+        "Id": "6c457ec6ad584345986f2f82d4f295a6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1286.3219158721449,
+        "Y": 819.836654418907
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "f379fd93e04b40fc975bc6bf860d3dbf",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1112.5018550157124,
+        "Y": 462.89171397553673
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "59a80071638c4a7c8874b08700e8547d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 834.64813822975589,
+        "Y": 1068.985522372916
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "GetWMTSURLTemplate.py",
+        "Id": "dad515711ee1497e8bc54d86204d64af",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 831.2695552823975,
+        "Y": 438.9057146384298
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "0e14f4f90bd44ff5ac1c59ff4778a2ed",
+        "Title": "Select ZoomLevel\r\n",
+        "Nodes": [
+          "a0181229a37e43d2af60f5d2061213bf",
+          "fb0986440b294777b2f111d789eae8c6"
+        ],
+        "Left": 1842.6466191954232,
+        "Top": 763.167939950658,
+        "Width": 574.83406995859968,
+        "Height": 226.0,
+        "FontSize": 36.0,
+        "InitialTop": 859.167939950658,
+        "InitialHeight": 160.0,
+        "TextblockHeight": 86.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "fa2bb301c6564bf49ea02278dd15862b",
+        "Title": "Prepare Tile URLs",
+        "Nodes": [
+          "9e9e9aec7d7d4984bc821d13b395d6c6",
+          "7e4143cc2db541ddbcc9c7048b3b1a3f"
+        ],
+        "Left": 2611.253464782586,
+        "Top": 532.2981950456,
+        "Width": 534.12776223896981,
+        "Height": 261.0,
+        "FontSize": 36.0,
+        "InitialTop": 585.2981950456,
+        "InitialHeight": 238.0,
+        "TextblockHeight": 43.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "d9c8bd0b36224e06ac4a90b48945cf3a",
+        "Title": "Download and Combine",
+        "Nodes": [
+          "566dfb85095a41d198ff5429915f8c75"
+        ],
+        "Left": 3224.0763797674763,
+        "Top": 514.955994611217,
+        "Width": 307.0,
+        "Height": 200.0,
+        "FontSize": 36.0,
+        "InitialTop": 610.955994611217,
+        "InitialHeight": 134.0,
+        "TextblockHeight": 86.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "1e9b11387b1f4af0becf44976187924f",
+        "Title": "Extract Data from Capabilities",
+        "Nodes": [
+          "1cea3203904a4dd7a4de80b719501f3a",
+          "f379fd93e04b40fc975bc6bf860d3dbf",
+          "dad515711ee1497e8bc54d86204d64af"
+        ],
+        "Left": 821.2695552823975,
+        "Top": 385.9057146384298,
+        "Width": 865.7865134463882,
+        "Height": 292.607001252758,
+        "FontSize": 36.0,
+        "InitialTop": 438.9057146384298,
+        "InitialHeight": 269.607001252758,
+        "TextblockHeight": 43.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "68e0cd871e4f4e89a509f5e0082fa96e",
+        "Title": "Possible Additional Parameters",
+        "Nodes": [
+          "59a80071638c4a7c8874b08700e8547d"
+        ],
+        "Left": 824.64813822975589,
+        "Top": 928.985522372916,
+        "Width": 244.0,
+        "Height": 218.0,
+        "FontSize": 36.0,
+        "InitialTop": 1068.985522372916,
+        "InitialHeight": 108.0,
+        "TextblockHeight": 130.0,
+        "Background": "#FFE8F7AD"
+      }
+    ],
+    "X": -38.095731432509581,
+    "Y": 214.78941860093113,
+    "Zoom": 0.36385662867149693
+  }
+}

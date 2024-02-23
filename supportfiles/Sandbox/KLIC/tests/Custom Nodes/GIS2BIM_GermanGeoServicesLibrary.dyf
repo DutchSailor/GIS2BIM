@@ -1,0 +1,2537 @@
+{
+  "Uuid": "66c1dda7-b375-4b8a-8967-ca997695247f",
+  "IsCustomNode": true,
+  "Category": "KC.GIS2BIM",
+  "Description": "Returns URLS to different German Geoservices based on location and bounding box.",
+  "Name": "GermanGeoservicesLibrary",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport math\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\ncity = IN[0]\r\nstate = IN[1]\r\nbbox = IN[2]\r\nATOMOffsetX = IN[3]\r\nATOMOffsetY = IN[4]\r\n\r\n#city = 'Aachen'\r\n#state = 'Nordrhein-Westfalen'\r\n#bbox = '296290,5628196,296590,5628496'\r\n#city = 'Berlin'\r\n#state = 'Berlin'\r\n#bbox = '388593,5818053,388893,5818353'\r\n\r\n# Place your code below this line\r\n# print(city)\r\n# print(state)\r\n# print(bbox)\r\n\r\n# Constants\r\n\r\nWIDTH = 3000    # Resolution width of WMS bbox\r\nHEIGHT = 3000   # Resolution width of WMS bbox\r\n\r\n# LAYERS_WFS = ['cadastre', 'cadastreBuildings'] # Placeholder for later filtering of layers. Needed?\r\n# LAYERS_WMS = ['orthophotos', 'topography', 'noiseKI', 'noiseNight', 'noiseDay', 'pollution', 'groundValueReference', 'zoning', 'energySources', 'groundwaterLevel', 'floodingAreas'] # Placeholder for later filtering of layers. Needed?\r\n\r\n# Prepared Properties\r\n\r\nbboxComponents = bbox.split(',')\r\nbboxOrigin = (bboxComponents[0], bboxComponents[1])\r\nbboxCenter = (str((int(bboxComponents[2]) - int(bboxComponents[0])) / 2 + int(bboxComponents[0])), str((int(bboxComponents[3]) - int(bboxComponents[1])) / 2 + int(bboxComponents[1])))\r\n\r\nbboxWidth = float(bboxComponents[2]) - float(bboxComponents[0])\r\nbboxHeight = float(bboxComponents[3]) - float(bboxComponents[1])\r\n\r\ndef calcMaxImageDim(scale, bboxDim):\r\n    resolution = 90\r\n    inchToCM = 2.54\r\n    return math.floor(bboxDim * 100 / scale / inchToCM * resolution)\r\n    \r\ndef floorToEven(number):\r\n    if type(number) == str:\r\n        return floorToEven(int(number))\r\n    if number % 2 == 0:\r\n        return number\r\n    else:\r\n        return number - 1\r\n    \r\n# Part 1 - URL template dictionary (external? combine with EPSG code?)\r\n\r\ngermanyWideURLs = {\r\n    'properties': {\r\n        'epsg': 3857,\r\n    },\r\n    'WFSURLs': {},  \r\n    'WMSURLs': {\r\n        'basemap': {\r\n            'url': \"https://sgx.geodatenzentrum.de/wms_basemapde?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A{epsg}&STYLES=&bbox={bbox}&width={width}&height={height}&layers=de_basemapde_web_raster_farbe\",\r\n            'legend': \"https://sgx.geodatenzentrum.de/wms_basemapde?format=image%2Fpng&layer=de_basemapde_web_raster_farbe&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles=\"\r\n        },\r\n        'noise': {\r\n            'url': \"https://datahub.uba.de/server/services/VeLa/LK/MapServer/WMSServer?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A{epsg}&STYLES=&bbox={bbox}&width={width}&height={height}&layers=Aggair_Lden_17,Mair_Lden_17,Aggind_Lden_17,Mroad_Lden_17,Aggroad_Lden_17,AggSrail_Lden_17,Mrail_Lden_17,Aggrail_Lden_17\",\r\n            'legend': \"https://datahub.uba.de/server/services/VeLa/LK/MapServer/WMSServer?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=Aggind_Lden_17\" \r\n        }\r\n    },\r\n    'OtherURLs': {}\r\n}\r\n\r\nstateURLs = {\r\n    'Berlin': {\r\n        'properties': {\r\n            'epsg': 25833,\r\n        },\r\n        'WFSURLs': {\r\n            'cadastre': \"https://fbinter.stadt-berlin.de/fb/wfs/data/senstadt/s_wfs_alkis?service=WFS&version=2.0.0&request=GetFeature&typenames=s_wfs_alkis&bbox={bbox}\",\r\n            'cadastreBuildings': \"https://fbinter.stadt-berlin.de/fb/wfs/data/senstadt/s_wfs_alkis_gebaeudeflaechen?service=WFS&version=2.0.0&request=GetFeature&typenames=s_wfs_alkis_gebaeudeflaechen&bbox={bbox}\",\r\n            'trees': \"https://fbinter.stadt-berlin.de/fb/wfs/data/senstadt/s_wfs_baumbestand?service=WFS&version=2.0.0&request=GetFeature&typenames=fis:s_wfs_baumbestand&bbox={bbox}\",\r\n        },\r\n        'WMSURLs': {\r\n            'basemap': {\r\n               'url': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/wmsk_alkis?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=wmsk_alkis\",\r\n               'legend': \"https://fbinter.stadt-berlin.de/fb_daten/legenden/leg_alkis.png\"\r\n            },\r\n            'landuse': {\r\n                'url': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/fnp_ak?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=0\",\r\n                'minScale': 2500,\r\n                'legend': \"https://fbinter.stadt-berlin.de/fb_daten/legenden/leg_fnp_ak.png\"\r\n            },\r\n            'orthophotos': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/OI_DOP2022rgbi?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=OI_DOP2022rgbi\",\r\n            'topography': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/k_dgm1?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=ATKIS\",\r\n            'noise': {\r\n                'url': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/wmsk_07_05_14verkehr_gesDEN2016?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=wmsk_07_05_14verkehr_gesDEN2016\",\r\n                'legend': \"https://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_07_05_14verkehr_gesDEN2012.png\",\r\n            },\r\n            'pollution': {\r\n                'url': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/k03_11_1emisskfzverkehr?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=k03_11_1emisskfzverkehr\",\r\n                'minScale': 600,\r\n                'maxDim': 4050,\r\n                'legend': \"https://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_03_11_1emisskfzverkehr2015.png\"\r\n            },\r\n            'groundValueReference': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/brw_2022_amtlich?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=brw_2022_amtlich\",\r\n            # Energy Sources and Groundwaterlevel only for larger bounding boxes or smaller resolutions... -> calculate from 90dpi resolution?\r\n            'energySources': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/energienetze_ea?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=energienetze_ea\",\r\n            'groundwaterLevel': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/wmsk_02_12gwgleichen?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=wmsk_02_12gwgleichen\",\r\n            'floodingAreas': {\r\n                'url': \"https://fbinter.stadt-berlin.de/fb/wms/senstadt/ueberschwemmung?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=ueberschwemmung\",\r\n                'minScale': 2500,\r\n                'legend': \"https://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_02_21uesg2018.png\",\r\n            },\r\n        },\r\n        'OtherURLs': {\r\n            '3dBuildingsATOM': \"https://fbinter.stadt-berlin.de/fb/atom/LOD2/LoD2_{x}_{y}.zip\".format(x=int(bboxCenter[0][0:3]) + ATOMOffsetX, y=int(bboxCenter[1][0:4]) + ATOMOffsetY),\r\n            'topographyATOM': \"https://fbinter.stadt-berlin.de/fb/atom/DGM1/DGM1_{x}_{y}.zip\".format(x=floorToEven(int(bboxCenter[0][0:3]) + ATOMOffsetX), y=floorToEven(int(bboxCenter[1][0:4]) + ATOMOffsetY)),\r\n        }\r\n    },\r\n    'Brandenburg': {\r\n        'properties': {\r\n            'epsg': 25833,\r\n        },\r\n        'WFSURLs': {\r\n            'cadastre': \"https://inspire.brandenburg.de/services/cp_alkis_wfs?request=GetFeature&service=WFS&version=2.0.0&typenames=cp:CadastralParcel&bbox={bbox}\",\r\n            'cadastreBuildings': \"https://inspire.brandenburg.de/services/bu_alkis_wfs?request=GetFeature&service=WFS&version=2.0.0&typenames=bu-core2d:Building&bbox={bbox}\",\r\n            'cadastreAAA': \"https://isk.geobasis-bb.de/ows/alkis_sf_wfs?service=WFS&version=2.0.0&request=GetFeature&bbox={bbox}&typenames=adv:AP_Darstellung,adv:AP_FPO,adv:AP_LPO,adv:AP_LTO,adv:AP_PPO,adv:AP_PTO,adv:AX_AndereFestlegungNachStrassenrecht,adv:AX_AndereFestlegungNachWasserrecht,adv:AX_Aufnahmepunkt,adv:AX_Bahnverkehr,adv:AX_Bahnverkehrsanlage,adv:AX_BauRaumOderBodenordnungsrecht,adv:AX_Baublock,adv:AX_Bauteil,adv:AX_BauwerkImGewaesserbereich,adv:AX_BauwerkImVerkehrsbereich,adv:AX_BauwerkOderAnlageFuerIndustrieUndGewerbe,adv:AX_BauwerkOderAnlageFuerSportFreizeitUndErholung,adv:AX_Bergbaubetrieb,adv:AX_BesondereFlurstuecksgrenze,adv:AX_BesondereGebaeudelinie,adv:AX_BesondererBauwerkspunkt,adv:AX_BesondererGebaeudepunkt,adv:AX_BesondererHoehenpunkt,adv:AX_BesondererTopographischerPunkt,adv:AX_Bewertung,adv:AX_Bodenschaetzung,adv:AX_BoeschungKliff,adv:AX_Boeschungsflaeche,adv:AX_Buchungsblattbezirk,adv:AX_Bundesland,adv:AX_DammWallDeich,adv:AX_Denkmalschutzrecht,adv:AX_Dienststelle,adv:AX_Duene,adv:AX_EinrichtungInOeffentlichenBereichen,adv:AX_EinrichtungenFuerDenSchiffsverkehr,adv:AX_FelsenFelsblockFelsnadel,adv:AX_Firstlinie,adv:AX_FlaecheBesondererFunktionalerPraegung,adv:AX_FlaecheGemischterNutzung,adv:AX_Fliessgewaesser,adv:AX_Flugverkehr,adv:AX_Flugverkehrsanlage,adv:AX_Flurstueck,adv:AX_Forstrecht,adv:AX_Friedhof,adv:AX_Gebaeude,adv:AX_Gebaeudeausgestaltung,adv:AX_Gehoelz,adv:AX_Gelaendekante,adv:AX_Gemarkung,adv:AX_GemarkungsteilFlur,adv:AX_Gemeinde,adv:AX_Gemeindeteil,adv:AX_GeoreferenzierteGebaeudeadresse,adv:AX_Gewaessermerkmal,adv:AX_Gleis,adv:AX_GrablochDerBodenschaetzung,adv:AX_Grenzpunkt,adv:AX_Hafenbecken,adv:AX_Halde,adv:AX_Heide,adv:AX_HeilquelleGasquelle,adv:AX_HistorischesBauwerkOderHistorischeEinrichtung,adv:AX_HistorischesFlurstueck,adv:AX_HistorischesFlurstueckALB,adv:AX_HistorischesFlurstueckOhneRaumbezug,adv:AX_Hoehenlinie,adv:AX_Hoehleneingang,adv:AX_IndustrieUndGewerbeflaeche,adv:AX_KlassifizierungNachStrassenrecht,adv:AX_KlassifizierungNachWasserrecht,adv:AX_KommunalesGebiet,adv:AX_KreisRegion,adv:AX_LagebezeichnungKatalogeintrag,adv:AX_LagebezeichnungMitHausnummer,adv:AX_LagebezeichnungMitPseudonummer,adv:AX_LagebezeichnungOhneHausnummer,adv:AX_Landschaft,adv:AX_Landwirtschaft,adv:AX_Leitung,adv:AX_MarkanterGelaendepunkt,adv:AX_Meer,adv:AX_Moor,adv:AX_MusterLandesmusterUndVergleichsstueck,adv:AX_NaturUmweltOderBodenschutzrecht,adv:AX_Platz,adv:AX_PunktortAG,adv:AX_PunktortAU,adv:AX_PunktortTA,adv:AX_Regierungsbezirk,adv:AX_SchifffahrtslinieFaehrverkehr,adv:AX_Schiffsverkehr,adv:AX_SchutzgebietNachNaturUmweltOderBodenschutzrecht,adv:AX_SchutzgebietNachWasserrecht,adv:AX_Schutzzone,adv:AX_SeilbahnSchwebebahn,adv:AX_Sicherungspunkt,adv:AX_SonstigerVermessungspunkt,adv:AX_SonstigesBauwerkOderSonstigeEinrichtung,adv:AX_SonstigesRecht,adv:AX_SportFreizeitUndErholungsflaeche,adv:AX_StehendesGewaesser,adv:AX_Strassenverkehr,adv:AX_Strassenverkehrsanlage,adv:AX_Sumpf,adv:AX_TagebauGrubeSteinbruch,adv:AX_Tagesabschnitt,adv:AX_TopographischeLinie,adv:AX_Transportanlage,adv:AX_Turm,adv:AX_UnlandVegetationsloseFlaeche,adv:AX_UntergeordnetesGewaesser,adv:AX_Vegetationsmerkmal,adv:AX_Verwaltungsgemeinschaft,adv:AX_VorratsbehaelterSpeicherbauwerk,adv:AX_Wald,adv:AX_Wasserspiegelhoehe,adv:AX_Weg,adv:AX_WegPfadSteig,adv:AX_WirtschaftlicheEinheit,adv:AX_Wohnbauflaeche,adv:AX_Wohnplatz\",\r\n            '3dBuilding': \"https://isk.geobasis-bb.de/ows/gebaeudelod2_wfs?request=GetFeature&service=WFS&version=2.0.0&typenames=bldg:Building&bbox={bbox}\"\r\n        },\r\n        'WMSURLs': {\r\n            'orthophotos': \"https://isk.geobasis-bb.de/mapproxy/dop20c/service/wms?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=bebb_dop20c\",\r\n            'topography': \"https://isk.geobasis-bb.de/mapproxy/dtk10farbe/service/wms?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=bb_dtk10_farbe\",\r\n            'noise': \"https://inspire.brandenburg.de/services/hh_laermk_bb2022_wms?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=HH.HealthDeterminantMeasure\",\r\n            'pollution': \"\",\r\n            'groundValueReference': \"\",\r\n            'zoning': \"https://inspire.brandenburg.de/services/elu_alkis_wms?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=LU.ExistingLandUse\",\r\n            'energySources': \"\",\r\n            'groundwaterLevel': \"\",\r\n            'floodingAreas': \"https://maps.brandenburg.de/services/wms/uesg?service=WMS&VERSION=1.3.0&request=GetMap&format=image%2Fpng&transparent=true&CRS=EPSG%3A25833&STYLES=&bbox={bbox}&width={width}&height={height}&layers=Festgesetzte_Ueberschwemmungsgebiete\",\r\n        },\r\n        'OtherURLs': {\r\n            '3dBuildingsATOM': \"\",\r\n        }\r\n    },\r\n    'Nordrhein-Westfalen': {\r\n        'properties': {\r\n            'epsg': 25832,\r\n        },\r\n        'WFSURLs': {\r\n            'cadastre': \"https://www.wfs.nrw.de/geobasis/wfs_nw_alkis_aaa-modell-basiert?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&bbox={bbox}&typenames=adv:AX_Flurstueck\",\r\n            'cadastreBuildings': \"https://www.wfs.nrw.de/geobasis/wfs_nw_alkis_aaa-modell-basiert?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&bbox={bbox}&typenames=adv:AX_Gebaeude\",\r\n            'cadastreStreets': \"https://www.wfs.nrw.de/geobasis/wfs_nw_alkis_aaa-modell-basiert?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&bbox={bbox}&typenames=adv:AX_Strassenverkehr\",\r\n            '3dBuildingsLoD1': \"https://www.wfs.nrw.de/geobasis/wfs_nw_3d-gebaeudemodell_lod1?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&bbox={bbox}&typename=bldg:Building\",\r\n        },\r\n        'WMSURLs': {\r\n            'basemap': {\r\n                'url': \"https://www.wms.nrw.de/geobasis/wms_nw_alkis?request=GetMap&service=WMS&version=1.3.0&format=image/png&crs=EPSG:25832&styles=&transparent=true&language=ger&bbox={bbox}&width={width}&height={height}&layers=adv_alkis_tatsaechliche_nutzung\",\r\n                'legend': \"https://www.wms.nrw.de/aaa-suite/wms-resources/external-graphics/alkis/wms/adv/ALKIS-WMS-Legende_TN_farbe.png\",\r\n            },\r\n            'orthophotos': \"https://www.wms.nrw.de/geobasis/wms_nw_dop?request=GetMap&service=WMS&version=1.3.0&format=image/png&crs=EPSG:25832&styles=&transparent=true&language=ger&bbox={bbox}&width={width}&height={height}&layers=nw_dop_utm_info%2Cnw_dop_rgb\",\r\n            'topography': \"https://www.wms.nrw.de/geobasis/wms_nw_dtk10?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&format=image/png&crs=EPSG:25832&styles=&transparent=true&language=ger&bbox={bbox}&width={width}&height={height}&layers=WMS_NW_DTK10\",\r\n            'noise': {\r\n                'url': \"https://www.wms.nrw.de/umwelt/laerm?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=laerm\",\r\n                'legend': \"https://www.wms.nrw.de/umwelt/laerm?service=WMS&version=1.1.1&sld_version=1.1.0&request=GetLegendGraphic&layer=STR_DEN&styles=&format=image%2Fpng\",\r\n            },\r\n            'pollution': \"\",\r\n            'groundValueReference': \"https://www.wms.nrw.de/wms/borisplus?SERVICE=WMS&REQUEST=GetMap&version=1.3.0&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=0%2C2%2C3%2C5%2C6%2C8%2C9%2C11%2C12%2C14%2C15%2C17%2C18\",\r\n            'zoning': \"\",\r\n            'energySources': \"\",\r\n            'groundwaterLevel': \"\",\r\n            'floodingAreas': \"https://www.wms.nrw.de/umwelt/uesg?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=1%2C2%2C3%2C4%2C5%2C6\",\r\n        },\r\n        'OtherURLs': {\r\n            '3dBuildingsATOM': \"https://www.opengeodata.nrw.de/produkte/geobasis/3dg/lod2_gml/lod2_gml/LoD2_32_{x}_{y}_1_NW.gml\".format(x=int(bboxCenter[0][0:3]) + ATOMOffsetX, y=int(bboxCenter[1][0:4])+ ATOMOffsetY),\r\n            'topographyATOM': \"https://www.opengeodata.nrw.de/produkte/geobasis/hm/dgm1_xyz/dgm1_xyz/dgm1_32_{x}_{y}_1_nw.xyz.gz\".format(x=int(bboxCenter[0][0:3]) + ATOMOffsetX, y=int(bboxCenter[1][0:4]) + ATOMOffsetY),\r\n        }\r\n    },\r\n    'Baden-Württemberg': { # CAUTON - NOT FREE TO USE\r\n        'properties': {\r\n            'epsg': 25832,\r\n            'epsgGK': 31467,\r\n        },\r\n        'WFSURLs': {\r\n            'cadastre': \"\",\r\n            'cadastreBuildings': \"\",\r\n        },\r\n        'WMSURLs': {\r\n            'basemap': \"\",\r\n            'orthophotos': \"https://owsproxy.lgl-bw.de/owsproxy/ows/WMS_LGL-BW_ATKIS_DOP_20_C?user=geop_raumord&password=20141009_raum&LAYERS=IMAGES_DOP_20_RGB&TRANSPARENT=false&FORMAT=image%2Fpng&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetMap&STYLES=&SRS=EPSG%3A25832&BBOX={bbox}&WIDTH={width}&HEIGHT={height}\",\r\n            'topography': \"\",\r\n            'pollution': \"\",\r\n            'groundValueReference': \"\",\r\n            'landuse': {\r\n                'url': \"https://www.geoportal-raumordnung-bw.de/mapserver/wms/nologin/1_fnp?LAYERS=fnp0&TRANSPARENT=TRUE&FORMAT=image%2Fgif&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetMap&STYLES=&SRS=EPSG%3A25832&BBOX={bbox}&WIDTH={width}&HEIGHT={height}\",\r\n                'legend': \"https://www.geoportal-raumordnung-bw.de/mapserver/wms/nologin/1_fnp?version=1.1.1&service=WMS&request=GetLegendGraphic&layer=fnp0&format=image/png&STYLE=default\",\r\n                'minScale': 7500,\r\n            },\r\n            'energySources': \"\",\r\n            'groundwaterLevel': \"\",\r\n            'floodingAreas': \"\",\r\n        },\r\n        'OtherURLs': {\r\n            '3dBuildingsATOM': \"\",\r\n            'topographyATOM': \"\",\r\n        }\r\n    },\r\n}\r\n\r\ncityURLs = {\r\n    'Heidenheim': {\r\n        'properties': {\r\n            'epsg': 25832\r\n        },\r\n        'WFSURLs': {},\r\n        'WMSURLs': {\r\n            'cadastreWMS': \"https://buergerinfo.landkreis-heidenheim.de/cadenza/api/map?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=ALKISWMS~5976&STYLES=default&EXCEPTIONS=application/vnd.ogc.se_blank&SRS=EPSG:25832&width={width}&height={height}&bbox={bbox}\",\r\n            'orthophotos': \"https://owsproxy.lgl-bw.de/owsproxy/ows/WMS_LGL-BW_ATKIS_DOP_20_C?user=lra_heidenheim02&password=20150504_heidenh02&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=IMAGES_DOP_20_RGB&STYLES=default&EXCEPTIONS=BLANK&CRS=EPSG%3A25832&WIDTH={width}&HEIGHT={height}&BBOX={bbox}\"\r\n        },\r\n        'OtherURLs': {}\r\n    },\r\n    'München': {\r\n        'properties': {\r\n            'epsg': 25832\r\n        },\r\n        'WFSURLs': {},\r\n        'WMSURLs': {\r\n            'cadastre': \"https://geoportal.muenchen.de/geoserver/gsm/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=gsm:g_stadtkarte_gesamt&SINGLETILE=false&CRS=EPSG:25832&STYLES=&width={width}&height={height}&bbox={bbox}\",\r\n            'orthophotos': \"https://geoportal.muenchen.de/geoserver/gsm/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&CACHEID=1217800&LAYERS=gsm:g_luftbild&SINGLETILE=false&CRS=EPSG:25832&STYLES=&width={width}&height={height}&bbox={bbox}\",\r\n            'zoning': \"https://geoportal.muenchen.de/geoserver/plan/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=plan:g_fnp&SINGLETILE=false&CRS=EPSG:25832&STYLES=&width={width}&height={height}&bbox={bbox}\",\r\n            'groundwaterLevel': \"https://geoportal.muenchen.de/geoserver/rgu/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=rgu:flab&SINGLETILE=false&CRS=EPSG:25832&STYLES=&width={width}&height={height}&bbox={bbox}\",\r\n            'floodingAreas': \"https://geoportal.muenchen.de/geoserver/rgu/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&CACHEID=6795953&LAYERS=rgu:festsetzung&SINGLETILE=false&CRS=EPSG:25832&STYLES=&width={width}&height={height}&bbox={bbox}\"\r\n        },\r\n        'OtherURLs': {}\r\n    },\r\n    'Stuttgart': {\r\n        'properties': {\r\n            'epsg': 25832\r\n        },\r\n        'WFSURLs': {},\r\n        'WMSURLs': {\r\n            'basemap': {\r\n                'url': \"https://geoserver.stuttgart.de/geoserver/ows/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=Base:Basemap_EPSG25832\",\r\n                'legend': \"https://geoserver.stuttgart.de/geoserver/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=Base%3ABasemap_EPSG25832\"\r\n            },\r\n            'cadastre': \"https://geoserver.stuttgart.de/geoserver/ows/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=Base:A62_GK_STRLINIEN_PLUS_EPSG25832,GEOLINE_FLEX:A36_SOLAR_GEB_GRUNDRISSE_EPSG25832,Base:A67_GFM_BAUM_PLUS_EPSG25832,GEOLINE_FLEX:A62_Hoehenlinien_EPSG25832,GEOLINE_FLEX:A62_GK_Flurstuecke_EPSG25832\",\r\n            'orthophotos': \"https://geoserver.stuttgart.de/geoserver/ows/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=Base:A62_Luftbild_2021_EPSG25832\",\r\n            'noise': {\r\n                'url': \"https://geoserver.stuttgart.de/geoserver/ows/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=Base:A62_GK_STRLINIEN_PLUS_EPSG25832,GEOLINE_FLEX:A36_SOLAR_GEB_GRUNDRISSE_EPSG25832,GEOLINE_FLEX:A36_LAERM2017_Strasse_LDEN_Gebaeude_EPSG25832\",\r\n                'legend': \"https://maps.stuttgart.de/_config/ressources/img/legend/Laermkartierung_24h_2018.png\"\r\n            },\r\n            'pollution': {\r\n                'url': \"https://geoserver.stuttgart.de/geoserver/ows/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=GEOLINE_FLEX:A36_LUFT_POT_LUFTBELASTUNG_STGT_EPSG25832,Base:A62_GK_STRLINIEN_PLUS_EPSG25832,GEOLINE_FLEX:A36_SOLAR_GEB_GRUNDRISSE_EPSG25832\",\r\n                'legend': \"https://maps.stuttgart.de/_config/ressources/img/legend/Luftbelastung/potentielle_luftbelastung.PNG\",\r\n                'minScale': 7500,\r\n            },\r\n            'pollutionPM10': {\r\n                'url': \"https://geoserver.stuttgart.de/geoserver/ows/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=Base:A62_GK_STRLINIEN_PLUS_EPSG25832,GEOLINE_FLEX:A36_SOLAR_GEB_GRUNDRISSE_EPSG25832,GEOLINE_FLEX:A36_LUFT_IMMISSION_PM10_EPSG25832\",\r\n                'legend': \"https://maps.stuttgart.de/_config/ressources/img/legend/Luftbelastung/Feinstaub.PNG\"\r\n            },\r\n            'pollutionNO2': {\r\n                'url': \"https://geoserver.stuttgart.de/geoserver/ows/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=Base:A62_GK_STRLINIEN_PLUS_EPSG25832,GEOLINE_FLEX:A36_SOLAR_GEB_GRUNDRISSE_EPSG25832,GEOLINE_FLEX:A36_Stickstoffdioxid_NO2_EPSG25832\",\r\n                'legend': \"https://maps.stuttgart.de/_config/ressources/img/legend/Luftbelastung/Stickstoffdioxid.PNG\"\r\n            },\r\n            'floodingAreas': {\r\n                'url': \"https://geoserver.stuttgart.de/geoserver/ows/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&format=image/png&crs=EPSG:25832&styles=&transparent=true&bbox={bbox}&width={width}&height={height}&layers=Base:A62_GK_STRLINIEN_PLUS_EPSG25832,GEOLINE_FLEX:A36_SOLAR_GEB_GRUNDRISSE_EPSG25832,GEOLINE_FLEX:A36_Ueberschwemmungsgebiete_HQ100_EPSG25832\",\r\n                'legend': \"https://maps.stuttgart.de/_config/ressources/img/legend/Festgesetzte_Ueberschwemmungsgebiete.png\"\r\n            },\r\n        },\r\n        'OtherURLs': {}\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n# Part 2 - Select best URLs for city/state/country/EU and fill templates with bbox (and potentially other parameters)\r\n\r\nurlTemplatesWFS = germanyWideURLs['WFSURLs']\r\nurlTemplatesWMS = germanyWideURLs['WMSURLs']\r\nurlsOther = germanyWideURLs['OtherURLs']\r\n\r\nepsg = germanyWideURLs['properties']['epsg']\r\n\r\nif state in stateURLs:\r\n    urlTemplatesWFS = {**urlTemplatesWFS, **stateURLs[state]['WFSURLs']}\r\n    urlTemplatesWMS = {**urlTemplatesWMS, **stateURLs[state]['WMSURLs']}\r\n    urlsOther = {**urlsOther, **stateURLs[state]['OtherURLs']}\r\n    epsg = stateURLs[state]['properties']['epsg']\r\nif city in cityURLs:\r\n    urlTemplatesWFS = {**urlTemplatesWFS, **cityURLs[city]['WFSURLs']}\r\n    urlTemplatesWMS = {**urlTemplatesWMS, **cityURLs[city]['WMSURLs']} \r\n    urlsOther = {**urlsOther, **cityURLs[city]['OtherURLs']}\r\n    epsg = cityURLs[city]['properties']['epsg']\r\nelse:\r\n    print('Error: No Service URLS available for this location')\r\n\r\n\r\n# Part 3 - Prepare correct URLs for deault layers (customize layer selection?)\r\n\r\nurlsWFS = { key + 'WFS': urlTemplatesWFS[key].format(bbox=bbox) for key in urlTemplatesWFS.keys() }\r\n#urlsWMS = { key + 'WMS': urlTemplatesWMS[key].format(width=WIDTH, height=HEIGHT, bbox=bbox) for key in urlTemplatesWMS.keys() }\r\nurlsWMS = {}\r\nfor key in urlTemplatesWMS.keys():\r\n    urlTemplate = urlTemplatesWMS[key]\r\n    outputKey = key + 'WMS'\r\n    if type(urlTemplate) is dict:\r\n        width = WIDTH\r\n        height = HEIGHT\r\n        \r\n        if 'minScale' in urlTemplate:\r\n            scale = urlTemplate['minScale']\r\n            width = calcMaxImageDim(scale, bboxWidth)\r\n            height = calcMaxImageDim(scale, bboxHeight)\r\n            \r\n        if 'maxDim' in urlTemplate:\r\n            maxDim = urlTemplate['maxDim']\r\n            ratio = width / height\r\n            if width > maxDim:\r\n                width = maxDim\r\n                height = math.floor(width / ratio)\r\n            elif height > maxDim:\r\n                height = maxDim\r\n                width = math.floor(height * ratio)\r\n    \r\n        if 'legend' in urlTemplate:\r\n            urlsWMS[outputKey] = [urlTemplatesWMS[key]['url'].format(width=width, height=height, bbox=bbox, epsg=epsg), urlTemplatesWMS[key]['legend']]\r\n        else:\r\n            urlsWMS[outputKey] = urlTemplatesWMS[key]['url'].format(width=width, height=height, bbox=bbox, epsg=epsg)\r\n    else:\r\n        urlsWMS[outputKey] = urlTemplatesWMS[key].format(width=WIDTH, height=HEIGHT, bbox=bbox)\r\n\r\n\r\n# Combine differnt URL groups to single output\r\n\r\nOUT = { **urlsWFS, **urlsWMS, **urlsOther }\r\n\r\n# print(OUT)\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "6810ca6a3a8a45e0868630f0463966d7",
+      "Inputs": [
+        {
+          "Id": "481297f7fd454a7aba5354c5b26a46b6",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2ba2edc12227484ab768bad08d59aed6",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "715eaa9226dc437d8258111dc50ce8dc",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "081582f5412e46e6b4d1bd571662a28d",
+          "Name": "IN[3]",
+          "Description": "Input #3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "25aa5897f821439aa2a9ce0b2f7fb4fc",
+          "Name": "IN[4]",
+          "Description": "Input #4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "e6e6a115240445e191d95c6355c25782",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "city",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "454ace3b5e5c45169c5962c26edeeff7",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7bb5ddc6ea054087a874ea6e6d08fc33",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "state",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "b8de9390697f41d3b06097dc922d0003",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "068a1e0e1ec04deb881ae558ba061fe8",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "bbox",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "67561477f3d04a4eaba767ce90814642",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "4001bf35822d4258be459298e027bd4f",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "URLs",
+      "Id": "5d522a816ec8436b9261eb8757d199ef",
+      "Inputs": [
+        {
+          "Id": "e08b8d5f8f3a44d6bef25ed3b98249a3",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "3bd80b17dbe54b8e892d134c4ec7c107",
+      "Inputs": [
+        {
+          "Id": "a346f9924c004b7b948664e84399344b",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8ba9cc0e664445e994e13a455c42a281",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2a47303c3b934fd68e302ca2247c8429",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"basemapWMS\";",
+      "Id": "06eee776547445cb9ede5022744acb97",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "3d13947ea586499cb0db40f72ac5506c",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Base Map (WMS)",
+      "Id": "2ecfbe6a5c2d48f4afc253b20508e2d5",
+      "Inputs": [
+        {
+          "Id": "9e3695c1704e4cca9deed4aaf60ed312",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "// Future Inputs: Layers",
+      "Id": "9fb5bca34fe44f789a749b3b7d298a1f",
+      "Inputs": [],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "a7a9c1ce11ea42f48bfe93b918719071",
+      "Inputs": [
+        {
+          "Id": "31ffbaa5e0a2482ba6147c1cb50cc24b",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e079e4186ca74832b42cf6a1c4f2a0ec",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "40db7a0f4feb4be2aab94dc5b41ddf86",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"orthophotosWMS\";",
+      "Id": "061c84209cb4491398ff0ceeb57f1036",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "bece100f68324fbc8deb20f0a214ad5c",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Orthophotos (WMS)",
+      "Id": "803c5abed0924b0e8e8dd564ce6079a7",
+      "Inputs": [
+        {
+          "Id": "b8979795e1bb429caafe3566088e7744",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "abb777e7250b4eb5ac4270aa944938eb",
+      "Inputs": [
+        {
+          "Id": "6ecd98101aaf4c238fd38b86048b307a",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8664049a1bde4146b0ff9847a0e4ae59",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ed7e383103e74aee8bd060ca08809199",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Noise (WMS)",
+      "Id": "e2d3a56d43a249babdbc1e86c363cc37",
+      "Inputs": [
+        {
+          "Id": "58810116063743989964e2e0a13e2bd5",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"noiseWMS\";",
+      "Id": "d67a9bc323914269a73a56305732c88e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "5d8e8d9c4ac0466f9544d69399698957",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "57d7dcc508d94d97a8cd51b5fb3dd7cf",
+      "Inputs": [
+        {
+          "Id": "e3e682296efe4783b913dad53414ba07",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d29d021dea214754ab59f463954e640c",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7d249dc221ce41cc97b0b67712b57d31",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Pollution (WMS)",
+      "Id": "a85e9bf67f84419781ac79815f946eda",
+      "Inputs": [
+        {
+          "Id": "e9846f970c694ab396e15bac76f62f7c",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"pollutionWMS\";",
+      "Id": "00e520d6a6a24890b9029d24ee6b8f10",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "dce928a625bd49b5a66e6720a653be7b",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "f0102b46e5534368967e234a1cea2bd6",
+      "Inputs": [
+        {
+          "Id": "a6d509a215c44bb1aa031b537b44e2f3",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4ab626681daa4c15b2bbb676510a5549",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "aa249f403add43e286df63c17e5160b4",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Topography (WMS)",
+      "Id": "e8a0e89d09134845b403d488d02f05b3",
+      "Inputs": [
+        {
+          "Id": "16bf36f722114916bb98b011b81f5d9a",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"topographyWMS\";",
+      "Id": "9bc87e80de0a47b188ae096a67500754",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6718ece2f7b941c2bcf02daa3760480c",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "3826f628e7eb41cc94cc5724a107e9c7",
+      "Inputs": [
+        {
+          "Id": "8a7ac54aed15406695ffc007ce2ee885",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "62dded77565a49ff82cb124dfca8e681",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "19152b39b433479da5f9358cda6b045b",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Cadastre (WFS)",
+      "Id": "db147e9ae1cd405f9709dce546e82946",
+      "Inputs": [
+        {
+          "Id": "52dc61921d0e4154aa13500dffb84478",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"cadastreWFS\";",
+      "Id": "1b335f5c6a7a47b59e1c26babeb61e9f",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "67c19f8491e54708b6209f26cac7f1a8",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "0be916810fd34205ab39b10cbf03e8b4",
+      "Inputs": [
+        {
+          "Id": "77c36105b69e4a138e6abe47198c35a2",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5a1a72c8dff24457916f845c74371adb",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "186fbc3dbf8e47f9909508fbd7e6089f",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"cadastreBuildingsWFS\";",
+      "Id": "d78623bad5084ecf87e74a5d6566f9ba",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "3cd6d858d0b04980a5d9c05b2f1e72dd",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Cadastre Buildings (WFS)",
+      "Id": "07748daccdc2478f9135457a6714a24c",
+      "Inputs": [
+        {
+          "Id": "657e8b5874794db6b28ba46d3784146e",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "737587aa5a6d47e68b2dfa2b798154d7",
+      "Inputs": [
+        {
+          "Id": "f3dd162310844ff58de4d5eb2bf406a1",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e0fdbaae9271497c8da965709f765ef3",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ea6a057487f24b1fae11a13a1e27b3b2",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "3D Buildings (ATOM)",
+      "Id": "4f9f46b1e89e4bc3994c5ea8ce14b7b0",
+      "Inputs": [
+        {
+          "Id": "d80bcd904d9343a38036b189ff4fe6d6",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"3dBuildingsATOM\";",
+      "Id": "23b4f90bd35d46ff8cc43357e077b6ba",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "26139e8011c74624854b380ba3060a23",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "2194b5b3fac74e238bf2d576d5f0a343",
+      "Inputs": [
+        {
+          "Id": "cceaf320d6b4434dae03447093385514",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "701ac21cb4234351b08fd27e2314177e",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "9227cb21df9b4245a06ff3b735704962",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "3D Buildings LoD1 (WFS)",
+      "Id": "0a9f182ff1ff4201a755c2d507f27c96",
+      "Inputs": [
+        {
+          "Id": "5c11b1600e044eada83bd91db7a420f4",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"3dBuildingsLoD1WFS\";",
+      "Id": "cbefd86a84144008871718245e4c5332",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "53552f36be0749a3bc6f2f9e26b6b4e5",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "f4811f5d464b460e95156ac34545f5da",
+      "Inputs": [
+        {
+          "Id": "b2688fdfba074876a483dfa2dd92dea0",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "bd2ac6cdae024ba4a1d7da9df5678cdd",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b416a0685c424045bdb14d693e111f1e",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Trees (WFS)",
+      "Id": "e58763f4179641978b9d58dffc70489b",
+      "Inputs": [
+        {
+          "Id": "7e8db334d3cb48b99396f2499e166d36",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"treesWFS\";",
+      "Id": "c308ad27ccec4faabe5f54a47222de9b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6bcfcb94a2784d78bc3b002c0a52c68f",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "cbb126d3599f427d8d308daf0cbe51e4",
+      "Inputs": [
+        {
+          "Id": "0316dd8e091f45a3b188f45f89c1ac5a",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "799cee30d65b4927b1e025d9b5ca1a75",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1bc14af72ee6414db3566a6b350e7ab1",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Topography 1m (ATOM)",
+      "Id": "30b9bd661c0340f69e4b30d37e10c677",
+      "Inputs": [
+        {
+          "Id": "4901dd30b1b842de95a1bb3bc05c79da",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"topographyATOM\";",
+      "Id": "b4b4b9812a1c4a898c6966ef73e3ead2",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "871446df35914a7480adcad46cf4d1c8",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "7e52e4b0b7194668b6b99e2755aaae8a",
+      "Inputs": [
+        {
+          "Id": "72db186ec4ec488685eab0e7ca10fb96",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c7b0baa9f68b44fea680c184773e2d71",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ee896eb6e20c454aaa9e0bdab752fcb3",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"landuseWMS\";",
+      "Id": "ab2cacd1b2dc4727a4069d1c0a3c214d",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "de28b6c533e74fed9b6967b928a27de6",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Land Use (WMS)",
+      "Id": "bbe5179491424d13bbe2862b77f54120",
+      "Inputs": [
+        {
+          "Id": "b8307ee67891465c86a85e74fa4a8eb6",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "87a8f563a10c48b1825aa5ae2f8274e5",
+      "Inputs": [
+        {
+          "Id": "dcc56109877445d9b20581d47c505e80",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0b35546aae3f4232ab625a7bdf6fba3f",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "87d2a18d40d14b9591b17dcb40f5ad5f",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Flooding Areas (WMS)",
+      "Id": "b24383fd85cc439c90d853215877a69e",
+      "Inputs": [
+        {
+          "Id": "17c219211db24f7593dc5da70802e204",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"floodingAreasWMS\";",
+      "Id": "e4340c6c95f74e97abd514a1c0b089b8",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "584bac9eecad447698a9214c4b6ecf2a",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "48b532d394974b9bb59ec00babe5cc8a",
+      "Inputs": [
+        {
+          "Id": "ad732b2575684a70b1d322d93d991d07",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0529f7e7916a4e0bbc584b0b3b7ae2e0",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8e342ca81abc4f89a48923206a97009f",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Cadastre (WMS)",
+      "Id": "e439003ef90c426dbb21d2d36eee513c",
+      "Inputs": [
+        {
+          "Id": "44e64897d67241759f4d22eee4c64420",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"cadastreWMS\";",
+      "Id": "b6dcede19c0441d4b2d161012b7d2441",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "28f2801a5b644079bc7b18bc66a8f9df",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "519bd5c2a64d4fc282c1c415b712f2ba",
+      "Inputs": [
+        {
+          "Id": "239177aa94f04583b6f40fbb34012601",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ab1c383bcead4e35ae823a33622d8f2f",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5f750f659bfa4946a05bce00eec36efc",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Pollution PM10 (WMS)",
+      "Id": "ca29e09b74034228a6dd3ec7e3d34f48",
+      "Inputs": [
+        {
+          "Id": "b4acbbfd28074f35ba3d7ca8ff2d08cc",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"pollutionPM10WMS\";",
+      "Id": "7cf252a5fd594bf6a80a14da7606fe67",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "45e4241cbb8a42d0ba8efd4d61f90fb9",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "475417db17d8412b985bf733d0b71144",
+      "Inputs": [
+        {
+          "Id": "1eef682172ee4ac5895425033ddfb0cb",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ccbde729e3ab4010a0ff196ab87d2dcb",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8d66e1f7b9484f6fbc094d114f364f19",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Pollution NO2 (WMS)",
+      "Id": "4efccda4620a48758da05b0c2ad94fb9",
+      "Inputs": [
+        {
+          "Id": "e7d6722b49c642cf974211b719d5bc0e",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"pollutionNO2WMS\";",
+      "Id": "5750cbbdc4cc460587a910304d84170a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a3feb83c23984842aae5059731c5dfe4",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "archilab.Core.Dictionaries.TryGetValueAtKey@DesignScript.Builtin.Dictionary,string",
+      "Id": "548353414b934c5cbe55ebc1440c7485",
+      "Inputs": [
+        {
+          "Id": "31a417c33aad4938b197d2ef06546fe8",
+          "Name": "dictionary",
+          "Description": "Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "c5227e7a1cb7402583f3ca1cb7b3736f",
+          "Name": "key",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6218f6db371b49e699035db01a5b1d4b",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Dictionaries.TryGetValueAtKey (dictionary: Dictionary, key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Cadastre Streets (WFS)",
+      "Id": "232896b85473408daa2dcec3491111f8",
+      "Inputs": [
+        {
+          "Id": "554bbea73ebc4490898150c5f489912b",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"cadastreStreetsWFS\";",
+      "Id": "0abadc2da2bf467782faeb7b8b40be6b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7461cf65717142c78047d9939db6481a",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "ATOMOffsetX",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "3bd0b354f5f340b69e59d4c7f4ab636b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a117c839c4ab4b73bcda545b2bc55e76",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "ATOMOffsetY",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "8096f63bb47a4d34a062de9e06bf692a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "fc278fb9e2064d0f8512c85a30c66241",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "e08b8d5f8f3a44d6bef25ed3b98249a3",
+      "Id": "abe35f1ed54a403a9110b78a481c111d"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "a346f9924c004b7b948664e84399344b",
+      "Id": "802a5eec480b49ab934361fb70c98a11"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "31ffbaa5e0a2482ba6147c1cb50cc24b",
+      "Id": "1f00d8ae042341f38a1512e80acbf77b"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "6ecd98101aaf4c238fd38b86048b307a",
+      "Id": "18c18f8c1c394dbdb478cd5a2f8f99a3"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "e3e682296efe4783b913dad53414ba07",
+      "Id": "a54ea4129a63498d86df88b808b88596"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "a6d509a215c44bb1aa031b537b44e2f3",
+      "Id": "a2438311756e4d4286362e8686c3a38c"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "8a7ac54aed15406695ffc007ce2ee885",
+      "Id": "9c3ec2ac6fc0499bae219b2a2b59453d"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "77c36105b69e4a138e6abe47198c35a2",
+      "Id": "bca82ac01d7245be81bc3cc202ab3ab5"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "f3dd162310844ff58de4d5eb2bf406a1",
+      "Id": "b487a3141bb04125bd1b521ddec13787"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "cceaf320d6b4434dae03447093385514",
+      "Id": "7eb6078c24da4b71b3884017304e4c83"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "b2688fdfba074876a483dfa2dd92dea0",
+      "Id": "227cdf9084c141968139425ed810877b"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "0316dd8e091f45a3b188f45f89c1ac5a",
+      "Id": "c4c1a30beef9418aacbfc792555efe5f"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "72db186ec4ec488685eab0e7ca10fb96",
+      "Id": "ab1dcd80de2644258d04584037e9ccc1"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "dcc56109877445d9b20581d47c505e80",
+      "Id": "beb92fdc0cb54767a589b55d570ac3bc"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "ad732b2575684a70b1d322d93d991d07",
+      "Id": "bcab23e04dd24f0dac60768b6c4e32fd"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "239177aa94f04583b6f40fbb34012601",
+      "Id": "9264874209614115b902e4229951e1fd"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "1eef682172ee4ac5895425033ddfb0cb",
+      "Id": "61bcdd64c0aa495591aa18b5b4bb88ae"
+    },
+    {
+      "Start": "e6e6a115240445e191d95c6355c25782",
+      "End": "31a417c33aad4938b197d2ef06546fe8",
+      "Id": "e47b61026e094e979c8b9fdb134b8625"
+    },
+    {
+      "Start": "7bb5ddc6ea054087a874ea6e6d08fc33",
+      "End": "481297f7fd454a7aba5354c5b26a46b6",
+      "Id": "6073361b65b347c7b41cbcbb7c12fcd2"
+    },
+    {
+      "Start": "068a1e0e1ec04deb881ae558ba061fe8",
+      "End": "2ba2edc12227484ab768bad08d59aed6",
+      "Id": "3ce83949b2b1455b94fbfdac79164f56"
+    },
+    {
+      "Start": "4001bf35822d4258be459298e027bd4f",
+      "End": "715eaa9226dc437d8258111dc50ce8dc",
+      "Id": "f2fa29e089c84955b93b4a90ed14a71d"
+    },
+    {
+      "Start": "2a47303c3b934fd68e302ca2247c8429",
+      "End": "9e3695c1704e4cca9deed4aaf60ed312",
+      "Id": "4c69e93183964892b2cebd328ac2310f"
+    },
+    {
+      "Start": "3d13947ea586499cb0db40f72ac5506c",
+      "End": "8ba9cc0e664445e994e13a455c42a281",
+      "Id": "91af6e6f72af4cb197a5a8e2a920dce4"
+    },
+    {
+      "Start": "40db7a0f4feb4be2aab94dc5b41ddf86",
+      "End": "b8979795e1bb429caafe3566088e7744",
+      "Id": "2f09698bdbd442b6861a0efd935d45f6"
+    },
+    {
+      "Start": "bece100f68324fbc8deb20f0a214ad5c",
+      "End": "e079e4186ca74832b42cf6a1c4f2a0ec",
+      "Id": "8b8097f337cd4883874256c2db2afd07"
+    },
+    {
+      "Start": "ed7e383103e74aee8bd060ca08809199",
+      "End": "58810116063743989964e2e0a13e2bd5",
+      "Id": "6bac6d73b74c4f90b49507c4a29b86e1"
+    },
+    {
+      "Start": "5d8e8d9c4ac0466f9544d69399698957",
+      "End": "8664049a1bde4146b0ff9847a0e4ae59",
+      "Id": "eaf255245b16419c817865f5291b8241"
+    },
+    {
+      "Start": "7d249dc221ce41cc97b0b67712b57d31",
+      "End": "e9846f970c694ab396e15bac76f62f7c",
+      "Id": "54531e75473b48008a182f828ca70d2c"
+    },
+    {
+      "Start": "dce928a625bd49b5a66e6720a653be7b",
+      "End": "d29d021dea214754ab59f463954e640c",
+      "Id": "e423159911104d9c831099ca7ff4d66c"
+    },
+    {
+      "Start": "aa249f403add43e286df63c17e5160b4",
+      "End": "16bf36f722114916bb98b011b81f5d9a",
+      "Id": "4bdef50fe74f4c8fb3433b5bea6c35f0"
+    },
+    {
+      "Start": "6718ece2f7b941c2bcf02daa3760480c",
+      "End": "4ab626681daa4c15b2bbb676510a5549",
+      "Id": "86925c82c4fe4e76a802366e85683afb"
+    },
+    {
+      "Start": "19152b39b433479da5f9358cda6b045b",
+      "End": "52dc61921d0e4154aa13500dffb84478",
+      "Id": "065126d315d44310b808481fed286ec7"
+    },
+    {
+      "Start": "67c19f8491e54708b6209f26cac7f1a8",
+      "End": "62dded77565a49ff82cb124dfca8e681",
+      "Id": "5a80bc2c5b0c4c83b4778cb1f0df9b0f"
+    },
+    {
+      "Start": "186fbc3dbf8e47f9909508fbd7e6089f",
+      "End": "657e8b5874794db6b28ba46d3784146e",
+      "Id": "bd8e41bbe986479fbda9bc09782bd493"
+    },
+    {
+      "Start": "3cd6d858d0b04980a5d9c05b2f1e72dd",
+      "End": "5a1a72c8dff24457916f845c74371adb",
+      "Id": "07f2ebb5415948fdb29a7f359d7a40db"
+    },
+    {
+      "Start": "ea6a057487f24b1fae11a13a1e27b3b2",
+      "End": "d80bcd904d9343a38036b189ff4fe6d6",
+      "Id": "1a9a8a19ed8440b9b80d83a91e245039"
+    },
+    {
+      "Start": "26139e8011c74624854b380ba3060a23",
+      "End": "e0fdbaae9271497c8da965709f765ef3",
+      "Id": "75f05ff8a14e4b988104d28b24021791"
+    },
+    {
+      "Start": "9227cb21df9b4245a06ff3b735704962",
+      "End": "5c11b1600e044eada83bd91db7a420f4",
+      "Id": "554c88086dfa4ace9babd1c328eb44db"
+    },
+    {
+      "Start": "53552f36be0749a3bc6f2f9e26b6b4e5",
+      "End": "701ac21cb4234351b08fd27e2314177e",
+      "Id": "6e77cd5baa7943ca86835cd4f14e98f3"
+    },
+    {
+      "Start": "b416a0685c424045bdb14d693e111f1e",
+      "End": "7e8db334d3cb48b99396f2499e166d36",
+      "Id": "5e0f8361eb1e4e28b63aac7e4f5ec48f"
+    },
+    {
+      "Start": "6bcfcb94a2784d78bc3b002c0a52c68f",
+      "End": "bd2ac6cdae024ba4a1d7da9df5678cdd",
+      "Id": "3b4cb5105f3a42ed979a17ed8855c3d6"
+    },
+    {
+      "Start": "1bc14af72ee6414db3566a6b350e7ab1",
+      "End": "4901dd30b1b842de95a1bb3bc05c79da",
+      "Id": "e63a99cf7b2044dcbbb5719a8dc1c825"
+    },
+    {
+      "Start": "871446df35914a7480adcad46cf4d1c8",
+      "End": "799cee30d65b4927b1e025d9b5ca1a75",
+      "Id": "6b535f3c2d8d4439ae0d2612749b7b81"
+    },
+    {
+      "Start": "ee896eb6e20c454aaa9e0bdab752fcb3",
+      "End": "b8307ee67891465c86a85e74fa4a8eb6",
+      "Id": "e35ed5bb8de6497c8bdce60aff2e112b"
+    },
+    {
+      "Start": "de28b6c533e74fed9b6967b928a27de6",
+      "End": "c7b0baa9f68b44fea680c184773e2d71",
+      "Id": "74451262fad249dd8378b7bbe2354dae"
+    },
+    {
+      "Start": "87d2a18d40d14b9591b17dcb40f5ad5f",
+      "End": "17c219211db24f7593dc5da70802e204",
+      "Id": "059f3be7ba804133b2993100827afbbc"
+    },
+    {
+      "Start": "584bac9eecad447698a9214c4b6ecf2a",
+      "End": "0b35546aae3f4232ab625a7bdf6fba3f",
+      "Id": "446800f1a6644834a4c46d275ebc5bea"
+    },
+    {
+      "Start": "8e342ca81abc4f89a48923206a97009f",
+      "End": "44e64897d67241759f4d22eee4c64420",
+      "Id": "ff6efede1256426783683f935081cd46"
+    },
+    {
+      "Start": "28f2801a5b644079bc7b18bc66a8f9df",
+      "End": "0529f7e7916a4e0bbc584b0b3b7ae2e0",
+      "Id": "6324c82063ed47a2bdb3d0d4e39d2fa2"
+    },
+    {
+      "Start": "5f750f659bfa4946a05bce00eec36efc",
+      "End": "b4acbbfd28074f35ba3d7ca8ff2d08cc",
+      "Id": "329c90457e9049da85112ca40c8c4dc1"
+    },
+    {
+      "Start": "45e4241cbb8a42d0ba8efd4d61f90fb9",
+      "End": "ab1c383bcead4e35ae823a33622d8f2f",
+      "Id": "3c3bb2e5db4d4ccdb4f4d8df05a458c3"
+    },
+    {
+      "Start": "8d66e1f7b9484f6fbc094d114f364f19",
+      "End": "e7d6722b49c642cf974211b719d5bc0e",
+      "Id": "39f766eacae84ead97d6c75019ba3c3f"
+    },
+    {
+      "Start": "a3feb83c23984842aae5059731c5dfe4",
+      "End": "ccbde729e3ab4010a0ff196ab87d2dcb",
+      "Id": "3ac31ec0c0ae49238f918784218ddeef"
+    },
+    {
+      "Start": "6218f6db371b49e699035db01a5b1d4b",
+      "End": "554bbea73ebc4490898150c5f489912b",
+      "Id": "d3fafe26202d4fd89a7893e39a46354c"
+    },
+    {
+      "Start": "7461cf65717142c78047d9939db6481a",
+      "End": "c5227e7a1cb7402583f3ca1cb7b3736f",
+      "Id": "641d479a9fde4f5da68048cd7553bf75"
+    },
+    {
+      "Start": "a117c839c4ab4b73bcda545b2bc55e76",
+      "End": "081582f5412e46e6b4d1bd571662a28d",
+      "Id": "3d9df0ca32664fad8731fd04bb05dac9"
+    },
+    {
+      "Start": "fc278fb9e2064d0f8512c85a30c66241",
+      "End": "25aa5897f821439aa2a9ce0b2f7fb4fc",
+      "Id": "886109944ef34dc488a5d9097bb546f6"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "archi-lab.net",
+      "Version": "2023.213.1523",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "3bd80b17dbe54b8e892d134c4ec7c107",
+        "a7a9c1ce11ea42f48bfe93b918719071",
+        "abb777e7250b4eb5ac4270aa944938eb",
+        "57d7dcc508d94d97a8cd51b5fb3dd7cf",
+        "f0102b46e5534368967e234a1cea2bd6",
+        "3826f628e7eb41cc94cc5724a107e9c7",
+        "0be916810fd34205ab39b10cbf03e8b4",
+        "737587aa5a6d47e68b2dfa2b798154d7",
+        "2194b5b3fac74e238bf2d576d5f0a343",
+        "f4811f5d464b460e95156ac34545f5da",
+        "cbb126d3599f427d8d308daf0cbe51e4",
+        "7e52e4b0b7194668b6b99e2755aaae8a",
+        "87a8f563a10c48b1825aa5ae2f8274e5",
+        "48b532d394974b9bb59ec00babe5cc8a",
+        "519bd5c2a64d4fc282c1c415b712f2ba",
+        "475417db17d8412b985bf733d0b71144",
+        "548353414b934c5cbe55ebc1440c7485"
+      ]
+    }
+  ],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.12.1.8246",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -159652.890625,
+      "EyeY": -17775.953125,
+      "EyeZ": 64839.78515625,
+      "LookX": 634.78125,
+      "LookY": 23733.703125,
+      "LookZ": -632.12890625,
+      "UpX": 0.68693149089813232,
+      "UpY": -0.24530760943889618,
+      "UpZ": -0.68406838178634644
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "GermanGeoServiceLibrary.py",
+        "Id": "6810ca6a3a8a45e0868630f0463966d7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 383.05837315960412,
+        "Y": 159.4844035986483
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "454ace3b5e5c45169c5962c26edeeff7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 107.616404893601,
+        "Y": 124.603512373111
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "b8de9390697f41d3b06097dc922d0003",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 107.616404893601,
+        "Y": 211.013200468839
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "67561477f3d04a4eaba767ce90814642",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 107.616404893601,
+        "Y": 286.621677552601
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "5d522a816ec8436b9261eb8757d199ef",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1421.7717721374875,
+        "Y": -283.57456295704623
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "3bd80b17dbe54b8e892d134c4ec7c107",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1013.470708187635,
+        "Y": -167.45901451368081
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "06eee776547445cb9ede5022744acb97",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 800.51419258580108,
+        "Y": -120.89996330023291
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "2ecfbe6a5c2d48f4afc253b20508e2d5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1356.7445940585981,
+        "Y": -168.58075794275078
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "9fb5bca34fe44f789a749b3b7d298a1f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 116.75150716929,
+        "Y": 552.89490697064048
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "a7a9c1ce11ea42f48bfe93b918719071",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1005.4620009819373,
+        "Y": -21.629995375762746
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "061c84209cb4491398ff0ceeb57f1036",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 792.50548538010321,
+        "Y": 24.929055837685269
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "803c5abed0924b0e8e8dd564ce6079a7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1314.5717721374876,
+        "Y": -22.751738804832712
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "abb777e7250b4eb5ac4270aa944938eb",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1029.670230795055,
+        "Y": 143.50572437757097
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "e2d3a56d43a249babdbc1e86c363cc37",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1374.8203550118449,
+        "Y": 142.38398094850197
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "d67a9bc323914269a73a56305732c88e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 816.71371519322088,
+        "Y": 190.06477559101899
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "57d7dcc508d94d97a8cd51b5fb3dd7cf",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1024.9787343196488,
+        "Y": 294.64220084256283
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "a85e9bf67f84419781ac79815f946eda",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1331.2563027253018,
+        "Y": 293.52045741349275
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "00e520d6a6a24890b9029d24ee6b8f10",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 812.02221871781467,
+        "Y": 341.20125205601084
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "f0102b46e5534368967e234a1cea2bd6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1027.1948639681166,
+        "Y": 428.34203422207395
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "e8a0e89d09134845b403d488d02f05b3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1330.7449881849066,
+        "Y": 427.22029079300393
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "9bc87e80de0a47b188ae096a67500754",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 814.23834836628248,
+        "Y": 474.90108543552196
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "3826f628e7eb41cc94cc5724a107e9c7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1022.5366851281223,
+        "Y": 563.69250713824158
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "db147e9ae1cd405f9709dce546e82946",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1338.5717721374876,
+        "Y": 562.57076370917173
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "1b335f5c6a7a47b59e1c26babeb61e9f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 809.58016952628827,
+        "Y": 610.2515583516896
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "0be916810fd34205ab39b10cbf03e8b4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1005.4784778622685,
+        "Y": 764.077834285265
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "d78623bad5084ecf87e74a5d6566f9ba",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 704.47924113568456,
+        "Y": 805.518122642622
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "07748daccdc2478f9135457a6714a24c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1321.5135648716384,
+        "Y": 762.956090856195
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "737587aa5a6d47e68b2dfa2b798154d7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1035.8111176081168,
+        "Y": 944.15050551865443
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "4f9f46b1e89e4bc3994c5ea8ce14b7b0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1351.8462046174868,
+        "Y": 943.02876208958446
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "23b4f90bd35d46ff8cc43357e077b6ba",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 734.81188088153294,
+        "Y": 985.59079387601139
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "2194b5b3fac74e238bf2d576d5f0a343",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1045.0409296160933,
+        "Y": 1098.9676047291687
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "0a9f182ff1ff4201a755c2d507f27c96",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1361.0760166254636,
+        "Y": 1097.8458613000987
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "cbefd86a84144008871718245e4c5332",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 744.04169288950652,
+        "Y": 1140.4078930865257
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "f4811f5d464b460e95156ac34545f5da",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1024.324412256196,
+        "Y": 1287.3396856830766
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "e58763f4179641978b9d58dffc70489b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1340.359499265566,
+        "Y": 1286.2179422540066
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "c308ad27ccec4faabe5f54a47222de9b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 723.325175529613,
+        "Y": 1328.7799740404366
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "cbb126d3599f427d8d308daf0cbe51e4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1056.1074346807145,
+        "Y": 1509.8208426546885
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "30b9bd661c0340f69e4b30d37e10c677",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1372.1425216900857,
+        "Y": 1508.6990992256142
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "b4b4b9812a1c4a898c6966ef73e3ead2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 755.10819795412863,
+        "Y": 1551.2611310120442
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "7e52e4b0b7194668b6b99e2755aaae8a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1043.2207665229439,
+        "Y": 1702.5063830231998
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "ab2cacd1b2dc4727a4069d1c0a3c214d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 830.26425092111185,
+        "Y": 1749.0654342366479
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "bbe5179491424d13bbe2862b77f54120",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1386.4946523939038,
+        "Y": 1701.3846395941298
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "87a8f563a10c48b1825aa5ae2f8274e5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1027.2603885442065,
+        "Y": 1891.3521277843222
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "b24383fd85cc439c90d853215877a69e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1350.71014330199,
+        "Y": 1890.2303843552522
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "e4340c6c95f74e97abd514a1c0b089b8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 773.416602521449,
+        "Y": 1945.3452281652135
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "48b532d394974b9bb59ec00babe5cc8a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1017.0421054518476,
+        "Y": 2057.4667157483095
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "e439003ef90c426dbb21d2d36eee513c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1340.4918602096277,
+        "Y": 2056.3449723192393
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "b6dcede19c0441d4b2d161012b7d2441",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 763.19831942909059,
+        "Y": 2111.4598161291992
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "519bd5c2a64d4fc282c1c415b712f2ba",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1024.2432463107766,
+        "Y": 2225.4933357899549
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "ca29e09b74034228a6dd3ec7e3d34f48",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1346.7376900904624,
+        "Y": 2224.3715923608847
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "7cf252a5fd594bf6a80a14da7606fe67",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 770.39946028801842,
+        "Y": 2279.4864361708451
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "475417db17d8412b985bf733d0b71144",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1023.0430561676262,
+        "Y": 2375.51710368428
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "4efccda4620a48758da05b0c2ad94fb9",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1346.4928109254063,
+        "Y": 2374.39536025521
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "5750cbbdc4cc460587a910304d84170a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 769.19927014486416,
+        "Y": 2429.51020406518
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionaries.TryGetValueAtKey",
+        "Id": "548353414b934c5cbe55ebc1440c7485",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1036.4661682454832,
+        "Y": 2565.2373378096045
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "232896b85473408daa2dcec3491111f8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1352.5012552548533,
+        "Y": 2564.1155943805343
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "0abadc2da2bf467782faeb7b8b40be6b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 735.46693151889826,
+        "Y": 2606.6776261669611
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "3bd0b354f5f340b69e59d4c7f4ab636b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 104.18538598018944,
+        "Y": 381.25701266892725
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "8096f63bb47a4d34a062de9e06bf692a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 105.19930716518655,
+        "Y": 460.35808738194089
+      }
+    ],
+    "Annotations": [],
+    "X": 173.71089321061822,
+    "Y": 112.28361593147343,
+    "Zoom": 0.84330139397070225
+  }
+}

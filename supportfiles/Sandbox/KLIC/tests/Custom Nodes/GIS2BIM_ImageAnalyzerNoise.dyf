@@ -1,0 +1,550 @@
+{
+  "Uuid": "2abe9869-eb9b-4b7d-8cdd-255ca05904e8",
+  "IsCustomNode": true,
+  "Category": "KC.GIS2BIM",
+  "Description": "Image Analyzer for Noise",
+  "Name": "ImageAnalyzerGeluid",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      },
+      "DSCore.List": {
+        "Key": "DSCore.List",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\ndataEnteringNode = IN\r\naColors= IN[0]\r\naRows= IN[1]\r\naCols= IN[2]\r\naColorsperobject= []\r\naDebug= []\r\naWOZ= []\r\n\r\n# Place your code below this line\r\nfor i in range(len(aRows)):\r\n#\taDebug.append(i)\r\n\tiRow=int(aRows[i])\r\n\tiCol=int(aCols[i])\t\r\n\tsColor= aColors[iRow][iCol]\r\n\taColorsperobject.append(sColor)\r\n\tiWOZ = 0\r\n\tif str(sColor) == 'Color(Red = 69, Green = 117, Blue = 181, Alpha = 255)':\r\n\t\tiWOZ= 100000\r\n\tif str(sColor) == 'Color(Red = 132, Green = 158, Blue = 186, Alpha = 255)':\r\n\t\tiWOZ= 150000\r\n\tif str(sColor) == 'Color(Red = 192, Green = 204, Blue = 190, Alpha = 255)':\r\n\t\tiWOZ= 200000\r\n\tif str(sColor) == 'Color(Red = 255, Green = 255, Blue = 191, Alpha = 255)':\r\n\t\tiWOZ= 300000\r\n\tif str(sColor) == 'Color(Red = 250, Green = 185, Blue = 132, Alpha = 255)':\r\n\t\tiWOZ= 500000\r\n\tif str(sColor) == 'Color(Red = 237, Green = 117, Blue = 81, Alpha = 255)':\r\n\t\tiWOZ= 750000\r\n\tif str(sColor) == 'Color(Red = 214, Green = 47, Blue = 39, Alpha = 255)':\r\n\t\tiWOZ= 1000000\r\n\taWOZ.append(iWOZ)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = [aWOZ,aColorsperobject]",
+      "VariableInputPorts": true,
+      "Id": "a5d0062da9fd446c94fe81e51de11fdb",
+      "Inputs": [
+        {
+          "Id": "39a764025256410e8366ea86eadd994a",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2245188eea0840aeb3af3e634aab6efb",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f7dbb4268b2c4ffb9cbc12790e86cd83",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "341f40edf1ca4d198e434b8d31a7b638",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.SetParameterByName@string,var",
+      "Id": "ead9a27f2c50474b817cdea7863a72fd",
+      "Inputs": [
+        {
+          "Id": "add5f379ba1c4f7f9446cb5f652af077",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b138310ef4804c2fadfcd02b0fc9f893",
+          "Name": "parameterName",
+          "Description": "The name of the parameter to set.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "949d35a59b6949128afaf62b12f87fa7",
+          "Name": "value",
+          "Description": "The value.\n\nvar",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8801e77053194d939b7ce3c18df86208",
+          "Name": "Element",
+          "Description": "Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Set one of the element's parameters.\n\nElement.SetParameterByName (parameterName: string, value: var): Element"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"WOZ\";",
+      "Id": "974b0da765684faaa295a7b4d1cc746a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "19df319029ac44c2bb5e1b3b56d080be",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.OverrideColorInView@DSCore.Color",
+      "Id": "88410c8b21c447bea39724d45aab67ec",
+      "Inputs": [
+        {
+          "Id": "c8378b834d114ded91080f95c2e8813e",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "96b0718c4f554b2f8c49b661f4252068",
+          "Name": "color",
+          "Description": "The color to apply to a solid fill on the element.\n\nColor",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5bc6c7c3fc094ec9956ffb0d404a8c34",
+          "Name": "Element",
+          "Description": "Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Override the element's color in the active view.\n\nElement.OverrideColorInView (color: Color): Element"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "l[1];\nl[0];",
+      "Id": "42c0ded8f26e42589773b37f01aebc0f",
+      "Inputs": [
+        {
+          "Id": "fdd66750d68747e198e13ee64b52a1df",
+          "Name": "l",
+          "Description": "l",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "17893c29033846b9812913bbbd6e2650",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4304d7368d9347c5957ddac607b341e3",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "list of colors",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "82d54391cf424cc68842238fd335fa44",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "0a574a2c6ed64cff832a0cefad935ff5",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "rows",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "ca8837733e0b4d08a46f6bb9b301d6ff",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "bfc31b26aaf746d9898c118780a6ca22",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "cols",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "6bcbadc8583e4f58a93ccabcd992b427",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "add65dae2c4645a4bd70e2d9e7292e8d",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "elements",
+        "TypeName": "Element",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "1ae1dfd74a3544c0b37cd45591bd9474",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "edb38b83a7c44dc788ef2e17b7eb1f10",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Element",
+      "Id": "3ed5f83cdb8c4400bdb2df7278d22325",
+      "Inputs": [
+        {
+          "Id": "99ac61f0eccf409293b5fe6c963fa1d6",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "341f40edf1ca4d198e434b8d31a7b638",
+      "End": "fdd66750d68747e198e13ee64b52a1df",
+      "Id": "b92918a6579a43fbb744da8a92239a9c"
+    },
+    {
+      "Start": "8801e77053194d939b7ce3c18df86208",
+      "End": "c8378b834d114ded91080f95c2e8813e",
+      "Id": "9e5b44b940b2435a9fe43086bccd9558"
+    },
+    {
+      "Start": "19df319029ac44c2bb5e1b3b56d080be",
+      "End": "b138310ef4804c2fadfcd02b0fc9f893",
+      "Id": "0002cd111306454086723495e10d4f9a"
+    },
+    {
+      "Start": "5bc6c7c3fc094ec9956ffb0d404a8c34",
+      "End": "99ac61f0eccf409293b5fe6c963fa1d6",
+      "Id": "e2b9710328364db0a4c48acc4d2d2816"
+    },
+    {
+      "Start": "17893c29033846b9812913bbbd6e2650",
+      "End": "96b0718c4f554b2f8c49b661f4252068",
+      "Id": "04c05baba7d94d5e92740416a773819e"
+    },
+    {
+      "Start": "4304d7368d9347c5957ddac607b341e3",
+      "End": "949d35a59b6949128afaf62b12f87fa7",
+      "Id": "ec6ab70f37c24d1483dbc0e52e196d4c"
+    },
+    {
+      "Start": "0a574a2c6ed64cff832a0cefad935ff5",
+      "End": "39a764025256410e8366ea86eadd994a",
+      "Id": "e8b73860af59434eb17f19491860d9e2"
+    },
+    {
+      "Start": "bfc31b26aaf746d9898c118780a6ca22",
+      "End": "2245188eea0840aeb3af3e634aab6efb",
+      "Id": "d271ea3213d24136b4007aa554844998"
+    },
+    {
+      "Start": "add65dae2c4645a4bd70e2d9e7292e8d",
+      "End": "f7dbb4268b2c4ffb9cbc12790e86cd83",
+      "Id": "707bef3846ba4966a76351f2dfdb521e"
+    },
+    {
+      "Start": "edb38b83a7c44dc788ef2e17b7eb1f10",
+      "End": "add5f379ba1c4f7f9446cb5f652af077",
+      "Id": "4ad0c6508caa40119d31c2e3fa664a35"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.2.6826",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "a5d0062da9fd446c94fe81e51de11fdb",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 249.13132293596504,
+        "Y": 1.7373541280699669
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Element.SetParameterByName",
+        "Id": "ead9a27f2c50474b817cdea7863a72fd",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 752.3816064018165,
+        "Y": 152.90084383871988
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "974b0da765684faaa295a7b4d1cc746a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 649.99909972397745,
+        "Y": 87.38838351634729
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Element.OverrideColorInView",
+        "Id": "88410c8b21c447bea39724d45aab67ec",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1098.6309300785879,
+        "Y": 8.8603619960206288
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "42c0ded8f26e42589773b37f01aebc0f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 459.76860998048505,
+        "Y": 42.589165455794159
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "82d54391cf424cc68842238fd335fa44",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "ca8837733e0b4d08a46f6bb9b301d6ff",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 163.61588034314792
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "6bcbadc8583e4f58a93ccabcd992b427",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1.3615880343147637,
+        "Y": 236.00536238720471
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "1ae1dfd74a3544c0b37cd45591bd9474",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 321.25742334462626
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "3ed5f83cdb8c4400bdb2df7278d22325",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1395.4106286050073,
+        "Y": 12.045360281150494
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "2abbd841491d4da291932ab4ddeff80e",
+        "Title": "set WOZ and color",
+        "Nodes": [
+          "a5d0062da9fd446c94fe81e51de11fdb",
+          "ead9a27f2c50474b817cdea7863a72fd",
+          "974b0da765684faaa295a7b4d1cc746a",
+          "88410c8b21c447bea39724d45aab67ec",
+          "42c0ded8f26e42589773b37f01aebc0f"
+        ],
+        "Left": 239.13132293596504,
+        "Top": -51.262645871930033,
+        "Width": 1088.4996071426228,
+        "Height": 349.16348971064991,
+        "FontSize": 36.0,
+        "InitialTop": 1.7373541280699669,
+        "InitialHeight": 297.90084383871988,
+        "TextblockHeight": 43.0,
+        "Background": "#FFFFC999"
+      }
+    ],
+    "X": 344.92538237908263,
+    "Y": 158.1738303649899,
+    "Zoom": 0.81809919567547307
+  }
+}
