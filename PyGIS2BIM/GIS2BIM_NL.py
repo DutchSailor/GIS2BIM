@@ -57,8 +57,10 @@ NLPDOKLuchtfoto2019 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2019_28992','w
 NLPDOKLuchtfoto2020 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2020_28992','webserverRequests','serverrequestprefix')
 NLPDOKLuchtfotoActueel = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_actueel_28992','webserverRequests','serverrequestprefix')
 
-NLTUDelftBAG3DV2 = "https://data.3dbag.nl/api/BAG3D_v2/wfs?&request=GetFeature&typeName=BAG3D_v2:bag_tiles_3k&bbox="
-NLTUDelftBAG3DV2DownloadPrefix = "http://data.3dbag.nl/cityjson/v21031_7425c21b/3dbag_v21031_7425c21b_"
+NLTUDelftBAG3D = GIS2BIM.GetWebServerData('NLTUDelftBAG3D_28992','webserverRequests','serverrequestprefix')
+
+NLTUDelftBAG3DDownloadPrefix = GIS2BIM.GetWebServerData('NLTUDelftBAG3Ddownload_28992','webserverRequests','serverrequestprefix')
+
 NLPDOKBGTURL1 = "https://api.pdok.nl/lv/bgt/download/v1_0/full/custom"
 NLPDOKBGTURL2 = "https://api.pdok.nl"
 
@@ -71,8 +73,14 @@ NLPDOKxPathOpenGISPosList2 = GIS2BIM.GetWebServerData('NLPDOKxPathOpenGISPosList
 NLTUDelftxPathString3DBagGround = GIS2BIM.GetWebServerData('NLTUDelftxPathString3DBagGround','Querystrings','querystring')
 NLTUDelftxPathString3DBagRoof = GIS2BIM.GetWebServerData('NLTUDelftxPathString3DBagRoof','Querystrings','querystring')
 
+NLTUDelftxPathString3DBagTileId = GIS2BIM.GetWebServerData('NLTUDelftxPathString3DBagTileId','Querystrings','querystring')
+NLTUDelftxPathString3DBag2 = GIS2BIM.GetWebServerData('NLTUDelftxPathString3DBag2','Querystrings','querystring')
+
+NLPDOKKadasterBasisvoorziening3DCityJSONVolledig = GIS2BIM.GetWebServerData("NLPDOKKadasterBasisvoorziening3DCityJSONVolledig","webserverRequests","serverrequestprefix")
+
 xPathStrings3DBag = [NLTUDelftxPathString3DBagGround, NLTUDelftxPathString3DBagRoof]
-xPathStrings3DBagV2 = [".//{bag3d_v2}tile_id", ".//{http://www.opengis.net/gml/3.2}posList", ".//{bag3d_v2}bag_tiles_3k"]
+
+xPathStrings3DBAG2 = [NLTUDelftxPathString3DBagTileId, NLPDOKxPathOpenGISposList, NLTUDelftxPathString3DBag2]
 
 xPathStringsCadastreTextAngle = [NLPDOKxPathStringsCadastreTextAngle, NLPDOKxPathStringsCadastreTextValue]
 
@@ -150,31 +158,24 @@ def bgtDownloadURL(X,Y,bboxWidth,bboxHeight,timeout):
 	        time.sleep(1)
 	    timer = timer + 1
 	return downloadURL
-	
+
 def BAG3DDownload(bboxString, tempFolder):
-	url = NLTUDelftBAG3DV2
-	xPathString1 = xPathStrings3DBagV2[0]
-	xPathString2 = xPathStrings3DBagV2[1]
-	xPathString3 = xPathStrings3DBagV2[2]
+	#Download 3D BAG as CityJSON
+	import requests
+	url = NLTUDelftBAG3D
+	xPathString1 = xPathStrings3DBAG2[0]
 
-	#Webrequest to obtain tilenumbers based on bbox
+	# Webrequest to obtain tilenumbers based on bbox
 	urlreq = url + bboxString
-	urlFile = urllib.request.urlopen(urlreq)
-	tree = ET.parse(urlFile)
-
-	urlDownloadPrefix = NLTUDelftBAG3DV2DownloadPrefix
-
-	#Collect result of webrequest 
-	res = []
-	for i,j,k in zip(tree.findall(xPathString1),tree.findall(xPathString2),tree.findall(xPathString3)):
-		LBcoords = j.text.split()[2], j.text.split()[3]
-		res.append((i.text, LBcoords, k.text, urlDownloadPrefix + i.text + ".json"))
-
-	#Download files
-	jsonFileNames = []
+	response = requests.get(urlreq)
+	tree = ET.fromstring(response.text)
+	res = tree.findall(xPathString1)
 	for i in res:
-		fileNme = tempFolder + '3dbag_v21031_7425c21b_' + i[0]+ '.json' 	
-		r = PyPackages.requests.get(i[3])
-		open(fileNme, 'wb').write(r.content)	
-		jsonFileNames.append(fileNme)
-	return jsonFileNames
+		tile_id = i.text
+		tile_id2 = tile_id.replace("/","-")
+		url = NLTUDelftBAG3DDownloadPrefix + tile_id + "/" + tile_id2 + ".city.json"
+		path = tempFolder + tile_id2 + ".city.json"
+		r = requests.get(url)
+		with open(path, 'wb') as f:
+			f.write(r.content)
+	return res
