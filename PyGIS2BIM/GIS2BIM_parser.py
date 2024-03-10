@@ -984,3 +984,51 @@ for geometry in geometries:
 
 # Assign your output to the OUT variable.
 OUT = meshGeometries
+
+import sys
+import clr
+
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+
+clr.AddReference('MeshToolkit')
+import Autodesk.Dynamo.MeshToolkit as mtk
+
+import System
+from System.Collections.Generic import List
+
+# The inputs to this node will be stored as a list in the IN variables.
+geometries = IN[0]
+
+
+# Place your code below this line
+
+def pointInList(point, vertexList):
+    for index, vertex in enumerate(vertexList):
+        if point.X == vertex.X and point.Y == vertex.Y and point.Z == vertex.Z:
+            return index
+    return -1
+
+
+meshGeometries = []
+for geometry in geometries:
+    vertexList = []
+    indexList = []
+    for surface in geometry:
+        for point in surface:
+            geoPoint = Point.ByCoordinates(point[0], point[1], point[2])
+            pointIndex = pointInList(geoPoint, vertexList)
+            if pointIndex > -1:
+                indexList.append(pointIndex)
+            else:
+                vertexList.append(Point.ByCoordinates(point[0], point[1], point[2]))
+                indexList.append(len(vertexList) - 1)
+
+    meshIndices = List[int](indexList)
+    # would fail when using 'indices' directly
+    meshGeometries.append(mtk.Mesh.ByVerticesAndIndices(vertexList, meshIndices))
+
+# Assign your output to the OUT variable.
+OUT = meshGeometries
+
+# TODO: Check (and adjust for) non-triangular surfaces
