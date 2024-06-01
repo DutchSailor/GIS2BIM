@@ -9,36 +9,9 @@ import ijson
 import sys
 import random
 
-#SETTINGS
-lst = NL_GetLocationData(NLPDOKServerURL,"Dordrecht", "werf van schouten", "501")
-Bboxwidth = 250 #m
-cityJSONFolder = "C:/TEMP/GIS/cityJSON/"
 maximumLoD = 2.2
 
-#BOUNDINGBOX
-RdX = lst[0]
-RdY = lst[1]
-GISBbox = GisRectBoundingBox().Create(RdX,RdY,Bboxwidth,Bboxwidth,0)
-start = time.time()
-bbox = GISBbox.boundingBoxXY
-projectLocation = [RdX, RdY, 0]
-scaleFactor = 1000
-transformedBBox = [
-    (bbox[0] - projectLocation[0]) * scaleFactor,
-    (bbox[1] - projectLocation[1]) * scaleFactor,
-    (bbox[2] - projectLocation[0]) * scaleFactor,
-    (bbox[3] - projectLocation[1]) * scaleFactor
-] if len(bbox) == 4 else []
-
-#CITYJSON FILES
-filePaths = []
-for file in os.listdir(cityJSONFolder):
-    if file.endswith(".json"):
-        filepath = os.path.join(cityJSONFolder, file)
-        filePaths.append(filepath)
-        print(filepath)
-
-def translateVertex(vertices, index, transform):
+def translateVertex(vertices, index, transform,projectLocation,scaleFactor):
     vertex = list(vertices[index])
     if len(transform.get('scale', [])) == 3 and len(transform.get('translate', [])) == 3:
         vertex[0] = round(
@@ -53,14 +26,14 @@ def translateVertex(vertices, index, transform):
         vertex[2] = round((vertex[2] - projectLocation[2]) * scaleFactor)
     return vertex
 
-def sitsInsideBBox(vertex):
+def sitsInsideBBox(vertex,transformedBBox):
     if len(transformedBBox) == 4:
         return transformedBBox[0] < vertex[0] < transformedBBox[2] and transformedBBox[1] < vertex[1] < transformedBBox[
             3]
     else:
         return True
 
-def parseGeometry(geometries, vertices, decompressionTransform, filterBBox=True, cutGeometries=False,
+def parseGeometry(projectLocation, scaleFactor,transformedBBox,geometries, vertices, decompressionTransform, filterBBox=True, cutGeometries=False,
                   includeHoles=False):
     outVolBoundary = []
     insideBBox = False
@@ -85,17 +58,17 @@ def parseGeometry(geometries, vertices, decompressionTransform, filterBBox=True,
                     for boundary in faceBoundaries:
                         outPolyBoundary = []
                         for vertexIndex in boundary:
-                            vertex = translateVertex(vertices, vertexIndex, decompressionTransform)
+                            vertex = translateVertex(vertices, vertexIndex, decompressionTransform,projectLocation,scaleFactor)
                             outPolyBoundary.append(vertex)
-                            if sitsInsideBBox(vertex):
+                            if sitsInsideBBox(vertex,transformedBBox):
                                 insideBBox = True
                                 boundaryInsideBBox = True
                         outSrfBoundary.append(outPolyBoundary)
                 else:
                     for vertexIndex in faceBoundaries[0]:
-                        vertex = translateVertex(vertices, vertexIndex, decompressionTransform)
+                        vertex = translateVertex(vertices, vertexIndex, decompressionTransform,projectLocation,scaleFactor)
                         outSrfBoundary.append(vertex)
-                        if sitsInsideBBox(vertex):
+                        if sitsInsideBBox(vertex,transformedBBox):
                             insideBBox = True
                             boundaryInsideBBox = True
                 if boundaryInsideBBox or not cutGeometries:
@@ -109,17 +82,17 @@ def parseGeometry(geometries, vertices, decompressionTransform, filterBBox=True,
                     for boundary in faceBoundaries:
                         outPolyBoundary = []
                         for vertexIndex in boundary:
-                            vertex = translateVertex(vertices, vertexIndex, decompressionTransform)
+                            vertex = translateVertex(vertices, vertexIndex, decompressionTransform,projectLocation,scaleFactor)
                             outPolyBoundary.append(vertex)
-                            if sitsInsideBBox(vertex):
+                            if sitsInsideBBox(vertex,transformedBBox):
                                 insideBBox = True
                                 boundaryInsideBBox = True
                         outSrfBoundary.append(outPolyBoundary)
                 else:
                     for vertexIndex in faceBoundaries[0]:
-                        vertex = translateVertex(vertices, vertexIndex, decompressionTransform)
+                        vertex = translateVertex(vertices, vertexIndex, decompressionTransform,projectLocation,scaleFactor)
                         outSrfBoundary.append(vertex)
-                        if sitsInsideBBox(vertex):
+                        if sitsInsideBBox(vertex,transformedBBox):
                             insideBBox = True
                             boundaryInsideBBox = True
                 if boundaryInsideBBox or not cutGeometries:
@@ -151,14 +124,25 @@ def parseAttributes(attributes, objectKey):
 
     return result
 
-def cityJSONParser(filePaths):
+def cityJSONParser(filePaths, GISBbox, maximumLoD):
     # START PARSING
+    bbox = GISBbox.boundingBoxXY
+    RdX = GISBbox.origX
+    RdY = GISBbox.origY
+    projectLocation = [RdX, RdY, 0]
+    scaleFactor = 1000
+
+    transformedBBox = [
+        (bbox[0] - projectLocation[0]) * scaleFactor,
+        (bbox[1] - projectLocation[1]) * scaleFactor,
+        (bbox[2] - projectLocation[0]) * scaleFactor,
+        (bbox[3] - projectLocation[1]) * scaleFactor
+    ] if len(bbox) == 4 else []
 
     if type(filePaths) != list:
         filePaths = [filePaths]
 
     print('BBOX', transformedBBox)
-    print('LoD', maximumLoD)
 
     buildings = []
     bridges = []
@@ -224,7 +208,7 @@ def cityJSONParser(filePaths):
 
                     if len(missingChildren) == 0:
                         # building complete: parse complete geometry
-                        geometry = parseGeometry(geometries, vertices, decompressionTransform, True, False, True)
+                        geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox, geometries, vertices, decompressionTransform, True, False, True)
 
                         if geometry is not None:
                             buildings.append({
@@ -250,7 +234,7 @@ def cityJSONParser(filePaths):
 
                         if len(building['missingChildren']) == 0:
                             # building complete: parse complete geometry
-                            geometry = parseGeometry(geometries, vertices, decompressionTransform, True, False, True)
+                            geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,geometries, vertices, decompressionTransform, True, False, True)
 
                             if geometry is not None:
                                 buildings.append({
@@ -265,39 +249,39 @@ def cityJSONParser(filePaths):
                             }
 
                 if v['type'] == 'Bridge':
-                    geometry = parseGeometry(v['geometry'], vertices, decompressionTransform)
+                    geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,v['geometry'], vertices, decompressionTransform)
                     if geometry is not None:
                         bridges.append(geometry)
                 if v['type'] == 'Road':
-                    geometry = parseGeometry(v['geometry'], vertices, decompressionTransform, True, True)
+                    geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,v['geometry'], vertices, decompressionTransform, True, True)
                     if geometry is not None:
                         roads.append(geometry)
                 if v['type'] == 'Railway':
-                    geometry = parseGeometry(v['geometry'], vertices, decompressionTransform, True, True)
+                    geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,v['geometry'], vertices, decompressionTransform, True, True)
                     if geometry is not None:
                         railways.append(geometry)
                 if v['type'] == 'LandUse':
-                    geometry = parseGeometry(v['geometry'], vertices, decompressionTransform, True, True)
+                    geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,v['geometry'], vertices, decompressionTransform, True, True)
                     if geometry is not None:
                         landuses.append(geometry)
                 if v['type'] == 'PlantCover':
-                    geometry = parseGeometry(v['geometry'], vertices, decompressionTransform, True, True)
+                    geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,v['geometry'], vertices, decompressionTransform, True, True)
                     if geometry is not None:
                         plantcovers.append(geometry)
                 if v['type'] == 'Waterway':
-                    geometry = parseGeometry(v['geometry'], vertices, decompressionTransform, True, True)
+                    geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,v['geometry'], vertices, decompressionTransform, True, True)
                     if geometry is not None:
                         waterways.append(geometry)
                 if v['type'] == 'WaterBody':
-                    geometry = parseGeometry(v['geometry'], vertices, decompressionTransform, True, True)
+                    geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,v['geometry'], vertices, decompressionTransform, True, True)
                     if geometry is not None:
                         waterbodies.append(geometry)
                 if v['type'] == 'GenericCityObject':
-                    geometry = parseGeometry(v['geometry'], vertices, decompressionTransform)
+                    geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,v['geometry'], vertices, decompressionTransform)
                     if geometry is not None:
                         generics.append(geometry)
                 if v['type'] == 'TINRelief':
-                    geometry = parseGeometry(v['geometry'], vertices, decompressionTransform, True, True)
+                    geometry = parseGeometry(projectLocation, scaleFactor,transformedBBox,v['geometry'], vertices, decompressionTransform, True, True)
                     if geometry is not None:
                         reliefs.append(geometry)
 
@@ -315,8 +299,6 @@ def cityJSONParser(filePaths):
         len(generics), 'other items and',
         len(reliefs), 'TIN reliefs.'
     )
-    print('Execution time:', end - start, 'seconds')
-
     # Object Types in Example
     # Building
     # Bridge
@@ -325,11 +307,59 @@ def cityJSONParser(filePaths):
     # LandUse
     # PlantCover
     # WaterBody
-    #
     # see here for full schema: https://3d.bk.tudelft.nl/schemas/cityjson/1.1.3/cityobjects.schema.json
 
     return buildings, bridges, roads, railways, landuses, plantcovers, waterways, waterbodies, generics, reliefs
 
-lst = cityJSONParser(filePaths)
+def cityJSONParserBAG3D(jsonFile, dX, dY, LODnumber, bboxWidth, bboxHeight):
+    # Fast but incomplete parser. Used for import of BAG3D
+    #dX = m, #dY = m bboxWidth is M
+    data = json.load(open(jsonFile, ))
+    vert = data['vertices']
+    cityobj = data['CityObjects']
+    translate = data['transform']['translate']
+    scaleX = data['transform']['scale'][0]
+    scaleY = data['transform']['scale'][1]
+    scaleZ = data['transform']['scale'][2]
+    translatex = (translate[0] - float(dX)) / scaleX #mm
+    translatey = (translate[1] - float(dY)) / scaleY #mm
+    translatez = translate[2] / scaleZ
 
-print(lst)
+    meshes = []
+    metadata = []
+    for i in cityobj:
+        cityobj = []
+        objName = i
+        try:
+            for j in data['CityObjects'][objName]['geometry'][2]['boundaries'][0]:
+                a = 0
+        except:
+            continue
+        name = data['CityObjects'][objName]['parents'][0]
+        metadata.append(name)
+        for j in data['CityObjects'][objName]['geometry'][2]['boundaries'][0]:
+            #print(j)
+            for jj in j:
+                facets = []
+                #print(jj) #All the indices of the verts in a face
+                for k in jj:
+                    #print(k) #This is the index of the vert
+                    x = math.floor(vert[k][0] + translatex)
+                    y = math.floor(vert[k][1] + translatey)
+                    z = math.floor(vert[k][2] + translatez)
+                    coord = [x,y]
+                    facets.append([x,y,z])
+
+
+                cityobj.append(facets)
+        if checkIfCoordIsInsideBoundingBox(coord, -500 * float(bboxWidth), -500 * float(bboxHeight),
+                                           500 * float(bboxWidth), 500 * float(bboxHeight)):
+            #print("true")
+            meshes.append(cityobj)
+    return meshes, metadata
+
+
+# example is the copy of a parsed cityjson file of 3D basis. This can be used for testing purposes without the need
+# to parse the files of 1 GB.
+
+

@@ -36,7 +36,7 @@ import urllib.request
 import time
 import xml.etree.ElementTree as ET
 
-#import PyPackages.requests
+import requests
 
 #import urllib.request, json
 
@@ -55,7 +55,18 @@ NLPDOKLuchtfoto2017 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2017_28992','w
 NLPDOKLuchtfoto2018 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2018_28992','webserverRequests','serverrequestprefix')
 NLPDOKLuchtfoto2019 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2019_28992','webserverRequests','serverrequestprefix')
 NLPDOKLuchtfoto2020 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2020_28992','webserverRequests','serverrequestprefix')
+NLPDOKLuchtfoto2021 = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_2021_28992','webserverRequests','serverrequestprefix')
 NLPDOKLuchtfotoActueel = GIS2BIM.GetWebServerData('NL_PDOK_Luchtfoto_actueel_28992','webserverRequests','serverrequestprefix')
+NLRuimtelijkeplannenEnkelbestemming = GIS2BIM.GetWebServerData('NLRuimtelijkeplannenEnkelbestemming_28992','webserverRequests','serverrequestprefix')
+NLNatura2000 = GIS2BIM.GetWebServerData('NL_PDOK_natura2000_28992','webserverRequests','serverrequestprefix')
+NLGeluidskaartAlleBronnen = GIS2BIM.GetWebServerData('NL_RIVM_Geluidskaart_alle_bronnen_28992','webserverRequests','serverrequestprefix')
+NLRIVMGeluidskaartldenwegverkeer = GIS2BIM.GetWebServerData('NL_RIVM_Geluidskaart_lden_wegverkeer_28992','webserverRequests','serverrequestprefix')
+NLRIVMGeluidskaartldenspoor = GIS2BIM.GetWebServerData('NL_RIVM_Geluidskaart_lden_spoor_28992','webserverRequests','serverrequestprefix')
+NLRisicocontourbasisnet = GIS2BIM.GetWebServerData('NL_RIVM_Geluidskaart_lden_spoor_28992','webserverRequests','serverrequestprefix')
+NLRisicocontourEV = GIS2BIM.GetWebServerData('NL_RIVM_Geluidskaart_lden_spoor_28992','webserverRequests','serverrequestprefix')
+NLRisicocontourEVbrand = GIS2BIM.GetWebServerData('NL_RIVM_Geluidskaart_lden_spoor_28992','webserverRequests','serverrequestprefix')
+NLRisicocontourEVexplosie = GIS2BIM.GetWebServerData('NL_RIVM_Geluidskaart_lden_spoor_28992','webserverRequests','serverrequestprefix')
+
 
 NLTUDelftBAG3D = GIS2BIM.GetWebServerData('NLTUDelftBAG3D_28992','webserverRequests','serverrequestprefix')
 
@@ -79,9 +90,7 @@ NLTUDelftxPathString3DBag2 = GIS2BIM.GetWebServerData('NLTUDelftxPathString3DBag
 NLPDOKKadasterBasisvoorziening3DCityJSONVolledig = GIS2BIM.GetWebServerData("NLPDOKKadasterBasisvoorziening3DCityJSONVolledig","webserverRequests","serverrequestprefix")
 
 xPathStrings3DBag = [NLTUDelftxPathString3DBagGround, NLTUDelftxPathString3DBagRoof]
-
 xPathStrings3DBAG2 = [NLTUDelftxPathString3DBagTileId, NLPDOKxPathOpenGISposList, NLTUDelftxPathString3DBag2]
-
 xPathStringsCadastreTextAngle = [NLPDOKxPathStringsCadastreTextAngle, NLPDOKxPathStringsCadastreTextValue]
 
 #Country specific
@@ -120,11 +129,11 @@ def bgtDownloadURL(X,Y,bboxWidth,bboxHeight,timeout):
 	data = qryPart1 +  qryPart2 + qryPart3 + qryPart4 + qryPart5
 	dataquery = data
 	
-	headers = PyPackages.requests.structures.CaseInsensitiveDict()
+	headers = requests.structures.CaseInsensitiveDict()
 	headers["accept"] = "application/json"
 	headers["Content-Type"] = "application/json"
 	
-	resp = PyPackages.requests.post(url, headers=headers, data=data)
+	resp = requests.post(url, headers=headers, data=data)
 	
 	jsondata = json.loads(resp.text)
 	data = jsondata["downloadRequestId"]

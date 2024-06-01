@@ -92,48 +92,48 @@ def GetWebServerDataService(category,service):
 	return listOfData
 	
 def DownloadURL(folder,url,filename):
-	#Download a file to a folder from a given url
-	path = folder + filename
-	urllib.request.urlretrieve(url,path)
-	return path
-	
+    #Download a file to a folder from a given url
+    path = folder + filename
+    urllib.request.urlretrieve(url,path)
+    return path
+
 def GetDataFiles(folder):
-	Serverlocation = "https://raw.githubusercontent.com/DutchSailor/GIS2BIM/master/datafiles/map.html"
-	url = urllib.request.urlopen(Serverlocation)
-	data = json.loads(url.read())['GIS2BIMserversRequests'][category]
-	test = []
-	for i in data:
-		test.append(i["title"])
-	result = data[test.index(servertitle)][parameter]
-	return result
+    Serverlocation = "https://raw.githubusercontent.com/DutchSailor/GIS2BIM/master/datafiles/map.html"
+    url = urllib.request.urlopen(Serverlocation)
+    data = json.loads(url.read())['GIS2BIMserversRequests'][category]
+    test = []
+    for i in data:
+        test.append(i["title"])
+    result = data[test.index(servertitle)][parameter]
+    return result
 
 def downloadUnzip(downloadURL,filepathZIP,folderUNZIP):
-	zipresp = urlopen(downloadURL)
-	tempzip = open(filepathZIP, "wb")
-	tempzip.write(zipresp.read())
-	tempzip.close()
-	zf = ZipFile(filepathZIP)
-	zf.extractall(path = folderUNZIP)
-	zf.close()
-	return folderUNZIP
+    zipresp = urlopen(downloadURL)
+    tempzip = open(filepathZIP, "wb")
+    tempzip.write(zipresp.read())
+    tempzip.close()
+    zf = ZipFile(filepathZIP)
+    zf.extractall(path = folderUNZIP)
+    zf.close()
+    return folderUNZIP
 	
 #GIS2BIM functions
 
 def mortonCode(X,Y,Xmod,Ymod,TileDim):
-	#
-	x = bin(int(math.floor(((X - Xmod)/TileDim))))
-	y = bin(int(math.floor(((Y - Ymod)/TileDim))))
-	x = str(x[2:])
-	y = str(y[2:])
+    #
+    x = bin(int(math.floor(((X - Xmod)/TileDim))))
+    y = bin(int(math.floor(((Y - Ymod)/TileDim))))
+    x = str(x[2:])
+    y = str(y[2:])
 
-	res = "".join(i + j for i, j in zip(y, x))
-	z=(res)
+    res = "".join(i + j for i, j in zip(y, x))
+    z=(res)
 
-	z = int(z, 2)
-	return z
+    z = int(z, 2)
+    return z
 
 def checkIfCoordIsInsideBoundingBox(coord, bounding_box):
-	#check if coordinate is inside rectangle boundingbox
+    #check if coordinate is inside rectangle boundingbox
     min_x = bounding_box[0] - (bounding_box[2] / 2)
     min_y = bounding_box[1] - (bounding_box[2] / 2)
     max_x = bounding_box[0] + (bounding_box[2] / 2)
@@ -199,6 +199,7 @@ class GisRectBoundingBox:
         self.width = 0
         self.height = 0
         self.boundingBoxString = ""
+        self.boundingBoxString2 = ""
         self.boundingBoxStringPolygon = ""
         self.boundingBoxXY = []
         self.z = 0
@@ -214,6 +215,7 @@ class GisRectBoundingBox:
         self.width = Width
         self.height = Height
         self.boundingBoxString = str(self.XLeft) + "," + str(self.YBottom) + "," + str(self.XRight) + "," + str(self.YTop)
+        self.boundingBoxString2 = str(self.XLeft) + "%2C" + str(self.YBottom) + "%2C" + str(self.XRight) + "%2C" + str(self.YTop)
         self.boundingBoxStringPolygon = "(" + str(self.XLeft) + ' ' + str(self.YTop) + ',' + str(self.XRight) + ' ' + str(self.YTop) + ',' + str(
             self.XRight) + ' ' + str(self.YBottom) + ',' + str(self.XLeft) + ' ' + str(self.YBottom) + ',' + str(self.XLeft) + ' ' + str(
             self.YTop) + ')'
@@ -238,13 +240,13 @@ def PointsFromWFS(serverName,boundingBoxString,xPathString,dx,dy,scale,DecimalNu
     return xyPosList
 	
 def PointsFromGML(filePath,xPathString,dx,dy,scale,DecimalNumbers):
-	# group X and Y Coordinates
-	tree = ET.parse(filePath)
-	xyPosList = GML_poslistData(tree,xPathString,dx,dy,scale,DecimalNumbers)
-	return xyPosList
+    # group X and Y Coordinates
+    tree = ET.parse(filePath)
+    xyPosList = GML_poslistData(tree,xPathString,dx,dy,scale,DecimalNumbers)
+    return xyPosList
 
 def DataFromWFS(serverName,boundingBoxString,xPathStringCoord,xPathStrings,dx,dy,scale,DecimalNumbers):
-# group textdata from WFS
+    # group textdata from WFS
     myrequesturl = serverName + boundingBoxString
     urlFile = urllib.request.urlopen(myrequesturl)
     tree = ET.parse(urlFile)
@@ -260,13 +262,10 @@ def DataFromWFS(serverName,boundingBoxString,xPathStringCoord,xPathStrings,dx,dy
     return xPathResults
 
 def checkIfCoordIsInsideBoundingBox(coord, min_x, min_y, max_x, max_y):
-    if re.match(r'^-?\d+(?:\.\d+)$', coord[0]) is None or re.match(r'^-?\d+(?:\.\d+)$', coord[1]) is None:
-        return False
+    if min_x <= float(coord[0]) <= max_x and min_y <= float(coord[1]) <= max_y:
+        return True
     else:
-        if min_x <= float(coord[0]) <= max_x and min_y <= float(coord[1]) <= max_y:
-            return True
-        else:
-            return False
+        return False
 
 def filterGMLbbox(tree,xPathString,bbx,bby,BoxWidth,BoxHeight,scale):
 
@@ -375,148 +374,148 @@ def TMSBboxFromTileXY(TileX,TileY,zoom):
     return S_deg,W_deg,N_deg,E_deg
 
 def TMS_WMTSCombinedMapFromLatLonBbox(lat,lon,bboxWidth,bboxHeight,zoomL,pixels,TMS_WMTS,ServerName):
-	#With lat/lon and bbox tilenumbers are calculated then downloaded from given server and merged into 1 images and cropped afterwards to given boundingbox
+    #With lat/lon and bbox tilenumbers are calculated then downloaded from given server and merged into 1 images and cropped afterwards to given boundingbox
 
-	#Create Boundingbox lat/lon
-	loc = GeoLocation.from_degrees(lat,lon)
-	radiusWidth = bboxWidth/2000 
-	SW_locWidth = loc.bounding_locations(radiusWidth)[0]
-	NE_locWidth = loc.bounding_locations(radiusWidth)[1]
-	radiusHeight = bboxHeight/2000 
-	SW_locHeight = loc.bounding_locations(radiusHeight)[0]
-	NE_locHeight = loc.bounding_locations(radiusHeight)[1]
+    #Create Boundingbox lat/lon
+    loc = GeoLocation.from_degrees(lat,lon)
+    radiusWidth = bboxWidth/2000
+    SW_locWidth = loc.bounding_locations(radiusWidth)[0]
+    NE_locWidth = loc.bounding_locations(radiusWidth)[1]
+    radiusHeight = bboxHeight/2000
+    SW_locHeight = loc.bounding_locations(radiusHeight)[0]
+    NE_locHeight = loc.bounding_locations(radiusHeight)[1]
 
-	#GetUniqueTileX/TileY list
-	TileXYBottomLeft = LatLonZoomToTileXY(SW_locHeight[0],SW_locWidth[1],zoomL)
-	TileXYTopRight = LatLonZoomToTileXY(NE_locHeight[0],NE_locWidth[1],zoomL)
+    #GetUniqueTileX/TileY list
+    TileXYBottomLeft = LatLonZoomToTileXY(SW_locHeight[0],SW_locWidth[1],zoomL)
+    TileXYTopRight = LatLonZoomToTileXY(NE_locHeight[0],NE_locWidth[1],zoomL)
 
-	#Get TileX/TileY orderlist for URLlists
-	rangex = list(range(TileXYBottomLeft[0], TileXYTopRight[0]+1))
-	rangey1 = list(range(TileXYTopRight[1], TileXYBottomLeft[1]+1))
-	rangey = rangey1[::-1]
-	minx = min(rangex)
-	miny = min(rangey)
-	maxx = max(rangex)
-	maxy = max(rangey) 
+    #Get TileX/TileY orderlist for URLlists
+    rangex = list(range(TileXYBottomLeft[0], TileXYTopRight[0]+1))
+    rangey1 = list(range(TileXYTopRight[1], TileXYBottomLeft[1]+1))
+    rangey = rangey1[::-1]
+    minx = min(rangex)
+    miny = min(rangey)
+    maxx = max(rangex)
+    maxy = max(rangey)
 
-	#Get Bbox from TopRight/BottomLeft
-	BboxTileBottomLeft = TMSBboxFromTileXY(minx,maxy,zoomL)
-	BboxTileTopRight = TMSBboxFromTileXY(maxx,miny,zoomL)
+    #Get Bbox from TopRight/BottomLeft
+    BboxTileBottomLeft = TMSBboxFromTileXY(minx,maxy,zoomL)
+    BboxTileTopRight = TMSBboxFromTileXY(maxx,miny,zoomL)
 
-	# Calculate total width of tiles and deltax/y of boundingbox 
-	GeoLocationBottomLeft = GeoLocation.from_degrees(BboxTileBottomLeft[0],BboxTileBottomLeft[1]) 
-	GeoLocationTopLeft = GeoLocation.from_degrees(BboxTileTopRight[2],BboxTileBottomLeft[1])
-	GeoLocationTopRight = GeoLocation.from_degrees(BboxTileTopRight[2],BboxTileTopRight[3])
+    # Calculate total width of tiles and deltax/y of boundingbox
+    GeoLocationBottomLeft = GeoLocation.from_degrees(BboxTileBottomLeft[0],BboxTileBottomLeft[1])
+    GeoLocationTopLeft = GeoLocation.from_degrees(BboxTileTopRight[2],BboxTileBottomLeft[1])
+    GeoLocationTopRight = GeoLocation.from_degrees(BboxTileTopRight[2],BboxTileTopRight[3])
 
-	TotalWidthOfTiles = 1000*GeoLocation.distance_to(GeoLocationTopLeft,GeoLocationTopRight,GeoLocation.EARTH_RADIUS)
-	TotalHeightOfTiles = 1000*GeoLocation.distance_to(GeoLocationBottomLeft,GeoLocationTopLeft,GeoLocation.EARTH_RADIUS)
+    TotalWidthOfTiles = 1000*GeoLocation.distance_to(GeoLocationTopLeft,GeoLocationTopRight,GeoLocation.EARTH_RADIUS)
+    TotalHeightOfTiles = 1000*GeoLocation.distance_to(GeoLocationBottomLeft,GeoLocationTopLeft,GeoLocation.EARTH_RADIUS)
 
-	#deltax Left, Width difference between bbox and TotalWidthOfTiles
-	GeoLocationBottomLeftBbox = GeoLocation.from_degrees(SW_locHeight[0],SW_locWidth[1]) 
-	GeoLocationBottomBboxLeftTiles = GeoLocation.from_degrees(SW_locHeight[0],BboxTileBottomLeft[1]) 
-	dx = 1000*GeoLocation.distance_to(GeoLocationBottomBboxLeftTiles,GeoLocationBottomLeftBbox,GeoLocation.EARTH_RADIUS)
+    #deltax Left, Width difference between bbox and TotalWidthOfTiles
+    GeoLocationBottomLeftBbox = GeoLocation.from_degrees(SW_locHeight[0],SW_locWidth[1])
+    GeoLocationBottomBboxLeftTiles = GeoLocation.from_degrees(SW_locHeight[0],BboxTileBottomLeft[1])
+    dx = 1000*GeoLocation.distance_to(GeoLocationBottomBboxLeftTiles,GeoLocationBottomLeftBbox,GeoLocation.EARTH_RADIUS)
 
-	#deltay Bottom, Height difference between bbox and TotalHeightOfTiles
-	GeoLocationBottomTilesLeftBbox = GeoLocation.from_degrees(BboxTileBottomLeft[0],SW_locWidth[1]) 
-	dy = 1000*GeoLocation.distance_to(GeoLocationBottomTilesLeftBbox,GeoLocationBottomLeftBbox,GeoLocation.EARTH_RADIUS)
+    #deltay Bottom, Height difference between bbox and TotalHeightOfTiles
+    GeoLocationBottomTilesLeftBbox = GeoLocation.from_degrees(BboxTileBottomLeft[0],SW_locWidth[1])
+    dy = 1000*GeoLocation.distance_to(GeoLocationBottomTilesLeftBbox,GeoLocationBottomLeftBbox,GeoLocation.EARTH_RADIUS)
 
-	x = rangex
-	y = rangey
-	n = len(rangey)
-	xl1=[]
-	for i in x:
-		xl1.append([i]*n)
+    x = rangex
+    y = rangey
+    n = len(rangey)
+    xl1=[]
+    for i in x:
+        xl1.append([i]*n)
 
-	xl2=[]
-	for sublist in xl1:
-		for item in sublist:
-			xl2.append(item)
-	yl1=[]
-	for i in x:
-		yl1.append(y)
-	yl2=[]
-	for sublist in yl1:
-		for item in sublist:
-			yl2.append(item)
+    xl2=[]
+    for sublist in xl1:
+        for item in sublist:
+            xl2.append(item)
+    yl1=[]
+    for i in x:
+        yl1.append(y)
+    yl2=[]
+    for sublist in yl1:
+        for item in sublist:
+            yl2.append(item)
 
-	tilesX = xl2
-	tileY = yl2
+    tilesX = xl2
+    tileY = yl2
 
-	#Create URLs for image
-	ServerName = ServerName.replace("{z}",str(zoomL))
-	URLlist = []
+    #Create URLs for image
+    ServerName = ServerName.replace("{z}",str(zoomL))
+    URLlist = []
 
-	for i,j in zip(tilesX,tileY):
-		URLlist.append(ServerName.replace("{y}",str(j)).replace("{x}",str(i)))
+    for i,j in zip(tilesX,tileY):
+        URLlist.append(ServerName.replace("{y}",str(j)).replace("{x}",str(i)))
 
-	#Download TileImages
-	TileImages = []
-	opener=urllib.request.build_opener()
-	opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
-	urllib.request.install_opener(opener)
-	for i in URLlist:
-		TileImages.append(Image.open(urllib.request.urlopen(i)))
+    #Download TileImages
+    TileImages = []
+    opener=urllib.request.build_opener()
+    opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
+    urllib.request.install_opener(opener)
+    for i in URLlist:
+        TileImages.append(Image.open(urllib.request.urlopen(i)))
 
-	#Create new image to concatenate the tileimages in.
-	widthImg = len(rangex)*pixels
-	heightImg = len(rangey)*pixels
+    #Create new image to concatenate the tileimages in.
+    widthImg = len(rangex)*pixels
+    heightImg = len(rangey)*pixels
 
-	img = Image.new('RGB', (widthImg,heightImg))
+    img = Image.new('RGB', (widthImg,heightImg))
 
-	LPx=[]
-	n=0
-	for i in rangex:
-		LPx.append(n*pixels)
-		n=n+1
+    LPx=[]
+    n=0
+    for i in rangex:
+        LPx.append(n*pixels)
+        n=n+1
 
-	LPy=[]
-	n=0
-	for i in rangey:
-		LPy.append(n*pixels)
-		n=n+1
+    LPy=[]
+    n=0
+    for i in rangey:
+        LPy.append(n*pixels)
+        n=n+1
 
-	LPx2=[]
-	n=len(LPy)
-	for i in LPx:
-		LPx2.append([i]*n)
+    LPx2=[]
+    n=len(LPy)
+    for i in LPx:
+        LPx2.append([i]*n)
 
-	LPx3=[]
-	for sublist in LPx2:
-		for item in sublist:
-			LPx3.append(item)
+    LPx3=[]
+    for sublist in LPx2:
+        for item in sublist:
+            LPx3.append(item)
 
-	LPy2=[]
-	#n=len(LPy)
-	for i in LPx:
-		LPy2.append(LPy)
+    LPy2=[]
+    #n=len(LPy)
+    for i in LPx:
+        LPy2.append(LPy)
 
-	LPy3=[]
-	for sublist in LPy2:
-		for item in sublist:
-			LPy3.append(item)
-			
-	LPy4=LPy3[::-1]
+    LPy3=[]
+    for sublist in LPy2:
+        for item in sublist:
+            LPy3.append(item)
 
-	if TMS_WMTS:
-		for i,j,k in zip(TileImages,LPy3,LPx3):
-			img.paste(i,(j,k))
-	else:
-		for i,j,k in zip(TileImages,LPx3,LPy4):
-			img.paste(i,(j,k))
+    LPy4=LPy3[::-1]
 
-	#Crop Image
-	deltaHeight = TotalHeightOfTiles- bboxHeight
-	dxM = dx
-	dyM = deltaHeight-dy
-	ImageWidthNew=(bboxWidth/TotalWidthOfTiles)*widthImg
-	ImageHeightNew=(bboxHeight/TotalHeightOfTiles)*heightImg
-	dxImage=-int((dxM/TotalWidthOfTiles)*widthImg)
-	dyImage=-int((dyM/TotalHeightOfTiles)*heightImg)
+    if TMS_WMTS:
+        for i,j,k in zip(TileImages,LPy3,LPx3):
+            img.paste(i,(j,k))
+    else:
+        for i,j,k in zip(TileImages,LPx3,LPy4):
+            img.paste(i,(j,k))
 
-	imgNew = Image.new('RGB', (int(ImageWidthNew),int(ImageHeightNew)))
-	imgNew.paste(img,(dxImage,dyImage))
-	
-	return imgNew,widthImg,heightImg
+    #Crop Image
+    deltaHeight = TotalHeightOfTiles- bboxHeight
+    dxM = dx
+    dyM = deltaHeight-dy
+    ImageWidthNew=(bboxWidth/TotalWidthOfTiles)*widthImg
+    ImageHeightNew=(bboxHeight/TotalHeightOfTiles)*heightImg
+    dxImage=-int((dxM/TotalWidthOfTiles)*widthImg)
+    dyImage=-int((dyM/TotalHeightOfTiles)*heightImg)
+
+    imgNew = Image.new('RGB', (int(ImageWidthNew),int(ImageHeightNew)))
+    imgNew.paste(img,(dxImage,dyImage))
+
+    return imgNew,widthImg,heightImg
 
 class GeoLocation:
     MIN_LAT = math.radians(-90)
@@ -626,6 +625,7 @@ class GeoLocation:
                 GeoLocation.from_radians(max_lat, max_lon)]
 
 def download_image(url, index, results):
+    import requests
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
     results[index] = img

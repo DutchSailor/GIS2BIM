@@ -179,9 +179,9 @@ def CurvesFromGML(tree,xPathString,dx,dy,BoxWidth,BoxHeight,scale,DecimalNumbers
 def PlaceText(textData,fontSize, upper):
     Texts = []
     for i, j, k in zip(textData[0], textData[1], textData[2]):
-        ZAxis = FreeCAD.Vector(0, 0, 1)
+        Z_Axis = FreeCAD.Vector(0, 0, 1)
         p1 = FreeCAD.Vector(i[0][0], i[0][1], 0)
-        Place1 = FreeCAD.Placement(p1, FreeCAD.Rotation(ZAxis, -float(j)))
+        Place1 = FreeCAD.Placement(p1, FreeCAD.Rotation(Z_Axis, -float(j)))
         if upper:
            k = k.upper()
         else: k
@@ -193,9 +193,9 @@ def PlaceText(textData,fontSize, upper):
 
 #def PlaceText2(text,x,y,rot,fontSize,upper):
 #    Texts = []
-#	ZAxis = FreeCAD.Vector(0, 0, 1)
+#	Z_Axis = FreeCAD.Vector(0, 0, 1)
 #	p1 = FreeCAD.Vector(x, y, 0)
-#	Place1 = FreeCAD.Placement(p1, FreeCAD.Rotation(ZAxis, -float(rot)))
+#	Place1 = FreeCAD.Placement(p1, FreeCAD.Rotation(Z_Axis, -float(rot)))
 #	if upper:
 #	   k = k.upper()
 #	else: k

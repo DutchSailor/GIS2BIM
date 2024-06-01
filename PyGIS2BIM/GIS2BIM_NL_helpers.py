@@ -1,5 +1,5 @@
 from geometry.geometry2d import *
-from abstract.intersect2d import *
+# from abstract.intersect2d import * WEGGEHAALD
 from packages.GIS2BIM.GIS2BIM import GisRectBoundingBox
 lstkaartbladenpolygons = \
     [[[175000, 600000], [175000, 606250], [180000, 606250], [180000, 600000], [175000, 600000]],
@@ -2754,15 +2754,27 @@ lstkaartbladennummers = \
 
 PCKaartbladen = []
 
+def is_point_in_polycurve(point: Point2D, polycurve: PolyCurve2D) -> bool:
+    x, y = point.x, point.y
+    intersections = 0
+    for curve in polycurve.curves:
+        p1, p2 = curve.start, curve.end
+        if (y > min(p1.y, p2.y)) and (y <= max(p1.y, p2.y)) and (x <= max(p1.x, p2.x)):
+            if p1.y != p2.y:
+                x_inters = (y - p1.y) * (p2.x - p1.x) / (p2.y - p1.y) + p1.x
+                if (p1.x == p2.x) or (x <= x_inters):
+                    intersections += 1
+    return intersections % 2 != 0
+
 def kaartbladnummer(RdX,RdY):
-    #geeft als resultaat het kaartbladnummer die voor de kadaster basisvoorziening o.a. gebruikt wordt
+    #geeft als resultaat het kaartbladnummer die voor de 3D Kadaster basisvoorziening o.a. gebruikt wordt
     orig = Point2D(RdX,RdY)
     kaartbladen = []
     for i,k in zip(lstkaartbladenpolygons,lstkaartbladennummers):
         pnts = []
         for j in i:
             pnts.append(Point2D(j[0],j[1]))
-        pc = PolyCurve2D().byPoints(pnts)
+        pc = PolyCurve2D().by_points(pnts)
         res = is_point_in_polycurve(orig,pc)
         if res is True:
             kaartbladen.append(k)
